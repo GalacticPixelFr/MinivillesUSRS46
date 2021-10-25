@@ -121,7 +121,6 @@ namespace MinivillesURSR46
 
             return new Element[2]{background, infos};
         }
-
         
     }
     public enum Color

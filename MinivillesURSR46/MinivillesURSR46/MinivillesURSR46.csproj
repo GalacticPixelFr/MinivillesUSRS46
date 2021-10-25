@@ -39,6 +39,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Cards.cs" />
+        <Compile Include="CardsInfo.cs" />
         <Compile Include="Die.cs" />
         <Compile Include="Game.cs" />
         <Compile Include="Piles.cs" />

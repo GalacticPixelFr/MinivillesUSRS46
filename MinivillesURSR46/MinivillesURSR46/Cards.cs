@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Resources;
 
 namespace MinivillesURSR46
@@ -58,6 +59,102 @@ namespace MinivillesURSR46
         public CardsInfo CreateStade()
         {
             return new CardsInfo(7, Color.Bleu, 6, "Stade", "Recevez 4 pièces", 6, 4);
+        }
+
+        /// <summary>
+        /// Permet de renvoyer une liste d'element pour afficher une carte
+        /// </summary>
+        /// <param name="cardsInfo">Les infos de la carte</param>
+        /// <param name="coordinates">les coordonnées de la carte</param>
+        /// <returns>liste d'element pour afficher une carte</returns>
+        public Element[] ToElementFull(CardsInfo cardsInfo, Coordinates coordinates)
+        {
+            string[] stringBackground = new string[7]{
+                "+---------+",
+                "|         |",
+                "|         |",
+                "|         |",
+                "|         |",
+                "|         |",
+                "+---------+"
+            };
+            
+            ConsoleColor color = ConsoleColor.White;
+            switch (cardsInfo.Color)
+            {
+                case "bleu":
+                    color = ConsoleColor.Blue;
+                    break;
+                case "rouge":
+                    color = ConsoleColor.Red;
+                    break;
+                case "vert":
+                    color = ConsoleColor.Green;
+                    break;
+            }
+            Element background = new Element(stringBackground, coordinates, Animation.None, Placement.topLeft, color, ConsoleColor.Black);
+
+            string[] stringInfos = new string[5]{
+                cardsInfo.Name,
+                "",
+                cardsInfo.Cost+" €",
+                "",
+                cardsInfo.Dice.ToString()
+            };
+            Element infos = new Element(stringInfos, new Coordinates(coordinates.x+5, coordinates.y+1), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+
+            return new Element[2]{background, infos};
+        }
+
+        /// <summary>
+        /// Permet d'afficher la moitier d'un carte (pour afficher celle du joueur)
+        /// </summary>
+        /// <param name="amount">Le nombre de cartes</param>
+        /// <param name="cardsInfo">Les infos de la carte</param>
+        /// <param name="coordinates">les coordonnées de la carte</param>
+        /// <returns></returns>
+        public Element[] ToElementSemiTop(bool top, int amount, CardsInfo cardsInfo, Coordinates coordinates)
+        {
+            string[] stringBackground = new string[4]{
+                "|         |",
+                "|         |",
+                "|         |",
+                "+---------+"
+            };
+
+            if (top) 
+            {
+                stringBackground = new string[4]{
+                    "+---------+",
+                    "|         |",
+                    "|         |",
+                    "|         |"
+                };
+            }
+
+            ConsoleColor color = ConsoleColor.White;
+            switch (cardsInfo.Color)
+            {
+                case "bleu":
+                    color = ConsoleColor.Blue;
+                    break;
+                case "rouge":
+                    color = ConsoleColor.Red;
+                    break;
+                case "vert":
+                    color = ConsoleColor.Green;
+                    break;
+            }
+            Element background = new Element(stringBackground, coordinates, Animation.None, Placement.topLeft, color, ConsoleColor.Black);
+
+            string[] stringInfos = new string[3]{
+                cardsInfo.Name,
+                cardsInfo.Dice.ToString(),
+                "+"+amount
+            };
+            Element infos = new Element(stringInfos, new Coordinates(coordinates.x+5, coordinates.y), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+
+            return new Element[2]{background, infos};
         }
     }
 }

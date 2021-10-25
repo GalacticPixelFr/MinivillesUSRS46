@@ -4,18 +4,16 @@ namespace MinivillesURSR46
 {
     public class Die
     {
-        private Random random = new Random();
-        public int Face { get; protected set; }
+        static private Random random = new Random();
 
         public Die()
         {
             
         }
         
-        public virtual int Lancer()
+        public static int Lancer()
         {
-            Face = random.Next(0, 6) + 1;
-            return Face;
+            return random.Next(0, 6) + 1;
         }
     }
 }

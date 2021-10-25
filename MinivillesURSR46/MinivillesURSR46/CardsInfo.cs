@@ -1,16 +1,21 @@
-﻿namespace MinivillesURSR46
+﻿using System;
+
+namespace MinivillesURSR46
 {
     public class CardsInfo
     {
         public int Id { get; set; }
-        public string Color { get; set; }
+        //public string Color { get; set; }
+        
+        
         public int Cost { get; set; }
+        public Color Color;
         public string Name { get; set; }
         public string Effect { get; set; }
         public int Dice { get; set; }
         public int Gain { get; set; }
 
-        public CardsInfo(int id, string color, int cost, string name, string effect, int dice, int gain)
+        public CardsInfo(int id, Color color, int cost, string name, string effect, int dice, int gain)
         {
             Id = id;
             Color = color;
@@ -20,5 +25,12 @@
             Dice = dice;
             Gain = gain;
         }
+        
+    }
+    public enum Color
+    {
+        Bleu,
+        Vert,
+        Rouge
     }
 }

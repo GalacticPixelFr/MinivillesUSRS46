@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace MinivillesURSR46
 {
@@ -10,7 +11,7 @@ namespace MinivillesURSR46
         public int width;
 
         //Dictionary<Coordinates, string[]> elements = new();
-        Dictionary<int, List<Element>> layers = new();
+        Dictionary<int, List<Element>> layers = new Dictionary<int, List<Element>>();
 
         /// <summary>
         /// Constructeur de la classe, crée une fenêtre carré
@@ -84,29 +85,31 @@ namespace MinivillesURSR46
         }
         */
 
+        /// <summary>
+        /// Permet d'afficher l'écran dans la console
+        /// </summary>
         public void Display()
         {
-            Console.Clear();
+            Console.Clear(); //On commence par clealr la console
             string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
-            Console.Write(background);
+            Console.Write(background); //On affiche le bords
 
-            bool recall = false;
+            bool recall = false; //Permet de savoir si l'éran doit être actualiser
 
             foreach (List<Element> layer in layers.Values)
             {
                 foreach (Element element in layer)
                 {
-
-
                     for (int i = 0; i < element.text.Count(); i++)
                     {
 
-                        if (element.animation != Animation.None && element.animationIndex[i] > 0)
+                        if (element.animation != Animation.None && element.animationIndex[i] > 0) //Si un element doit être actualisé
                         {
                             element.animationIndex[i]--;
                             recall = true;
                         }
 
+                        //Les différentes façon de placer le texte
                         if (element.placement == Placement.topLeft)
                             Console.SetCursorPosition(element.coordinates.x, element.coordinates.y + i);
 
@@ -131,52 +134,80 @@ namespace MinivillesURSR46
                             Console.Write(string.Join("", element.text[i].Take(element.text[i].Length - element.animationIndex[i])));
                         else Console.Write(element.text[i]);
                     }
-                    foreach (string text in element.text)
-                    {
-                        
-                    }
+
+                    //Reset des couleurs
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
             Console.SetCursorPosition(0, 0);
+
             if (recall) 
             {
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 Display();
             }
         }
 
+        /// <summary>
+        /// Permet d'ajouet un élément sans spécifier de layer
+        /// </summary>
+        /// <param name="element">L'élément à ajouter</param>
         public void Add(Element element) {
             this.Add(element, 0);
         }
 
+        /// <summary>
+        /// Permet d'ajouter un élément
+        /// </summary>
+        /// <param name="element">L'élément à ajouter</param>
+        /// <param name="layer">Le layer sur lequel ajouter l'élément</param>
         public void Add(Element element, int layer) {
         if (!layers.ContainsKey(layer))
                 layers.Add(layer, new List<Element>());
             layers[layer].Add(element);
         }
 
-        /* TODO
+        /// <summary>
+        /// Permet de supprimer les élément situer à une coordonnée
+        /// </summary>
+        /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
         public void Delete(Coordinates coordinates) {
-            this.Delete(coordinates, 0);
+            foreach (KeyValuePair<int, List<Element>> layer in this.layers)
+            {
+                layer.Value.Remove(layer.Value.FirstOrDefault(x => x.coordinates == coordinates));
+            }
         }
 
+        /// <summary>
+        /// Permet de supprimer les élément situer à une coordonnée sur un layer
+        /// </summary>
+        /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
+        /// <param name="layer">Le layer sur lequel supprimer l'élément</param>
         public void Delete(Coordinates coordinates, int layer) {
-            if(this.layers[layer].ContainsKey(coordinates))
-                this.layers[layer].Remove(coordinates);
-        }*/
+            this.layers[layer].Remove(layers[layer].FirstOrDefault(x => x.coordinates == coordinates));
+        }
 
+        /// <summary>
+        /// Permet de supprimer un layer entier
+        /// </summary>
+        /// <param name="layer">Le layer à supprimer</param>
         public void DeleteLayer(int layer) {
             if (this.layers.ContainsKey(layer)) {
                 this.layers.Remove(layer);
             }
         }
 
+        /// <summary>
+        /// Permet de clear l'écran
+        /// </summary>
         public void Clear() {
             this.layers.Clear();
         }
 
+        /// <summary>
+        /// Permet de creer les bords de l'écran
+        /// </summary>
         private List<string> BuildBorder() {
             string top = "+" + new String('-', this.width-2) + "+\n";
             string mid = "|" + new String(' ', this.width-2) + "|\n";

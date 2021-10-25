@@ -47,6 +47,7 @@ namespace MinivillesURSR46
         {
             //TODO affichage de base : credits, noms du jeu, etc.
 
+            
             /*
             1. Le joueur A lance le dé.
             2. Le joueur B regarde s’il a des cartes bleues ou rouges qui s’activent et il en applique les effets
@@ -58,11 +59,19 @@ namespace MinivillesURSR46
             // condition fin
             while (playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish)
             {
+                int resultDie;
                 // tour joueur humain
-                // TODO attendre pression touche ?
-                die.Lancer();
-
-                // TODO corriger fonction activation cartes joueur selon couleur
+                while (true)
+                {
+                    Console.WriteLine("Tapez Enter pour Lancer le dé");
+                    ConsoleKey key = Console.ReadKey().Key;
+                    if (key == ConsoleKey.Enter || key == ConsoleKey.Spacebar)
+                    {
+                        resultDie = die.Lancer();
+                        break;
+                    }
+                }
+                CardsActivation(playerH, playerIA, resultDie);
                 //IA bleue et rouge
                 //H bleue et vert
 
@@ -103,8 +112,8 @@ namespace MinivillesURSR46
                 if(playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish) { break; }
 
                 // tour joueur IA
-                die.Lancer();
-                // TODO corriger fonction activation cartes joueur selon couleur
+                resultDie = die.Lancer();
+                CardsActivation(playerIA, playerH, resultDie);
                 //H bleue et rouge
                 //IA bleue et vert
 
@@ -157,6 +166,36 @@ namespace MinivillesURSR46
             else { c = new Cards().CreateSuperette(); }
 
             return c;
+        }
+
+        public void CardsActivation(Player userPlayer, Player opponentPlayer, int dice)
+        {
+            foreach (CardsInfo card in userPlayer.UserHand)
+            {
+                if (card.Dice == dice)
+                {
+                    if (card.Color == Color.Bleu || card.Color == Color.Vert )
+                    {
+                        userPlayer.UserMoney += card.Gain;
+                    }
+                }
+            }
+            foreach (CardsInfo card in opponentPlayer.UserHand)
+            {
+                if (card.Dice == dice)
+                {
+                    if (card.Color == Color.Bleu)
+                    {
+                        opponentPlayer.UserMoney += card.Gain;
+                    }
+                    else if (card.Color == Color.Rouge)
+                    {
+                        opponentPlayer.UserMoney += card.Gain;
+                        userPlayer.UserMoney -= card.Gain;
+
+                    }
+                }
+            }
         }
     }
 }

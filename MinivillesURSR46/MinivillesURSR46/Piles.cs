@@ -14,7 +14,7 @@ namespace MinivillesURSR46
         {
             pile = new List<CardsInfo>();
         }
-        public Piles(List<Cardsinfo> liste)
+        public Piles(List<CardsInfo> liste)
         {
             pile = liste;
         }
@@ -64,7 +64,7 @@ namespace MinivillesURSR46
 
             for (int i = 0; i < pile.Count; i++)
             {
-                if (pile[i].ID == ID)
+                if (pile[i].Id == ID)
                 {
                     index = i;
                     break;
@@ -75,7 +75,7 @@ namespace MinivillesURSR46
             if (index == -1)
                 return null;
 
-            CardsInfo = pile[index];
+            CardsInfo c = pile[index];
             pile.RemoveAt(index);
             return c;
         }

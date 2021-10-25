@@ -148,36 +148,65 @@ namespace MinivillesURSR46
             }
         }
 
+        /// <summary>
+        /// Permet d'ajouet un élément sans spécifier de layer
+        /// </summary>
+        /// <param name="element">L'élément à ajouter</param>
         public void Add(Element element) {
             this.Add(element, 0);
         }
 
+        /// <summary>
+        /// Permet d'ajouter un élément
+        /// </summary>
+        /// <param name="element">L'élément à ajouter</param>
+        /// <param name="layer">Le layer sur lequel ajouter l'élément</param>
         public void Add(Element element, int layer) {
         if (!layers.ContainsKey(layer))
                 layers.Add(layer, new List<Element>());
             layers[layer].Add(element);
         }
 
-        /* TODO
+        /// <summary>
+        /// Permet de supprimer les élément situer à une coordonnée
+        /// </summary>
+        /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
         public void Delete(Coordinates coordinates) {
-            this.Delete(coordinates, 0);
+            foreach (List<Element> layer in this.layers)
+            {
+                layer.Remove(layer.FirstOrDefault(x => x.coordinates == coordinates));
+            }
         }
 
+        /// <summary>
+        /// Permet de supprimer les élément situer à une coordonnée sur un layer
+        /// </summary>
+        /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
+        /// <param name="layer">Le layer sur lequel supprimer l'élément</param>
         public void Delete(Coordinates coordinates, int layer) {
-            if(this.layers[layer].ContainsKey(coordinates))
-                this.layers[layer].Remove(coordinates);
-        }*/
+            this.layers[layer].Remove(layer.FirstOrDefault(x => x.coordinates == coordinates));
+        }
 
+        /// <summary>
+        /// Permet de supprimer un layer entier
+        /// </summary>
+        /// <param name="layer">Le layer à supprimer</param>
         public void DeleteLayer(int layer) {
             if (this.layers.ContainsKey(layer)) {
                 this.layers.Remove(layer);
             }
         }
 
+        /// <summary>
+        /// Permet de clear l'écran
+        /// </summary>
         public void Clear() {
             this.layers.Clear();
         }
 
+        /// <summary>
+        /// Permet de creer les bords de l'écran
+        /// </summary>
         private List<string> BuildBorder() {
             string top = "+" + new String('-', this.width-2) + "+\n";
             string mid = "|" + new String(' ', this.width-2) + "|\n";

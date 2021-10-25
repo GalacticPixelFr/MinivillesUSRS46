@@ -89,6 +89,7 @@ namespace MinivillesURSR46
                     color = ConsoleColor.Red;
                     break;
                 case Color.Vert:
+
                     color = ConsoleColor.Green;
                     break;
             }

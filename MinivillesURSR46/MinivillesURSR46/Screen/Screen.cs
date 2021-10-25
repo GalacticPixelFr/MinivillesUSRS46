@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 
 namespace MinivillesURSR46
 {
@@ -10,7 +11,7 @@ namespace MinivillesURSR46
         public int width;
 
         //Dictionary<Coordinates, string[]> elements = new();
-        Dictionary<int, List<Element>> layers = new();
+        Dictionary<int, List<Element>> layers = new Dictionary<int, List<Element>>();
 
         /// <summary>
         /// Constructeur de la classe, crée une fenêtre carré
@@ -172,9 +173,9 @@ namespace MinivillesURSR46
         /// </summary>
         /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
         public void Delete(Coordinates coordinates) {
-            foreach (List<Element> layer in this.layers)
+            foreach (KeyValuePair<int, List<Element>> layer in this.layers)
             {
-                layer.Remove(layer.FirstOrDefault(x => x.coordinates == coordinates));
+                layer.Value.Remove(layer.Value.FirstOrDefault(x => x.coordinates == coordinates));
             }
         }
 
@@ -184,7 +185,7 @@ namespace MinivillesURSR46
         /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
         /// <param name="layer">Le layer sur lequel supprimer l'élément</param>
         public void Delete(Coordinates coordinates, int layer) {
-            this.layers[layer].Remove(layer.FirstOrDefault(x => x.coordinates == coordinates));
+            this.layers[layer].Remove(layers[layer].FirstOrDefault(x => x.coordinates == coordinates));
         }
 
         /// <summary>

@@ -84,29 +84,31 @@ namespace MinivillesURSR46
         }
         */
 
+        /// <summary>
+        /// Permet d'afficher l'écran dans la console
+        /// </summary>
         public void Display()
         {
-            Console.Clear();
+            Console.Clear(); //On commence par clealr la console
             string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
-            Console.Write(background);
+            Console.Write(background); //On affiche le bords
 
-            bool recall = false;
+            bool recall = false; //Permet de savoir si l'éran doit être actualiser
 
             foreach (List<Element> layer in layers.Values)
             {
                 foreach (Element element in layer)
                 {
-
-
                     for (int i = 0; i < element.text.Count(); i++)
                     {
 
-                        if (element.animation != Animation.None && element.animationIndex[i] > 0)
+                        if (element.animation != Animation.None && element.animationIndex[i] > 0) //Si un element doit être actualisé
                         {
                             element.animationIndex[i]--;
                             recall = true;
                         }
 
+                        //Les différentes façon de placer le texte
                         if (element.placement == Placement.topLeft)
                             Console.SetCursorPosition(element.coordinates.x, element.coordinates.y + i);
 
@@ -131,18 +133,17 @@ namespace MinivillesURSR46
                             Console.Write(string.Join("", element.text[i].Take(element.text[i].Length - element.animationIndex[i])));
                         else Console.Write(element.text[i]);
                     }
-                    foreach (string text in element.text)
-                    {
-                        
-                    }
+
+                    //Reset des couleurs
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Black;
                 }
             }
             Console.SetCursorPosition(0, 0);
+
             if (recall) 
             {
-                Thread.Sleep(200);
+                Thread.Sleep(100);
                 Display();
             }
         }

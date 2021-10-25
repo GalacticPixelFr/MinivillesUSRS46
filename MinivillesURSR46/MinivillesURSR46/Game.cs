@@ -61,23 +61,46 @@ namespace MinivillesURSR46
                 // tour joueur humain
                 // TODO attendre pression touche ?
                 die.Lancer();
+
                 // TODO corriger fonction activation cartes joueur selon couleur
                 //IA bleue et rouge
                 //H bleue et vert
 
                 // choix action joueur
-                int choix = 0;
-                // TODO choix achat/rien
-                if (choix == 1)
+                bool action = false;
+                while (!action)
                 {
-                    choix = 0;
-                    // TODO choix entre les différentes cartes
-                    // TODO condition (playerH.argent > cartes.cost)
-                    playerH.Achat(choix);
+                    int choix = 0;
+                    // TODO choix achat/rien
+                    if (choix == 1)
+                    {
+                        choix = 0;
+                        // TODO choix entre les différentes cartes
+
+                        // selection carte choisi
+                        CardsInfo c = CardChoice(choix); 
+
+                        // on vérifie que la carte est encore disponible
+                        if (pile.GetNumberCard(choix) == 0)
+                        {
+                            // TODO "la carte n'est plus disponible"
+                        }
+                        // on vérifie que le joueur a assez d'argent
+                        else if (c.Cost < playerH.UserMoney)
+                        {
+                            playerH.BuyCard(c, pile);
+                            action = true;
+                        }
+                        else
+                        {
+                            // TODO "vous n'avez pas assez d'argent"
+                        }
+                    }
+                    else { action = true; }
                 }
 
                 // verification condition de fin
-                if(playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish){ break;}
+                if(playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish) { break; }
 
                 // tour joueur IA
                 die.Lancer();
@@ -85,16 +108,55 @@ namespace MinivillesURSR46
                 //H bleue et rouge
                 //IA bleue et vert
 
-                // achat de cartes au hasard
-                if (rnd.Next(0, 1) == 0 && playerIA.argent > 0)
+                // cette méthode pose probleme, l'IA va de moins en moins acheter de batiments car il y aura moins de cartes disponbles au fur et a mesure de la partie
+
+                // action au hasard
+                if (rnd.Next(0, 1) == 0 && playerIA.UserMoney > 0)
                 {
-                    // TODO chois d'une carte a acheter au hasard
-                    // TODO verifier que l'on peut acheter la carte
+                    // choix d'une carte a acheter au hasard
+                    int choix = rnd.Next(0, 8);
+
+                    // selection carte choisi
+                    CardsInfo c = CardChoice(choix); 
+
+                    // on vérifie que la carte est encore disponible et qu'elle est encore achetable
+                    if (c.Cost < playerH.UserMoney && pile.GetNumberCard(choix) == 0)
+                    {
+                        playerH.BuyCard(c, pile);
+                    }
                 }
 
             }
+
             // TODO nettoyer screen
-            // TODO afficher défaite ou vistoire selon situation
+            if (playerH.UserMoney > playerIA.UserMoney)
+            {
+                // TODO "vous gagnez car vous avez le plus d'argent
+            }
+            else if (playerIA.UserMoney > playerH.UserMoney)
+            {
+                // TODO "vous perdez car l'adversaire est le plus riche"
+            }
+            else // egalité des sommes d'argent
+            {
+                // TODO "vous êtes à égalité car vous avez autant d'argent que votre adversaire
+            }
+        }
+
+        private CardsInfo CardChoice(int i)
+        {
+            CardsInfo c;
+
+            if (i == 0) { c = new Cards().CreateBoulangerie(); }
+            else if (i == 1) { c = new Cards().CreateCafe(); }
+            else if (i == 2) { c = new Cards().CreateChampDeBle(); }
+            else if (i == 3) { c = new Cards().CreateFerme(); }
+            else if (i == 4) { c = new Cards().CreateForet(); }
+            else if (i == 5) { c = new Cards().CreateRestaurant(); }
+            else if (i == 6) { c = new Cards().CreateStade(); }
+            else { c = new Cards().CreateSuperette(); }
+
+            return c;
         }
     }
 }

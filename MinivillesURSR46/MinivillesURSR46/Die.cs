@@ -11,7 +11,7 @@ namespace MinivillesURSR46
             
         }
         
-        public static int Lancer()
+        public int Lancer()
         {
             return random.Next(0, 6) + 1;
         }

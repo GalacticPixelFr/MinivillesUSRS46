@@ -79,5 +79,17 @@ namespace MinivillesURSR46
             pile.RemoveAt(index);
             return c;
         }
+
+        public int GetNumberCard(int ID)
+        {
+            int cpt = 0;
+
+            foreach(CardsInfo c in pile)
+            {
+                if (c.Id == ID){ cpt++; }
+            }
+
+            return cpt;
+        }
     }
 }

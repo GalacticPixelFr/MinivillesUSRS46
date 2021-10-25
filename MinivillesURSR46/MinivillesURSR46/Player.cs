@@ -15,16 +15,6 @@ namespace MinivillesURSR46
             UserHand.Add(pile.GetCard(2));
         }
 
-        public void AddCard(Piles pile, int id)
-        {
-            UserHand.Add(pile.GetCard(id));
-        }
-
-        public void AddMoney(int amount)
-        {
-            UserMoney += amount;
-        }
-
         public void BuyCard(CardsInfo card, Piles pile)
         {
             UserMoney -= card.Cost;

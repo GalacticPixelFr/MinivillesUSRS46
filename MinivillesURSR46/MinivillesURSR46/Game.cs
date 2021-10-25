@@ -56,7 +56,7 @@ namespace MinivillesURSR46
             */
 
             // condition fin
-            while (playerH.argent < gainFinish && playerIA.argent < gainFinish)
+            while (playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish)
             {
                 // tour joueur humain
                 // TODO attendre pression touche ?
@@ -77,7 +77,7 @@ namespace MinivillesURSR46
                 }
 
                 // verification condition de fin
-                if(playerH.argent < gainFinish && playerIA.argent < gainFinish){ break;}
+                if(playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish){ break;}
 
                 // tour joueur IA
                 die.Lancer();

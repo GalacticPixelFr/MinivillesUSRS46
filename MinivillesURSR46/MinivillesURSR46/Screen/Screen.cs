@@ -5,7 +5,7 @@ using System.Threading;
 
 namespace MinivillesURSR46
 {
-    class Screen
+    public class Screen
     {
         public int height;
         public int width;

@@ -1,10 +1,58 @@
-﻿namespace MinivillesURSR46
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Threading;
+
+namespace MinivillesURSR46
 {
     public class Game
     {
-        
-<<<<<<< Updated upstream
-=======
+        public Player playerH;
+        public Player playerIA;
+        public Die die;
+        public Piles pile;
+        public int gainFinish; // en prévision du bonus changer condition fin pour partie rapide/normal/lente
+
+        // screen
+        public Screen screen;
+
+        private Random rnd;
+
+        public Game(int gain)
+        {
+            //TODO initialisation pile de cartes
+            pile = new Piles();
+            for(int i = 0; i < 6; i++)
+            {
+                foreach(CardsInfo c in new Cards().EachCards)
+                {
+                    pile.AddCard(c);
+                }
+            }
+
+            gainFinish = gain;
+
+            playerH = new Player(new List<CardsInfo>(), pile);
+            playerIA = new Player(new List<CardsInfo>(), pile);
+
+            die = new Die();
+            rnd = new Random();
+            screen = new Screen(200, 50);
+        }
+
+        public void DisplayMoney()
+        {
+            screen.Add(new Element(new string[] {playerIA.UserMoney+" pièces", }
+                , new Coordinates(1, 1),
+                Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black), 1);
+
+            screen.Add(new Element(new string[] {playerH.UserMoney+" pièces", }
+                , new Coordinates(1, screen.height-2),
+                Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black), 1);
+            
+            screen.Display();
+        }
+      
         public void DisplayHands()
         {
             List<Element> cards = new List<Element>();
@@ -109,6 +157,7 @@
                     {
                         // TODO choix entre les différentes cartes
                         List<Element> cardsElements = new List<Element>();
+
                         int index = 0;
                         for (int i = 0; i <= 7; i++)
                         {
@@ -157,7 +206,9 @@
                 }
 
                 // verification condition de fin
+
                 if(playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish) { break; }
+
 
                 // tour joueur IA
                 resultDie = die.Lancer();
@@ -177,9 +228,11 @@
                     CardsInfo c = CardChoice(choix); 
 
                     // on vérifie que la carte est encore disponible et qu'elle est encore achetable
+
                     if (c.Cost < playerIA.UserMoney && pile.GetNumberCard(choix) == 0)
                     {
                         playerIA.BuyCard(c, pile);
+
                     }
                 }
 
@@ -255,6 +308,5 @@
                 }
             }
         }
->>>>>>> Stashed changes
     }
 }

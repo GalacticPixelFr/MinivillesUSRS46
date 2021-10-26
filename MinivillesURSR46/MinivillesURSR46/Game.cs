@@ -42,13 +42,13 @@ namespace MinivillesURSR46
 
         public void DisplayMoney()
         {
-            screen.Add(new Element(new string[] {playerIA+" pièces", }
+            screen.Add(new Element(new string[] {playerIA.UserMoney+" pièces", }
                 , new Coordinates(1, 1),
-                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 1);
+                Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black), 1);
 
-            screen.Add(new Element(new string[] {playerH+" pièces", }
+            screen.Add(new Element(new string[] {playerH.UserMoney+" pièces", }
                 , new Coordinates(1, screen.height-2),
-                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 1);
+                Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black), 1);
             
             screen.Display();
         }

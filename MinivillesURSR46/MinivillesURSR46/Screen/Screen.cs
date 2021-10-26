@@ -114,7 +114,7 @@ namespace MinivillesURSR46
                             Console.SetCursorPosition(element.coordinates.x, element.coordinates.y + i);
 
                         else if (element.placement == Placement.mid)
-                            Console.SetCursorPosition(element.coordinates.x - (element.text[i].Length/2), element.coordinates.y + i);
+                            Console.SetCursorPosition(element.coordinates.x - (element.text[i].Length/2), (element.coordinates.y/2 - element.text.Length/2) + i);
 
                         else if (element.placement == Placement.topRight)
                             Console.SetCursorPosition(element.coordinates.x - element.text[i].Length, element.coordinates.y + i);
@@ -215,6 +215,52 @@ namespace MinivillesURSR46
             lines.Insert(0, top);
             lines.Add(top);
             return lines;
+        }
+
+        public int Choice(string[] choixArray, int height)
+        {
+            Element title = new Element(new string[1]{"Voulez-vous acheter ?"}, new Coordinates(this.width/2, this.height/2), Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+
+            Element[] choixElements = new Element[choixArray.Length];
+            int space = this.width / (choixArray.Length+1); 
+            for(int i = 0; i < choixArray.Length; i++)
+            {
+                Element choixElement = new Element(new string[1]{choixArray[i]}, 
+                                                    new Coordinates(space * (i+1) - choixArray[i].ToString().Length, height),
+                                                    Animation.None,
+                                                    Placement.mid, ConsoleColor.Black, ConsoleColor.White);
+
+                this.Add(choixElement, 2);
+            }
+            this.Display();
+            return Select(choixElements);
+        }
+
+        public int Select(Element[] elementArray)
+        {
+            int choix = 0;
+            while(true)
+            {
+                ConsoleKey key = Console.ReadKey().Key;
+                if (key == ConsoleKey.RightArrow) {
+                    choix++;
+                } else if (key == ConsoleKey.LeftArrow) {
+                    choix--;
+                } else if (key == ConsoleKey.Enter) {
+                    break;
+                }
+
+                if (choix < 0) choix = elementArray.Length-1;
+                if (choix >= elementArray.Length) choix = 0;
+
+                for (int i = 0; i < choix; i++)
+                {
+                    if (i == choix) elementArray[choix].foreground = ConsoleColor.Green;
+                    else elementArray[choix].foreground = ConsoleColor.White;
+                }
+                this.Display();
+            }
+            return choix;
         }
     }
 }

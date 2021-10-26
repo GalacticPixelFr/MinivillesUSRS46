@@ -36,6 +36,7 @@ namespace MinivillesURSR46
 
             die = new Die();
             rnd = new Random();
+            screen = new Screen(238, 28);
         } 
 
         public void DisplayGame()
@@ -45,8 +46,17 @@ namespace MinivillesURSR46
 
         public void Run()
         {
-            //TODO affichage de base : credits, noms du jeu, etc.
-
+            Element credits = new Element(new string[6] {
+                "Je Minivilles",
+                "",
+                "Créée par :",
+                "Jordan BURNET",
+                "Mathias DIDIER",
+                "Camille PELE"
+            }, new Coordinates(screen.width/2, screen.height/2), Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            screen.Add(credits, 1);
+            screen.Display();
+            screen.Clear();
             
             /*
             1. Le joueur A lance le dé.
@@ -79,12 +89,31 @@ namespace MinivillesURSR46
                 bool action = false;
                 while (!action)
                 {
-                    int choix = 0;
-                    // TODO choix achat/rien
+                    int choix = screen.Choice(new string[2]{"OUI", "NON"}, screen.height/2+1);
+
                     if (choix == 1)
                     {
-                        choix = 0;
                         // TODO choix entre les différentes cartes
+                        List<Element> cardsElements = new List<Element>();
+                        int space = 3;
+                        int index = 0;
+                        for (int y = 0; y <= 1; y++)
+                        {
+                            for (int x = -2; x <= 2; x++)
+                            {
+                                Coordinates coordinates = new Coordinates(screen.width/2 +x*space + x*11, screen.height/2 - 8 + y*8);
+                                Element[] card = CardChoice(index).ToElementFull(coordinates);
+                                screen.Add(card[0], 2);
+                                screen.Add(card[1], 2);
+                                cardsElements.Add(card[1]);
+
+                                index++;
+                            }
+                        }
+                        screen.Display();
+                        choix = screen.Select(cardsElements.ToArray());
+
+                        
 
                         // selection carte choisi
                         CardsInfo c = CardChoice(choix); 
@@ -93,6 +122,10 @@ namespace MinivillesURSR46
                         if (pile.GetNumberCard(choix) == 0)
                         {
                             // TODO "la carte n'est plus disponible"
+                            screen.DeleteLayer(2);
+                            screen.Add(new Element(new string[] {"La carte n'est plus disponible"}
+                                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
                         }
                         // on vérifie que le joueur a assez d'argent
                         else if (c.Cost < playerH.UserMoney)
@@ -103,7 +136,12 @@ namespace MinivillesURSR46
                         else
                         {
                             // TODO "vous n'avez pas assez d'argent"
+                            screen.DeleteLayer(2);
+                            screen.Add(new Element(new string[] {"Vous n'avez pas assez d'argent"}
+                                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
                         }
+                        screen.Display();
                     }
                     else { action = true; }
                 }
@@ -138,17 +176,27 @@ namespace MinivillesURSR46
             }
 
             // TODO nettoyer screen
+            screen.Clear();
             if (playerH.UserMoney > playerIA.UserMoney)
             {
-                // TODO "vous gagnez car vous avez le plus d'argent
+                // TODO "vous gagnez car vous avez le plus d'argent"
+                screen.Add(new Element(new string[] {"Vous gagnez car vous avez le plus d'argent"}
+                                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                                    Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
             }
             else if (playerIA.UserMoney > playerH.UserMoney)
             {
                 // TODO "vous perdez car l'adversaire est le plus riche"
+                screen.Add(new Element(new string[] {"Vous perdez car l'adversaire est le plus riche"}
+                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                    Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
             }
             else // egalité des sommes d'argent
             {
                 // TODO "vous êtes à égalité car vous avez autant d'argent que votre adversaire
+                screen.Add(new Element(new string[] {"Vous êtes à égalité car vous avez autant d'argent que votre adversaire"}
+                            , new Coordinates(screen.width/2, screen.height/2+1),
+                            Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
             }
         }
 

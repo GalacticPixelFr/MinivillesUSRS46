@@ -32,14 +32,16 @@ namespace MinivillesURSR46
         /// <returns>liste d'element pour afficher une carte</returns>
         public Element[] ToElementFull(Coordinates coordinates)
         {
-            string[] stringBackground = new string[7]{
-                "+---------+",
-                "|         |",
-                "|         |",
-                "|         |",
-                "|         |",
-                "|         |",
-                "+---------+"
+            string[] stringBackground = new string[9]{
+                "+----------------+",
+                "|                |",
+                "|                |",
+                "|                |",
+                "|                |",
+                "|                |",
+                "|                |",
+                "|                |",
+                "+----------------+"
             };
             
             ConsoleColor color = ConsoleColor.White;
@@ -56,16 +58,16 @@ namespace MinivillesURSR46
                     color = ConsoleColor.Green;
                     break;
             }
-            Element background = new Element(stringBackground, coordinates, Animation.None, Placement.topLeft, color, ConsoleColor.Black);
+            Element background = new Element(stringBackground, coordinates, Animation.None, Placement.mid, color, ConsoleColor.Black);
 
             string[] stringInfos = new string[5]{
                 this.Name,
                 "",
-                this.Cost+" €",
+                this.Cost+"  pièces",
                 "",
                 this.Dice.ToString()
             };
-            Element infos = new Element(stringInfos, new Coordinates(coordinates.x+5, coordinates.y+1), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            Element infos = new Element(stringInfos, new Coordinates(coordinates.x, coordinates.y), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
 
             return new Element[2]{background, infos};
         }
@@ -81,19 +83,19 @@ namespace MinivillesURSR46
         public Element[] ToElementSemi(bool top, int amount, Coordinates coordinates)
         {
             string[] stringBackground = new string[4]{
-                "|         |",
-                "|         |",
-                "|         |",
-                "+---------+"
+                "|                |",
+                "|                |",
+                "|                |",
+                "+----------------+"
             };
 
             if (top) 
             {
                 stringBackground = new string[4]{
-                    "+---------+",
-                    "|         |",
-                    "|         |",
-                    "|         |"
+                    "+----------------+",
+                    "|                |",
+                    "|                |",
+                    "|                |"
                 };
             }
 
@@ -110,14 +112,14 @@ namespace MinivillesURSR46
                     color = ConsoleColor.Green;
                     break;
             }
-            Element background = new Element(stringBackground, coordinates, Animation.None, Placement.topLeft, color, ConsoleColor.Black);
+            Element background = new Element(stringBackground, coordinates, Animation.None, Placement.mid, color, ConsoleColor.Black);
 
             string[] stringInfos = new string[3]{
                 this.Name,
                 this.Dice.ToString(),
                 "+"+amount
             };
-            Element infos = new Element(stringInfos, new Coordinates(coordinates.x+5, coordinates.y), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            Element infos = new Element(stringInfos, new Coordinates(coordinates.x, coordinates.y + (top ? 0 : -1)), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
 
             return new Element[2]{background, infos};
         }

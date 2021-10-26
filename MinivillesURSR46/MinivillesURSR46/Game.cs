@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace MinivillesURSR46
 {
@@ -36,18 +37,36 @@ namespace MinivillesURSR46
 
             die = new Die();
             rnd = new Random();
-            screen = new Screen(238, 28);
+            screen = new Screen(200, 50);
         } 
 
-        public void DisplayGame()
+        public void DisplayHands()
         {
-            // TODO
+            List<Element> cards = new List<Element>();
+            Console.Write(playerIA.UserHand.Count);
+            for (int i = 0; i < playerIA.UserHand.Count; i++)
+            {
+                Coordinates coordinates = new Coordinates(screen.width/2-(playerIA.UserHand.Count/2*13) + i*20, +3);
+                Element[] elements = playerIA.UserHand[i].ToElementSemi(false,1, coordinates);//TODO le nombre de carte
+                screen.Add(elements[0], 1);
+                screen.Add(elements[1], 1);
+            }
+            
+            cards = new List<Element>();
+            for (int i = 0; i < playerH.UserHand.Count; i++)
+            {
+                Coordinates coordinates = new Coordinates(screen.width/2-(playerH.UserHand.Count/2*13) + i*20, screen.height-3);
+                Element[] elements = playerH.UserHand[i].ToElementSemi(true,1, coordinates);//TODO le nombre de carte
+                screen.Add(elements[0]);
+                screen.Add(elements[1]);
+            }
+            screen.Display();
         }
 
         public void Run()
         {
             Element credits = new Element(new string[6] {
-                "Je Minivilles",
+                "Jeu Minivilles",
                 "",
                 "Créée par :",
                 "Jordan BURNET",
@@ -56,6 +75,8 @@ namespace MinivillesURSR46
             }, new Coordinates(screen.width/2, screen.height/2), Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
             screen.Add(credits, 1);
             screen.Display();
+
+            Thread.Sleep(500);
             screen.Clear();
             
             /*
@@ -69,11 +90,17 @@ namespace MinivillesURSR46
             // condition fin
             while (playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish)
             {
+                DisplayHands();
                 int resultDie;
                 // tour joueur humain
                 while (true)
                 {
-                    Console.WriteLine("Tapez Enter pour Lancer le dé");
+                    screen.Add(new Element(new string[] {"Tapez Enter pour Lancer le dé", }
+                        , new Coordinates(screen.width/2, screen.height/2),
+                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
+                    screen.Display();
+                    screen.DeleteLayer(2);
+                    
                     ConsoleKey key = Console.ReadKey().Key;
                     if (key == ConsoleKey.Enter || key == ConsoleKey.Spacebar)
                     {
@@ -81,6 +108,8 @@ namespace MinivillesURSR46
                         break;
                     }
                 }
+                //TODO Animation de dé
+
                 CardsActivation(playerH, playerIA, resultDie);
                 //IA bleue et rouge
                 //H bleue et vert
@@ -89,29 +118,29 @@ namespace MinivillesURSR46
                 bool action = false;
                 while (!action)
                 {
-                    int choix = screen.Choice(new string[2]{"OUI", "NON"}, screen.height/2+1);
+                    screen.Add(new Element(new string[] {"Voulez-vous acheter ?", }
+                        , new Coordinates(screen.width/2, screen.height/2),
+                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
 
+                    int choix = screen.Choice(new string[2]{"NON", "OUI"}, screen.height/2+2);
                     if (choix == 1)
                     {
                         // TODO choix entre les différentes cartes
                         List<Element> cardsElements = new List<Element>();
                         int space = 3;
                         int index = 0;
-                        for (int y = 0; y <= 1; y++)
+                        for (int i = 0; i <= 7; i++)
                         {
-                            for (int x = -2; x <= 2; x++)
-                            {
-                                Coordinates coordinates = new Coordinates(screen.width/2 +x*space + x*11, screen.height/2 - 8 + y*8);
-                                Element[] card = CardChoice(index).ToElementFull(coordinates);
-                                screen.Add(card[0], 2);
-                                screen.Add(card[1], 2);
-                                cardsElements.Add(card[1]);
+                            Coordinates coordinates = new Coordinates(screen.width/2 - 21*2 + i%4*21, screen.height/2 - 11 + (i >= 4 ? 11 : 0));
+                            Element[] card = CardChoice(index).ToElementFull(coordinates);
+                            screen.Add(card[0], 2);
+                            screen.Add(card[1], 2);
+                            cardsElements.Add(card[1]);
 
-                                index++;
-                            }
+                            index++;
                         }
                         screen.Display();
-                        choix = screen.Select(cardsElements.ToArray());
+                        choix = screen.Select(cardsElements.ToArray(), 2);
 
                         
 

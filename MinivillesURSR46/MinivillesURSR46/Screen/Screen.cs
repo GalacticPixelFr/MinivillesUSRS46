@@ -90,7 +90,7 @@ namespace MinivillesURSR46
         /// </summary>
         public void Display()
         {
-            Console.Clear(); //On commence par clealr la console
+            //Console.Clear(); //On commence par clealr la console
             string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
             Console.Write(background); //On affiche le bords
 
@@ -114,7 +114,7 @@ namespace MinivillesURSR46
                             Console.SetCursorPosition(element.coordinates.x, element.coordinates.y + i);
 
                         else if (element.placement == Placement.mid)
-                            Console.SetCursorPosition(element.coordinates.x - (element.text[i].Length/2), (element.coordinates.y/2 - element.text.Length/2) + i);
+                            Console.SetCursorPosition(element.coordinates.x - (element.text[i].Length/2), (element.coordinates.y - element.text.Length/2) + i);
 
                         else if (element.placement == Placement.topRight)
                             Console.SetCursorPosition(element.coordinates.x - element.text[i].Length, element.coordinates.y + i);
@@ -203,6 +203,7 @@ namespace MinivillesURSR46
         /// </summary>
         public void Clear() {
             this.layers.Clear();
+            Console.Clear();
         }
 
         /// <summary>
@@ -221,22 +222,22 @@ namespace MinivillesURSR46
         {
             Element title = new Element(new string[1]{"Voulez-vous acheter ?"}, new Coordinates(this.width/2, this.height/2), Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
 
-            Element[] choixElements = new Element[choixArray.Length];
+            List<Element> choixElements = new List<Element>();
             int space = this.width / (choixArray.Length+1); 
             for(int i = 0; i < choixArray.Length; i++)
             {
                 Element choixElement = new Element(new string[1]{choixArray[i]}, 
-                                                    new Coordinates(space * (i+1) - choixArray[i].ToString().Length, height),
+                                                    new Coordinates(space * (i+1), height),
                                                     Animation.None,
-                                                    Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-
+                                                    Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+                choixElements.Add(choixElement);
                 this.Add(choixElement, 2);
             }
             this.Display();
-            return Select(choixElements);
+            return Select(choixElements.ToArray(), 2);
         }
 
-        public int Select(Element[] elementArray)
+        public int Select(Element[] elementArray, int layer)
         {
             int choix = 0;
             while(true)
@@ -252,14 +253,24 @@ namespace MinivillesURSR46
 
                 if (choix < 0) choix = elementArray.Length-1;
                 if (choix >= elementArray.Length) choix = 0;
-
-                for (int i = 0; i < choix; i++)
+                
+                
+                for (int i = 0; i < elementArray.Length; i++)
                 {
-                    if (i == choix) elementArray[choix].foreground = ConsoleColor.Green;
-                    else elementArray[choix].foreground = ConsoleColor.White;
+                    if (i == choix)
+                    {
+                        elementArray[i].foreground = ConsoleColor.Black;
+                        elementArray[i].background = ConsoleColor.White;
+                    }
+                    else
+                    {
+                        elementArray[i].foreground = ConsoleColor.White;
+                        elementArray[i].background = ConsoleColor.Black;
+                    }
                 }
                 this.Display();
             }
+            this.DeleteLayer(layer);
             return choix;
         }
     }

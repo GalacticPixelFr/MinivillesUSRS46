@@ -52,7 +52,7 @@ namespace MinivillesURSR46
             
             screen.Display();
         }
-        
+      
         public void DisplayHands()
         {
             List<Element> cards = new List<Element>();
@@ -157,7 +157,7 @@ namespace MinivillesURSR46
                     {
                         // TODO choix entre les différentes cartes
                         List<Element> cardsElements = new List<Element>();
-                        int space = 3;
+
                         int index = 0;
                         for (int i = 0; i <= 7; i++)
                         {
@@ -206,7 +206,9 @@ namespace MinivillesURSR46
                 }
 
                 // verification condition de fin
-                if(playerH.UserMoney > gainFinish || playerIA.UserMoney > gainFinish) { break; }
+
+                if(playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish) { break; }
+
 
                 // tour joueur IA
                 resultDie = die.Lancer();
@@ -226,9 +228,11 @@ namespace MinivillesURSR46
                     CardsInfo c = CardChoice(choix); 
 
                     // on vérifie que la carte est encore disponible et qu'elle est encore achetable
-                    if (c.Cost < playerH.UserMoney && pile.GetNumberCard(choix) == 0)
+
+                    if (c.Cost < playerIA.UserMoney && pile.GetNumberCard(choix) == 0)
                     {
-                        playerH.BuyCard(c, pile);
+                        playerIA.BuyCard(c, pile);
+
                     }
                 }
 

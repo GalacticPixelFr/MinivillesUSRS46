@@ -30,5 +30,17 @@ namespace MinivillesURSR46
             UserMoney -= card.Cost;
             UserHand.Add(pile.GetCard(card.Id));
         }
+        
+        public int GetNumberCard(int ID)
+        {
+            int cpt = 0;
+
+            foreach(CardsInfo c in UserHand)
+            {
+                if (c.Id == ID){ cpt++; }
+            }
+
+            return cpt;
+        }
     }
 }

@@ -55,23 +55,27 @@ namespace MinivillesURSR46
       
         public void DisplayHands()
         {
-            List<Element> cards = new List<Element>();
-            Console.Write(playerIA.UserHand.Count);
+            screen.DeleteLayer(3);
+            List<int> cards = new List<int>();
             for (int i = 0; i < playerIA.UserHand.Count; i++)
             {
+                if (cards.Contains(playerIA.UserHand[i].Id)) continue;
+                cards.Add(playerIA.UserHand[i].Id);
                 Coordinates coordinates = new Coordinates(screen.width/2-(playerIA.UserHand.Count/2*13) + i*20, +3);
-                Element[] elements = playerIA.UserHand[i].ToElementSemi(false,1, coordinates);//TODO le nombre de carte
-                screen.Add(elements[0], 1);
-                screen.Add(elements[1], 1);
+                Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);//TODO le nombre de carte
+                screen.Add(elements[0], 3);
+                screen.Add(elements[1], 3);
             }
             
-            cards = new List<Element>();
+            cards = new List<int>();
             for (int i = 0; i < playerH.UserHand.Count; i++)
             {
+                if (cards.Contains(playerH.UserHand[i].Id)) continue;
+                cards.Add(playerH.UserHand[i].Id);
                 Coordinates coordinates = new Coordinates(screen.width/2-(playerH.UserHand.Count/2*13) + i*20, screen.height-3);
-                Element[] elements = playerH.UserHand[i].ToElementSemi(true,1, coordinates);//TODO le nombre de carte
-                screen.Add(elements[0]);
-                screen.Add(elements[1]);
+                Element[] elements = playerH.UserHand[i].ToElementSemi(true,playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);//TODO le nombre de carte
+                screen.Add(elements[0], 3);
+                screen.Add(elements[1], 3);
             }
             screen.Display();
         }
@@ -187,7 +191,7 @@ namespace MinivillesURSR46
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
                         }
                         // on vérifie que le joueur a assez d'argent
-                        else if (c.Cost < playerH.UserMoney)
+                        else if (c.Cost <= playerH.UserMoney)
                         {
                             playerH.BuyCard(c, pile);
                             action = true;

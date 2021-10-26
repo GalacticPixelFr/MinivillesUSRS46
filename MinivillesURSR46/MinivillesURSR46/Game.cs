@@ -223,7 +223,7 @@ namespace MinivillesURSR46
                 // cette méthode pose probleme, l'IA va de moins en moins acheter de batiments car il y aura moins de cartes disponbles au fur et a mesure de la partie
 
                 // action au hasard
-                if (rnd.Next(0, 1) == 0 && playerIA.UserMoney > 0)
+                if (rnd.Next(0, 2) == 0 && playerIA.UserMoney > 0)
                 {
                     // choix d'une carte a acheter au hasard
                     int choix = rnd.Next(0, 8);

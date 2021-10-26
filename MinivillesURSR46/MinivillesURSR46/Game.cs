@@ -38,8 +38,21 @@ namespace MinivillesURSR46
             die = new Die();
             rnd = new Random();
             screen = new Screen(200, 50);
-        } 
+        }
 
+        public void DisplayMoney()
+        {
+            screen.Add(new Element(new string[] {playerIA+" pièces", }
+                , new Coordinates(1, 1),
+                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 1);
+
+            screen.Add(new Element(new string[] {playerH+" pièces", }
+                , new Coordinates(1, screen.height-2),
+                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 1);
+            
+            screen.Display();
+        }
+        
         public void DisplayHands()
         {
             List<Element> cards = new List<Element>();
@@ -91,6 +104,7 @@ namespace MinivillesURSR46
             while (playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish)
             {
                 DisplayHands();
+                DisplayMoney();
                 int resultDie;
                 // tour joueur humain
                 while (true)
@@ -111,6 +125,7 @@ namespace MinivillesURSR46
                 //TODO Animation de dé
 
                 CardsActivation(playerH, playerIA, resultDie);
+                DisplayMoney();
                 //IA bleue et rouge
                 //H bleue et vert
 
@@ -176,7 +191,7 @@ namespace MinivillesURSR46
                 }
 
                 // verification condition de fin
-                if(playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish) { break; }
+                if(playerH.UserMoney > gainFinish || playerIA.UserMoney > gainFinish) { break; }
 
                 // tour joueur IA
                 resultDie = die.Lancer();

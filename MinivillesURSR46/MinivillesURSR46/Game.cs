@@ -122,8 +122,23 @@ namespace MinivillesURSR46
                         break;
                     }
                 }
-                //TODO Animation de dé
+                // Animation du Dé
+                for (int i = 0; i < 5; i++)
+                {
+                    screen.Add(new Element(Die.ToStrings(rnd.Next(1, 7))
+                        , new Coordinates(screen.width/2, screen.height/2),
+                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
+                    Thread.Sleep(300);
+                    screen.Display();
+                }
+                screen.Add(new Element(Die.ToStrings(resultDie)
+                    , new Coordinates(screen.width/2, screen.height/2),
+                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black), 2);
+                screen.Display();
+                screen.DeleteLayer(2);
+                Thread.Sleep(3000);
 
+                
                 CardsActivation(playerH, playerIA, resultDie);
                 DisplayMoney();
                 //IA bleue et rouge

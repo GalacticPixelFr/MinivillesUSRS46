@@ -13,6 +13,7 @@ namespace MinivillesURSR46
         public ConsoleColor foreground;
         public ConsoleColor background;
         public int[] animationIndex;
+        public bool temp { get; private set; } = false;
 
         public Element(Coordinates coordinates, string text)
         {
@@ -38,6 +39,40 @@ namespace MinivillesURSR46
             this.background = background;
 
             this.animationIndex = text.AsEnumerable().Select(x => x.Length).ToArray();
+        }
+
+        public Element(string[] text, Coordinates coordinates, Animation animation, Placement placement, ConsoleColor foreground, ConsoleColor background, bool temp)
+        {
+            this.text = text;
+            this.coordinates = coordinates;
+            this.animation = animation;
+            this.placement = placement;
+            this.foreground = foreground;
+            this.background = background;
+            this.temp = temp;
+
+            this.animationIndex = text.AsEnumerable().Select(x => x.Length).ToArray();
+        }
+        
+        public bool CompareTo(Element other)
+        {
+            bool result = this.text == other.text && this.coordinates == other.coordinates &&
+                          this.animation == other.animation && this.placement == other.placement &&
+                          this.foreground == other.foreground && this.background == other.background;
+            return result;
+        }
+
+        public Element GetEmptyClone()
+        {
+            Element clone = new Element(this.text, this.coordinates, Animation.None, this.placement, ConsoleColor.White,
+                ConsoleColor.Black, true);
+            
+            for (int i = 0; i < clone.text.Length; i++)
+            {
+                clone.text[i] = new string(' ', clone.text[i].Length);
+            }
+
+            return clone;
         }
     }
 

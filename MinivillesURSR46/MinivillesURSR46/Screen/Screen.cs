@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 
@@ -12,6 +13,7 @@ namespace MinivillesURSR46
 
         //Dictionary<Coordinates, string[]> elements = new();
         Dictionary<int, List<Element>> layers = new Dictionary<int, List<Element>>();
+        List<Element> elementsClone = new List<Element>();
 
         /// <summary>
         /// Constructeur de la classe, crée une fenêtre carré
@@ -90,55 +92,58 @@ namespace MinivillesURSR46
         /// </summary>
         public void Display()
         {
-            //Console.Clear(); //On commence par clealr la console
-            string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
-            Console.Write(background); //On affiche le bords
+            List<Element> elements = new List<Element>();
+            if (elementsClone.Count <= 0)
+            {
+                string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
+                Console.Write(background); //On affiche le bords
+            }
 
             bool recall = false; //Permet de savoir si l'éran doit être actualiser
-
-            foreach (List<Element> layer in layers.Values)
+            
+            foreach (int layer in layers.Keys.OrderBy(x => x))
             {
-                foreach (Element element in layer)
+                for (int n = 0; n < layers[layer].Count(); n++)
                 {
-                    for (int i = 0; i < element.text.Count(); i++)
+                    bool update = true;
+                    foreach (Element element in elementsClone)
                     {
+                        if (element.CompareTo(layers[layer][n])) update = false;
+                    }
 
-                        if (element.animation != Animation.None && element.animationIndex[i] > 0) //Si un element doit être actualisé
+                    if (!update) continue;
+                        
+                    for (int i = 0; i < layers[layer][n].text.Count(); i++)
+                    {
+                        if (layers[layer][n].animation != Animation.None && layers[layer][n].animationIndex[i] > 0) //Si un element doit être actualisé
                         {
-                            element.animationIndex[i]--;
+                            layers[layer][n].animationIndex[i]--;
                             recall = true;
                         }
 
-                        //Les différentes façon de placer le texte
-                        if (element.placement == Placement.topLeft)
-                            Console.SetCursorPosition(element.coordinates.x, element.coordinates.y + i);
-
-                        else if (element.placement == Placement.mid)
-                            Console.SetCursorPosition(element.coordinates.x - (element.text[i].Length/2), (element.coordinates.y - element.text.Length/2) + i);
-
-                        else if (element.placement == Placement.topRight)
-                            Console.SetCursorPosition(element.coordinates.x - element.text[i].Length, element.coordinates.y + i);
+                        SetCursorElement(layers[layer][n], layers[layer][n].text[i], i);
                         
-                        else if (element.placement == Placement.botLeft)
-                            Console.SetCursorPosition(element.coordinates.x, (element.coordinates.y+i) - element.text[i].Length);
+                        Console.ForegroundColor = layers[layer][n].foreground;
+                        Console.BackgroundColor = layers[layer][n].background;
 
-                        else if (element.placement == Placement.botLeft)
-                            Console.SetCursorPosition(element.coordinates.x - element.text[i].Length, (element.coordinates.y+i) - element.text[i].Length);
+                        if (layers[layer][n].animationIndex[i] >= layers[layer][n].text[i].Length) layers[layer][n].animationIndex[i] = -1;
 
-                        Console.ForegroundColor = element.foreground;
-                        Console.BackgroundColor = element.background;
+                        if (layers[layer][n].animationIndex[i] != -1)
+                            Console.Write(string.Join("", layers[layer][n].text[i].Take(layers[layer][n].text[i].Length - layers[layer][n].animationIndex[i])));
+                        else Console.Write(layers[layer][n].text[i]);
 
-                        if (element.animationIndex[i] >= element.text[i].Length) element.animationIndex[i] = -1;
-
-                        if (element.animationIndex[i] != -1)
-                            Console.Write(string.Join("", element.text[i].Take(element.text[i].Length - element.animationIndex[i])));
-                        else Console.Write(element.text[i]);
+                        elements.Add(layers[layer][n]);
+                        //Reset des couleurs
+                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.BackgroundColor = ConsoleColor.Black;
                     }
 
-                    //Reset des couleurs
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.BackgroundColor = ConsoleColor.Black;
+                    if (layers[layer][n].temp)
+                    {
+                        this.layers[layer].RemoveAt(n);
+                    }
                 }
+
             }
             Console.SetCursorPosition(0, 0);
 
@@ -147,6 +152,7 @@ namespace MinivillesURSR46
                 Thread.Sleep(100);
                 Display();
             }
+            elementsClone = elements;
         }
 
         /// <summary>
@@ -164,8 +170,8 @@ namespace MinivillesURSR46
         /// <param name="layer">Le layer sur lequel ajouter l'élément</param>
         public void Add(Element element, int layer) {
         if (!layers.ContainsKey(layer))
-                layers.Add(layer, new List<Element>());
-            layers[layer].Add(element);
+            layers.Add(layer, new List<Element>());
+        layers[layer].Add(element);
         }
 
         /// <summary>
@@ -175,6 +181,7 @@ namespace MinivillesURSR46
         public void Delete(Coordinates coordinates) {
             foreach (KeyValuePair<int, List<Element>> layer in this.layers)
             {
+                DeleteElement(layer.Value.FirstOrDefault(x => x.coordinates == coordinates));
                 layer.Value.Remove(layer.Value.FirstOrDefault(x => x.coordinates == coordinates));
             }
         }
@@ -185,6 +192,7 @@ namespace MinivillesURSR46
         /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
         /// <param name="layer">Le layer sur lequel supprimer l'élément</param>
         public void Delete(Coordinates coordinates, int layer) {
+            DeleteElement(layers[layer].FirstOrDefault(x => x.coordinates == coordinates));
             this.layers[layer].Remove(layers[layer].FirstOrDefault(x => x.coordinates == coordinates));
         }
 
@@ -193,17 +201,48 @@ namespace MinivillesURSR46
         /// </summary>
         /// <param name="layer">Le layer à supprimer</param>
         public void DeleteLayer(int layer) {
-            if (this.layers.ContainsKey(layer)) {
+            if (this.layers.ContainsKey(layer)) 
+            {
+                foreach (Element element in this.layers[layer])
+                {
+                    DeleteElement(element);
+                }
                 this.layers.Remove(layer);
             }
         }
 
+        public void DeleteElement(Element element)
+        {
+            this.Add(element.GetEmptyClone(), 0);
+        }
+
+        private void SetCursorElement(Element element, string text, int index)
+        {
+            if (element.placement == Placement.topLeft)
+                Console.SetCursorPosition(element.coordinates.x, element.coordinates.y + index);
+
+            else if (element.placement == Placement.mid)
+                Console.SetCursorPosition(element.coordinates.x - (text.Length/2), (element.coordinates.y - element.text.Length/2) + index);
+
+            else if (element.placement == Placement.topRight)
+                Console.SetCursorPosition(element.coordinates.x - text.Length, element.coordinates.y + index);
+                        
+            else if (element.placement == Placement.botLeft)
+                Console.SetCursorPosition(element.coordinates.x, (element.coordinates.y+index) - text.Length);
+
+            else if (element.placement == Placement.botLeft)
+                Console.SetCursorPosition(element.coordinates.x - text.Length, (element.coordinates.y+index) - text.Length);
+
+        }
+        
         /// <summary>
         /// Permet de clear l'écran
         /// </summary>
         public void Clear() {
             this.layers.Clear();
             Console.Clear();
+            string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
+            Console.Write(background); //On affiche le bords
         }
 
         /// <summary>
@@ -220,8 +259,6 @@ namespace MinivillesURSR46
 
         public int Choice(string[] choixArray, int height)
         {
-            Element title = new Element(new string[1]{"Voulez-vous acheter ?"}, new Coordinates(this.width/2, this.height/2), Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-
             List<Element> choixElements = new List<Element>();
             int space = this.width / (choixArray.Length+1); 
             for(int i = 0; i < choixArray.Length; i++)
@@ -243,9 +280,9 @@ namespace MinivillesURSR46
             while(true)
             {
                 ConsoleKey key = Console.ReadKey().Key;
-                if (key == ConsoleKey.RightArrow) {
+                if (key == ConsoleKey.RightArrow || key == ConsoleKey.UpArrow) {
                     choix++;
-                } else if (key == ConsoleKey.LeftArrow) {
+                } else if (key == ConsoleKey.LeftArrow || key == ConsoleKey.DownArrow) {
                     choix--;
                 } else if (key == ConsoleKey.Enter) {
                     break;
@@ -268,6 +305,7 @@ namespace MinivillesURSR46
                         elementArray[i].background = ConsoleColor.Black;
                     }
                 }
+                Console.Write(choix);
                 this.Display();
             }
             this.DeleteLayer(layer);

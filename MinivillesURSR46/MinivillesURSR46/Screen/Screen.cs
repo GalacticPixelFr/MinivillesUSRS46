@@ -92,8 +92,8 @@ namespace MinivillesURSR46
         /// </summary>
         public void Display()
         {
-            List<Element> elements = new List<Element>();
-            if (elementsClone.Count <= 0)
+            List<Element> elements = new List<Element>(); //Future liste des éléments
+            if (elementsClone.Count <= 0) //Si on avait aucun élément avant
             {
                 string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
                 Console.Write(background); //On affiche le bords
@@ -101,51 +101,53 @@ namespace MinivillesURSR46
 
             bool recall = false; //Permet de savoir si l'éran doit être actualiser
             
-            foreach (int layer in layers.Keys.OrderBy(x => x))
+            foreach (int layer in layers.Keys.OrderBy(x => x)) //On boucle sur tous les layers
             {
-                for (int n = 0; n < layers[layer].Count(); n++)
+                for (int n = 0; n < layers[layer].Count(); n++) //On boucle sur tous les éléments du layer
                 {
-                    bool update = true;
+                    bool update = true; //Si true, l'élement doit être afficher car il n'existe pas, ou il a changé
                     foreach (Element element in elementsClone)
                     {
-                        if (element.CompareTo(layers[layer][n])) update = false;
+                        if (element.CompareTo(layers[layer][n])) update = false; //Si l'élément a été affiché dans le display précédent on l'update pas
                     }
-
-                    if (!update) continue;
-                        
-                    for (int i = 0; i < layers[layer][n].text.Count(); i++)
+                    
+                    if (!update) continue; //Si update = false, on skip le reste de la boucle
+                    
+                    for (int i = 0; i < layers[layer][n].text.Count(); i++) //On boucle sur toutes les lignes de l'élément
                     {
                         if (layers[layer][n].animation != Animation.None && layers[layer][n].animationIndex[i] > 0) //Si un element doit être actualisé
                         {
-                            layers[layer][n].animationIndex[i]--;
+                            layers[layer][n].animationIndex[i]--; //On décrémente l'index de 1
                             recall = true;
                         }
 
-                        SetCursorElement(layers[layer][n], layers[layer][n].text[i], i);
+                        SetCursorElement(layers[layer][n], layers[layer][n].text[i], i); //On positionne le cursor au bon endroit
                         
                         Console.ForegroundColor = layers[layer][n].foreground;
                         Console.BackgroundColor = layers[layer][n].background;
 
                         if (layers[layer][n].animationIndex[i] >= layers[layer][n].text[i].Length) layers[layer][n].animationIndex[i] = -1;
 
-                        if (layers[layer][n].animationIndex[i] != -1)
-                            Console.Write(string.Join("", layers[layer][n].text[i].Take(layers[layer][n].text[i].Length - layers[layer][n].animationIndex[i])));
+                        if (layers[layer][n].animationIndex[i] != -1) //TODO régler le problème
+                        {
+                            Console.SetCursorPosition(Console.CursorLeft+layers[layer][n].text[i].Length - layers[layer][n].animationIndex[i], Console.CursorTop);
+                            Console.Write(string.Join("", layers[layer][n].text[i].Skip(layers[layer][n].text[i].Length - layers[layer][n].animationIndex[i]-1).Take(1)));
+                        }
                         else Console.Write(layers[layer][n].text[i]);
-
-                        elements.Add(layers[layer][n]);
+                        
                         //Reset des couleurs
                         Console.ForegroundColor = ConsoleColor.White;
                         Console.BackgroundColor = ConsoleColor.Black;
                     }
-
-                    if (layers[layer][n].temp)
+                    elements.Add(layers[layer][n]); //On ajoute cet élément aux élément affiché
+                    if (layers[layer][n].temp) //Si l'élément est temporaire, on le supprime
                     {
                         this.layers[layer].RemoveAt(n);
                     }
                 }
 
             }
-            Console.SetCursorPosition(0, 0);
+            Console.SetCursorPosition(0, 0); //On reset la position du cursor
 
             if (recall) 
             {
@@ -257,21 +259,21 @@ namespace MinivillesURSR46
             return lines;
         }
 
-        public int Choice(string[] choixArray, int height)
+        public int Choice(string[] choixArray, int height)//TODO renseigner le layer ici
         {
             List<Element> choixElements = new List<Element>();
-            int space = this.width / (choixArray.Length+1); 
+            int space = this.width / (choixArray.Length+1); //On détermine la taille entre chaque élément
             for(int i = 0; i < choixArray.Length; i++)
             {
                 Element choixElement = new Element(new string[1]{choixArray[i]}, 
                                                     new Coordinates(space * (i+1), height),
                                                     Animation.None,
                                                     Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-                choixElements.Add(choixElement);
-                this.Add(choixElement, 2);
+                choixElements.Add(choixElement); //On ajoute l'élément créé a la liste d'éléments
+                this.Add(choixElement, 2); //On Ajoute l'élément créé à l'écran
             }
-            this.Display();
-            return Select(choixElements.ToArray(), 2);
+            this.Display(); //On Display l'écran
+            return Select(choixElements.ToArray(), 2); //On call Select avec les éléments précedement créé
         }
 
         public int Select(Element[] elementArray, int layer)
@@ -279,6 +281,9 @@ namespace MinivillesURSR46
             int choix = 0;
             while(true)
             {
+                elementArray[choix].foreground = ConsoleColor.White; // On reset l'ancien élément selectionneé
+                elementArray[choix].background = ConsoleColor.Black;
+                
                 ConsoleKey key = Console.ReadKey().Key;
                 if (key == ConsoleKey.RightArrow || key == ConsoleKey.UpArrow) {
                     choix++;
@@ -288,27 +293,16 @@ namespace MinivillesURSR46
                     break;
                 }
 
-                if (choix < 0) choix = elementArray.Length-1;
+                if (choix < 0) choix = elementArray.Length-1; //On module la variable choix
                 if (choix >= elementArray.Length) choix = 0;
+
+                elementArray[choix].foreground = ConsoleColor.Black;
+                elementArray[choix].background = ConsoleColor.White;
                 
-                
-                for (int i = 0; i < elementArray.Length; i++)
-                {
-                    if (i == choix)
-                    {
-                        elementArray[i].foreground = ConsoleColor.Black;
-                        elementArray[i].background = ConsoleColor.White;
-                    }
-                    else
-                    {
-                        elementArray[i].foreground = ConsoleColor.White;
-                        elementArray[i].background = ConsoleColor.Black;
-                    }
-                }
-                Console.Write(choix);
-                this.Display();
+                Console.Write(choix); //Debug
+                this.Display(); //On display l'écran avec les modifications
             }
-            this.DeleteLayer(layer);
+            this.DeleteLayer(layer); //TODO pas le faire ici
             return choix;
         }
     }

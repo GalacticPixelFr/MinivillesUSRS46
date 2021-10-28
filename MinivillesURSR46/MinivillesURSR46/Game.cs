@@ -115,7 +115,7 @@ namespace MinivillesURSR46
                 // tour joueur humain
                 while (true)
                 {
-                    Element pressEnter = new Element(new string[] {"Tapez Enter pour Lancer le dé",}
+                    Element pressEnter = new Element(TextManagement.GetData("EnterDé")
                         , new Coordinates(screen.width / 2, screen.height / 2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                     screen.DisplayElement(pressEnter);
@@ -155,13 +155,13 @@ namespace MinivillesURSR46
                 bool action = false;
                 while (!action)
                 {
-                    Element title = new Element(new string[] {"Voulez-vous acheter ?",}
+                    Element title = new Element(TextManagement.GetData("Achat")
                         , new Coordinates(screen.width / 2, screen.height / 2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                     screen.DisplayElement(title);
 
                     Layer choice = new Layer(1);
-                    int choix = screen.Choice(new string[2]{"NON", "OUI"}, screen.height/2+2, choice);
+                    int choix = screen.Choice(TextManagement.GetData("booleen"), screen.height/2+2, choice);
                     screen.HideLayer(choice);
                     choice.Clear();
                     screen.HideElement(title);
@@ -194,7 +194,7 @@ namespace MinivillesURSR46
                         // on vérifie que la carte est encore disponible
                         if (pile.GetNumberCard(choix) == 0)
                         {
-                            background.Add(new Element(new string[] {"La carte n'est plus disponible"}
+                            background.Add(new Element(TextManagement.GetData("Indisponible")
                                                     , new Coordinates(screen.width/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
                         }
@@ -206,7 +206,7 @@ namespace MinivillesURSR46
                         }
                         else
                         {
-                            background.Add(new Element(new string[] {"Vous n'avez pas assez d'argent"}
+                            background.Add(new Element(TextManagement.GetData("ZeroArgent")
                                                     , new Coordinates(screen.width/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
                         }
@@ -251,19 +251,19 @@ namespace MinivillesURSR46
             screen.Clear();
             if (playerH.UserMoney > playerIA.UserMoney)
             {
-                background.Add(new Element(new string[] {"Vous gagnez car vous avez le plus d'argent"}
+                background.Add(new Element(TextManagement.GetData("Gagné")
                                                     , new Coordinates(screen.width/2, screen.height/2+1),
                                                     Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else if (playerIA.UserMoney > playerH.UserMoney)
             {
-                background.Add(new Element(new string[] {"Vous perdez car l'adversaire est le plus riche"}
+                background.Add(new Element(TextManagement.GetData("Perdu")
                                     , new Coordinates(screen.width/2, screen.height/2+1),
                                     Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else // egalité des sommes d'argent
             {
-                background.Add(new Element(new string[] {"Vous êtes à égalité car vous avez autant d'argent que votre adversaire"}
+                background.Add(new Element(TextManagement.GetData("Egalité")
                             , new Coordinates(screen.width/2, screen.height/2+1),
                             Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }

@@ -21,7 +21,7 @@ namespace MinivillesURSR46
 
         public Layer(Element element)
         {
-            this.elements = elements;
+            this.elements.Add(element);
         }
 
         public void Add(Element element)

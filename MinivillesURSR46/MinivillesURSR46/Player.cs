@@ -32,5 +32,22 @@ namespace MinivillesURSR46
 
             return cpt;
         }
+
+        public int GetNumberCardType()
+        {
+            int cpt = 0;
+            List<int> IdCards = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
+
+            foreach(CardsInfo c in UserHand)
+            {
+                if (IdCards.Contains(c.Id))
+                {
+                    cpt++;
+                    IdCards.Remove(c.Id);
+                }
+            }
+
+            return cpt;
+        }
     }
 }

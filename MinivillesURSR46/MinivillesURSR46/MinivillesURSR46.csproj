@@ -50,6 +50,7 @@
         <Compile Include="Screen\Element.cs" />
         <Compile Include="Screen\Layer.cs" />
         <Compile Include="Screen\Screen.cs" />
+        <Compile Include="TextManagement.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include="bin\Debug\MinivillesURSR46.exe" />

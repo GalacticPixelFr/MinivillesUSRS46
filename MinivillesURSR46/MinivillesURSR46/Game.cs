@@ -159,6 +159,10 @@ namespace MinivillesURSR46
                 bool action = false;
                 while (!action)
                 {
+                    Element title = new Element(TextManagement.GetData("EnterDé")
+                        , new Coordinates(screen.width/2, screen.height/2+1),
+                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);   
+                    Layer choice = new Layer(1); 
                     Element oui = new Element(new Coordinates((screen.width-34)/3 *1, screen.height/2+2), "OUI");
                     Element non = new Element(new Coordinates((screen.width-34)/3 *2, screen.height/2+2), "NON");
                     choice.Add(oui);
@@ -199,7 +203,7 @@ namespace MinivillesURSR46
                         {
                             background.Add(new Element(TextManagement.GetData("Indisponible")
                                                     , new Coordinates(screen.width/2, screen.height/2+1),
-                                                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
+                                                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
                         // on vérifie que le joueur a assez d'argent
                         else if (c.Cost <= playerH.UserMoney)
@@ -211,7 +215,7 @@ namespace MinivillesURSR46
                         {
                             background.Add(new Element(TextManagement.GetData("ZeroArgent")
                                                     , new Coordinates(screen.width/2, screen.height/2+1),
-                                                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
+                                                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
                         screen.DisplayLayer(background);
                     }

@@ -94,15 +94,7 @@ namespace MinivillesURSR46
         public void Run()
         {
             Layer creditsLayer = new Layer(1);
-            creditsLayer.Add(new Element(new string[6]
-                {
-                    "Jeu Minivilles",
-                    "",
-                    "Créée par :",
-                    "Jordan BURNET",
-                    "Mathias DIDIER",
-                    "Camille PELE"
-                }, new Coordinates((screen.width-34)/2, screen.height / 2), Animation.None, Placement.mid,
+            creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates(screen.width / 2, screen.height / 2), Animation.None, Placement.mid,
                 ConsoleColor.White,
                 ConsoleColor.Black));
             screen.DisplayLayer(creditsLayer);
@@ -127,8 +119,8 @@ namespace MinivillesURSR46
                 // tour joueur humain
                 while (true)
                 {
-                    Element pressEnter = new Element(new string[] {"Tapez Enter pour Lancer le dé",}
-                        , new Coordinates((screen.width-34)/2, screen.height / 2),
+                    Element pressEnter = new Element(TextManagement.GetData("EnterDé")
+                        , new Coordinates(screen.width / 2, screen.height / 2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                     screen.DisplayElement(pressEnter);
                     
@@ -167,12 +159,6 @@ namespace MinivillesURSR46
                 bool action = false;
                 while (!action)
                 {
-                    Element title = new Element(new string[] {"Voulez-vous acheter ?",}
-                        , new Coordinates((screen.width-34)/2, screen.height / 2),
-                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-                    screen.DisplayElement(title);
-
-                    Layer choice = new Layer(1);
                     Element oui = new Element(new Coordinates((screen.width-34)/3 *1, screen.height/2+2), "OUI");
                     Element non = new Element(new Coordinates((screen.width-34)/3 *2, screen.height/2+2), "NON");
                     choice.Add(oui);
@@ -211,8 +197,8 @@ namespace MinivillesURSR46
                         // on vérifie que la carte est encore disponible
                         if (pile.GetNumberCard(choix) == 0)
                         {
-                            background.Add(new Element(new string[] {"La carte n'est plus disponible"}
-                                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
+                            background.Add(new Element(TextManagement.GetData("Indisponible")
+                                                    , new Coordinates(screen.width/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
                         }
                         // on vérifie que le joueur a assez d'argent
@@ -223,8 +209,8 @@ namespace MinivillesURSR46
                         }
                         else
                         {
-                            background.Add(new Element(new string[] {"Vous n'avez pas assez d'argent"}
-                                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
+                            background.Add(new Element(TextManagement.GetData("ZeroArgent")
+                                                    , new Coordinates(screen.width/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
                         }
                         screen.DisplayLayer(background);
@@ -268,20 +254,20 @@ namespace MinivillesURSR46
             screen.Clear();
             if (playerH.UserMoney > playerIA.UserMoney)
             {
-                background.Add(new Element(new string[] {"Vous gagnez car vous avez le plus d'argent"}
-                                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
+                background.Add(new Element(TextManagement.GetData("Gagné")
+                                                    , new Coordinates(screen.width/2, screen.height/2+1),
                                                     Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else if (playerIA.UserMoney > playerH.UserMoney)
             {
-                background.Add(new Element(new string[] {"Vous perdez car l'adversaire est le plus riche"}
-                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
+                background.Add(new Element(TextManagement.GetData("Perdu")
+                                    , new Coordinates(screen.width/2, screen.height/2+1),
                                     Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else // egalité des sommes d'argent
             {
-                background.Add(new Element(new string[] {"Vous êtes à égalité car vous avez autant d'argent que votre adversaire"}
-                            , new Coordinates((screen.width-34)/2, screen.height/2+1),
+                background.Add(new Element(TextManagement.GetData("Egalité")
+                            , new Coordinates(screen.width/2, screen.height/2+1),
                             Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             screen.DisplayLayer(background);

@@ -12,9 +12,9 @@ namespace MinivillesURSR46
         public int width;
 
         //Dictionary<Coordinates, string[]> elements = new();
-        Dictionary<int, List<Element>> layers = new Dictionary<int, List<Element>>();
-        List<Element> elementsClone = new List<Element>();
-
+        List<Layer> layers = new List<Layer>();
+        Layer defaultLayer = new Layer(0);
+        
         /// <summary>
         /// Constructeur de la classe, crée une fenêtre carré
         /// </summary>
@@ -22,6 +22,9 @@ namespace MinivillesURSR46
         public Screen(int size) {
             this.height = size;
             this.width = size;
+            this.AddLayer(defaultLayer);
+            string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
+            Console.Write(background); //On affiche le bords
         }
 
         /// <summary>
@@ -32,6 +35,9 @@ namespace MinivillesURSR46
         public Screen(int width, int height) {
             this.width = width;
             this.height = height;
+            this.AddLayer(defaultLayer);
+            string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
+            Console.Write(background); //On affiche le bords
         }
 
 
@@ -90,132 +96,105 @@ namespace MinivillesURSR46
         /// <summary>
         /// Permet d'afficher l'écran dans la console
         /// </summary>
-        public void Display()
+        public void Display() //TODO Préciser un layer précis
         {
             List<Element> elements = new List<Element>(); //Future liste des éléments
-            if (elementsClone.Count <= 0) //Si on avait aucun élément avant
+
+            foreach (Layer layer in layers.OrderBy(x => x.priority)) //On boucle sur tous les layers
             {
-                string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
-                Console.Write(background); //On affiche le bords
-            }
-
-            bool recall = false; //Permet de savoir si l'éran doit être actualiser
-            
-            foreach (int layer in layers.Keys.OrderBy(x => x)) //On boucle sur tous les layers
-            {
-                for (int n = 0; n < layers[layer].Count(); n++) //On boucle sur tous les éléments du layer
-                {
-                    bool update = true; //Si true, l'élement doit être afficher car il n'existe pas, ou il a changé
-                    foreach (Element element in elementsClone)
-                    {
-                        if (element.CompareTo(layers[layer][n])) update = false; //Si l'élément a été affiché dans le display précédent on l'update pas
-                    }
-                    
-                    if (!update) continue; //Si update = false, on skip le reste de la boucle
-                    
-                    for (int i = 0; i < layers[layer][n].text.Count(); i++) //On boucle sur toutes les lignes de l'élément
-                    {
-                        if (layers[layer][n].animation != Animation.None && layers[layer][n].animationIndex[i] > 0) //Si un element doit être actualisé
-                        {
-                            layers[layer][n].animationIndex[i]--; //On décrémente l'index de 1
-                            recall = true;
-                        }
-
-                        SetCursorElement(layers[layer][n], layers[layer][n].text[i], i); //On positionne le cursor au bon endroit
-                        
-                        Console.ForegroundColor = layers[layer][n].foreground;
-                        Console.BackgroundColor = layers[layer][n].background;
-
-                        if (layers[layer][n].animationIndex[i] >= layers[layer][n].text[i].Length) layers[layer][n].animationIndex[i] = -1;
-
-                        if (layers[layer][n].animationIndex[i] != -1) //TODO régler le problème
-                        {
-                            Console.SetCursorPosition(Console.CursorLeft+layers[layer][n].text[i].Length - layers[layer][n].animationIndex[i], Console.CursorTop);
-                            Console.Write(string.Join("", layers[layer][n].text[i].Skip(layers[layer][n].text[i].Length - layers[layer][n].animationIndex[i]-1).Take(1)));
-                        }
-                        else Console.Write(layers[layer][n].text[i]);
-                        
-                        //Reset des couleurs
-                        Console.ForegroundColor = ConsoleColor.White;
-                        Console.BackgroundColor = ConsoleColor.Black;
-                    }
-                    elements.Add(layers[layer][n]); //On ajoute cet élément aux élément affiché
-                    if (layers[layer][n].temp) //Si l'élément est temporaire, on le supprime
-                    {
-                        this.layers[layer].RemoveAt(n);
-                    }
-                }
-
+                DisplayLayer(layer);
             }
             Console.SetCursorPosition(0, 0); //On reset la position du cursor
 
-            if (recall) 
-            {
-                Thread.Sleep(100);
-                Display();
-            }
-            elementsClone = elements;
         }
 
+        public void DisplayLayer(Layer layer)
+        {
+            for (int i = 0; i < layer.elements.Count; i++)
+            {
+                DisplayElement(layer.elements[i]);
+                if (layer.elements[i].temp)
+                {
+                    layer.Delete(layer.elements[i]);
+                    i--;
+                }
+            }
+            Console.SetCursorPosition(0, 0); //On reset la position du cursor
+        }
+
+        public void DisplayElement(Element element)
+        {
+            for (int i = 0; i < element.text.Length; i++)
+            {
+                if (element.animation != Animation.None && element.animationIndex[i] > 0) //Si un element doit être actualisé
+                {
+                    element.animationIndex[i]--; //On décrémente l'index de 1
+                }
+
+                SetCursorElement(element, element.text[i], i); //On positionne le cursor au bon endroit
+                        
+                Console.ForegroundColor = element.foreground;
+                Console.BackgroundColor = element.background;
+
+                if (element.animationIndex[i] >= element.text[i].Length) element.animationIndex[i] = -1;
+
+                if (element.animationIndex[i] != -1) //TODO régler le problème
+                {
+                    Console.SetCursorPosition(Console.CursorLeft+element.text[i].Length - element.animationIndex[i], Console.CursorTop);
+                    Console.Write(string.Join("", element.text[i].Skip(element.text[i].Length - element.animationIndex[i]-1).Take(1)));
+                }
+                else Console.Write(element.text[i]);
+                        
+                //Reset des couleurs
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.BackgroundColor = ConsoleColor.Black;
+            }
+            Console.SetCursorPosition(0, 0); //On reset la position du cursor
+        }
+
+        public void AddLayer(Layer layer)
+        {
+            this.layers.Add(layer);
+        }
+        
         /// <summary>
         /// Permet d'ajouet un élément sans spécifier de layer
         /// </summary>
         /// <param name="element">L'élément à ajouter</param>
-        public void Add(Element element) {
-            this.Add(element, 0);
+        public void AddElement(Element element) {
+            defaultLayer.Add(element);
         }
 
-        /// <summary>
-        /// Permet d'ajouter un élément
-        /// </summary>
-        /// <param name="element">L'élément à ajouter</param>
-        /// <param name="layer">Le layer sur lequel ajouter l'élément</param>
-        public void Add(Element element, int layer) {
-        if (!layers.ContainsKey(layer))
-            layers.Add(layer, new List<Element>());
-        layers[layer].Add(element);
-        }
-
-        /// <summary>
-        /// Permet de supprimer les élément situer à une coordonnée
-        /// </summary>
-        /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
-        public void Delete(Coordinates coordinates) {
-            foreach (KeyValuePair<int, List<Element>> layer in this.layers)
-            {
-                DeleteElement(layer.Value.FirstOrDefault(x => x.coordinates == coordinates));
-                layer.Value.Remove(layer.Value.FirstOrDefault(x => x.coordinates == coordinates));
-            }
-        }
-
-        /// <summary>
-        /// Permet de supprimer les élément situer à une coordonnée sur un layer
-        /// </summary>
-        /// <param name="coordinates">La coordonnée où supprimer les éléments</param>
-        /// <param name="layer">Le layer sur lequel supprimer l'élément</param>
-        public void Delete(Coordinates coordinates, int layer) {
-            DeleteElement(layers[layer].FirstOrDefault(x => x.coordinates == coordinates));
-            this.layers[layer].Remove(layers[layer].FirstOrDefault(x => x.coordinates == coordinates));
-        }
-
-        /// <summary>
-        /// Permet de supprimer un layer entier
-        /// </summary>
-        /// <param name="layer">Le layer à supprimer</param>
-        public void DeleteLayer(int layer) {
-            if (this.layers.ContainsKey(layer)) 
-            {
-                foreach (Element element in this.layers[layer])
-                {
-                    DeleteElement(element);
-                }
-                this.layers.Remove(layer);
-            }
+        public void DeleteLayer(Layer layer)
+        {
+            HideLayer(layer);
+            this.layers.Remove(layer);
         }
 
         public void DeleteElement(Element element)
         {
-            this.Add(element.GetEmptyClone(), 0);
+            foreach (Layer layer in layers)
+            {
+                foreach (Element _element in layer.elements)
+                {
+                    if (element.CompareTo(_element)) HideElement(element);
+                    layer.Delete(element);
+                    return;
+                }
+            }
+        }
+
+        public void HideLayer(Layer layer)
+        {
+            foreach (Element element in layer.elements)
+            {
+                HideElement(element);
+            }
+        }
+        
+        public void HideElement(Element element)
+        {
+            DisplayElement(element.GetEmptyClone());
         }
 
         private void SetCursorElement(Element element, string text, int index)
@@ -243,8 +222,6 @@ namespace MinivillesURSR46
         public void Clear() {
             this.layers.Clear();
             Console.Clear();
-            string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
-            Console.Write(background); //On affiche le bords
         }
 
         /// <summary>
@@ -259,7 +236,7 @@ namespace MinivillesURSR46
             return lines;
         }
 
-        public int Choice(string[] choixArray, int height)//TODO renseigner le layer ici
+        public int Choice(string[] choixArray, int height, Layer layer)//TODO renseigner le layer ici
         {
             List<Element> choixElements = new List<Element>();
             int space = this.width / (choixArray.Length+1); //On détermine la taille entre chaque élément
@@ -270,40 +247,49 @@ namespace MinivillesURSR46
                                                     Animation.None,
                                                     Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 choixElements.Add(choixElement); //On ajoute l'élément créé a la liste d'éléments
-                this.Add(choixElement, 2); //On Ajoute l'élément créé à l'écran
+                layer.Add(choixElement); //On Ajoute l'élément créé à l'écran
             }
-            this.Display(); //On Display l'écran
-            return Select(choixElements.ToArray(), 2); //On call Select avec les éléments précedement créé
+            this.DisplayLayer(layer); //On Display l'écran
+            return Select(choixElements.ToArray()); //On call Select avec les éléments précedement créé
         }
 
-        public int Select(Element[] elementArray, int layer)
+        public int Select(Element[] elementArray)
         {
-            int choix = 0;
+            int choice = 0;
             while(true)
             {
-                elementArray[choix].foreground = ConsoleColor.White; // On reset l'ancien élément selectionneé
-                elementArray[choix].background = ConsoleColor.Black;
-                
+                int newChoice = 0;
+
                 ConsoleKey key = Console.ReadKey().Key;
                 if (key == ConsoleKey.RightArrow || key == ConsoleKey.UpArrow) {
-                    choix++;
+                    newChoice = choice + 1;
                 } else if (key == ConsoleKey.LeftArrow || key == ConsoleKey.DownArrow) {
-                    choix--;
+                    newChoice = choice - 1;
                 } else if (key == ConsoleKey.Enter) {
                     break;
                 }
 
-                if (choix < 0) choix = elementArray.Length-1; //On module la variable choix
-                if (choix >= elementArray.Length) choix = 0;
+                if (newChoice < 0) newChoice = elementArray.Length-1; //On module la variable choix
+                if (newChoice >= elementArray.Length) newChoice = 0;
 
-                elementArray[choix].foreground = ConsoleColor.Black;
-                elementArray[choix].background = ConsoleColor.White;
+
+
+                elementArray[newChoice].foreground = ConsoleColor.Black;
+                elementArray[newChoice].background = ConsoleColor.White;
+                DisplayElement(elementArray[newChoice]);
                 
-                Console.Write(choix); //Debug
+                elementArray[choice].foreground = ConsoleColor.White; // On reset l'ancien élément selectionneé
+                elementArray[choice].background = ConsoleColor.Black;
+                DisplayElement(elementArray[choice]);
+
+                choice = newChoice;
+                
+                
+                Console.Write(choice); //Debug
                 this.Display(); //On display l'écran avec les modifications
             }
-            this.DeleteLayer(layer); //TODO pas le faire ici
-            return choix;
+            
+            return choice;
         }
     }
 }

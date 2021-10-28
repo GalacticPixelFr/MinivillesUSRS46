@@ -23,7 +23,7 @@ namespace MinivillesURSR46
             this.height = size;
             this.width = size;
             this.AddLayer(defaultLayer);
-            string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
+            string background = string.Join("", BuildBorder(size, size)); // on crée les bord de l'écran
             Console.Write(background); //On affiche le bords
         }
 
@@ -36,7 +36,7 @@ namespace MinivillesURSR46
             this.width = width;
             this.height = height;
             this.AddLayer(defaultLayer);
-            string background = string.Join("", BuildBorder()); // on crée les bord de l'écran
+            string background = string.Join("", BuildBorder(this.width, this.height)); // on crée les bord de l'écran
             Console.Write(background); //On affiche le bords
         }
 
@@ -227,10 +227,10 @@ namespace MinivillesURSR46
         /// <summary>
         /// Permet de creer les bords de l'écran
         /// </summary>
-        private List<string> BuildBorder() {
-            string top = "+" + new String('-', this.width-2) + "+\n";
-            string mid = "|" + new String(' ', this.width-2) + "|\n";
-            List<string> lines = Enumerable.Repeat(mid, this.height-2).ToList();
+        public static List<string> BuildBorder(int width, int height) {
+            string top = "+" + new String('-', width-2) + "+\n";
+            string mid = "|" + new String(' ', width-2) + "|\n";
+            List<string> lines = Enumerable.Repeat(mid, height-2).ToList();
             lines.Insert(0, top);
             lines.Add(top);
             return lines;

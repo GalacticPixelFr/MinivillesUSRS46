@@ -72,7 +72,7 @@ namespace MinivillesURSR46
             {
                 if (cards.Contains(playerIA.UserHand[i].Id)) continue;
                 cards.Add(playerIA.UserHand[i].Id);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.UserHand.Count*(18+2)/2 + i*(18+2)+9, +3);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + i*(18+2)+9, +3);
                 Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);//TODO le nombre de carte
                 hands.Add(elements[0]);
                 hands.Add(elements[1]);
@@ -83,7 +83,7 @@ namespace MinivillesURSR46
             {
                 if (cards.Contains(playerH.UserHand[i].Id)) continue;
                 cards.Add(playerH.UserHand[i].Id);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.UserHand.Count*(18+2)/2 + i*(18+2)+9, screen.height-3);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(18+2)/2 + i*(18+2)+9, screen.height-3);
                 Element[] elements = playerH.UserHand[i].ToElementSemi(true,playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);//TODO le nombre de carte
                 hands.Add(elements[0]);
                 hands.Add(elements[1]);
@@ -94,7 +94,7 @@ namespace MinivillesURSR46
         public void Run()
         {
             Layer creditsLayer = new Layer(1);
-            creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates(screen.width / 2, screen.height / 2), Animation.None, Placement.mid,
+            creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates((screen.width-34) / 2, screen.height / 2), Animation.None, Placement.mid,
                 ConsoleColor.White,
                 ConsoleColor.Black));
             screen.DisplayLayer(creditsLayer);
@@ -120,7 +120,7 @@ namespace MinivillesURSR46
                 while (true)
                 {
                     Element pressEnter = new Element(TextManagement.GetData("EnterDé")
-                        , new Coordinates(screen.width / 2, screen.height / 2),
+                        , new Coordinates((screen.width-34) / 2, screen.height / 2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                     screen.DisplayElement(pressEnter);
                     
@@ -159,9 +159,11 @@ namespace MinivillesURSR46
                 bool action = false;
                 while (!action)
                 {
-                    Element title = new Element(TextManagement.GetData("EnterDé")
-                        , new Coordinates(screen.width/2, screen.height/2+1),
-                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);   
+                    Element title = new Element(new string[] {"Voulez-vous acheter ?",}
+                        , new Coordinates((screen.width-34)/2, screen.height / 2),
+                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+                    screen.DisplayElement(title);
+
                     Layer choice = new Layer(1); 
                     Element oui = new Element(new Coordinates((screen.width-34)/3 *1, screen.height/2+2), "OUI");
                     Element non = new Element(new Coordinates((screen.width-34)/3 *2, screen.height/2+2), "NON");
@@ -202,7 +204,7 @@ namespace MinivillesURSR46
                         if (pile.GetNumberCard(choix) == 0)
                         {
                             background.Add(new Element(TextManagement.GetData("Indisponible")
-                                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
                         // on vérifie que le joueur a assez d'argent
@@ -214,7 +216,7 @@ namespace MinivillesURSR46
                         else
                         {
                             background.Add(new Element(TextManagement.GetData("ZeroArgent")
-                                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
                         screen.DisplayLayer(background);
@@ -259,19 +261,19 @@ namespace MinivillesURSR46
             if (playerH.UserMoney > playerIA.UserMoney)
             {
                 background.Add(new Element(TextManagement.GetData("Gagné")
-                                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
                                                     Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else if (playerIA.UserMoney > playerH.UserMoney)
             {
                 background.Add(new Element(TextManagement.GetData("Perdu")
-                                    , new Coordinates(screen.width/2, screen.height/2+1),
+                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
                                     Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else // egalité des sommes d'argent
             {
                 background.Add(new Element(TextManagement.GetData("Egalité")
-                            , new Coordinates(screen.width/2, screen.height/2+1),
+                            , new Coordinates((screen.width-34)/2, screen.height/2+1),
                             Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             screen.DisplayLayer(background);

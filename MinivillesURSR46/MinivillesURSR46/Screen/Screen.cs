@@ -96,7 +96,7 @@ namespace MinivillesURSR46
         /// <summary>
         /// Permet d'afficher l'écran dans la console
         /// </summary>
-        public void Display() //TODO Préciser un layer précis
+        public void Display()
         {
             List<Element> elements = new List<Element>(); //Future liste des éléments
 
@@ -236,7 +236,7 @@ namespace MinivillesURSR46
             return lines;
         }
 
-        public int Choice(string[] choixArray, int height, Layer layer)//TODO renseigner le layer ici
+        public int Choice(string[] choixArray, int height, Layer layer)
         {
             List<Element> choixElements = new List<Element>();
             int space = this.width / (choixArray.Length+1); //On détermine la taille entre chaque élément

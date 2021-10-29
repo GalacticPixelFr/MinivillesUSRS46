@@ -191,7 +191,14 @@ namespace MinivillesURSR46
                 incomeIa = playerIA.UserMoney - incomeIa;
                 DisplayMoney();
                 chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
-                chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
+                if (incomeIa < 0)
+                {
+                    chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIa.ToString()));
+                }
+                else
+                {
+                    chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
+                }
                 //IA bleue et rouge
                 //H bleue et vert
 
@@ -251,6 +258,7 @@ namespace MinivillesURSR46
                         else if (c.Cost <= playerH.UserMoney)
                         {
                             playerH.BuyCard(c, pile);
+                            chat.AddText(TextManagement.GetDataString("CarteAchat", c.Name));
                             action = true;
                         }
                         else
@@ -260,7 +268,7 @@ namespace MinivillesURSR46
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
                         screen.DisplayLayer(background);
-                        chat.AddText(TextManagement.GetDataString("CarteAchat", c.Name));
+                        
                     }
                     else { action = true; }
 
@@ -285,7 +293,15 @@ namespace MinivillesURSR46
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIa = playerIA.UserMoney - incomeIa;
                 chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
-                chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
+                if (incomePlayer < 0)
+                {
+                    chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
+                }
+                else
+                {
+                    chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
+                }
+                
                 //H bleue et rouge
                 //IA bleue et vert
 

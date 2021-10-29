@@ -150,9 +150,14 @@ namespace MinivillesURSR46
                 screen.HideLayer(dieLayer);
                 chat.AddText(TextManagement.GetDataString("NombreDé", resultDie.ToString()));
 
-                
+                int incomePlayer = playerH.UserMoney;
+                int incomeIa = playerIA.UserMoney;
                 CardsActivation(playerH, playerIA, resultDie);
+                incomePlayer = playerH.UserMoney - incomePlayer;
+                incomeIa = playerIA.UserMoney - incomeIa;
                 DisplayMoney();
+                chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
+                chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
                 //IA bleue et rouge
                 //H bleue et vert
 
@@ -160,7 +165,7 @@ namespace MinivillesURSR46
                 bool action = false;
                 while (!action)
                 {
-                    Element title = new Element(new string[] {"Voulez-vous acheter ?",}
+                    Element title = new Element(TextManagement.GetData("Achat")
                         , new Coordinates((screen.width-34)/2, screen.height / 2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                     screen.DisplayElement(title);
@@ -221,8 +226,15 @@ namespace MinivillesURSR46
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
                         screen.DisplayLayer(background);
+                        chat.AddText(TextManagement.GetDataString("CarteAchat", c.Name));
                     }
                     else { action = true; }
+
+                    if (choix == 0)
+                    {
+                        chat.AddText(TextManagement.GetDataString("NoAchat"));
+                    }
+                    
                 }
 
                 // verification condition de fin
@@ -232,7 +244,14 @@ namespace MinivillesURSR46
 
                 // tour joueur IA
                 resultDie = die.Lancer();
+                chat.AddText(TextManagement.GetDataString("IaDé", resultDie.ToString()));
+                incomePlayer = playerH.UserMoney;
+                incomeIa = playerIA.UserMoney;
                 CardsActivation(playerIA, playerH, resultDie);
+                incomePlayer = playerH.UserMoney - incomePlayer;
+                incomeIa = playerIA.UserMoney - incomeIa;
+                chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
+                chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
                 //H bleue et rouge
                 //IA bleue et vert
 
@@ -252,7 +271,13 @@ namespace MinivillesURSR46
                     if (c.Cost < playerIA.UserMoney && pile.GetNumberCard(choix) == 0)
                     {
                         playerIA.BuyCard(c, pile);
+                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", c.ToString()));
 
+                    }
+
+                    if (choix == 0)
+                    {
+                        chat.AddText(TextManagement.GetDataString("NoIaAchat"));
                     }
                 }
 

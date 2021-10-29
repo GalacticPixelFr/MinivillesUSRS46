@@ -32,12 +32,13 @@ namespace MinivillesURSR46
             {"Indisponible", new []{"La carte n'est plus disponible."}},
             {"IaDé", new []{"Votre adversaire lance le dé, il a fait &."}},
             {"IaAchat", new []{"Votre adversaire à décidé d'acheter une carte."}},
+            {"NoIaAchat", new []{"Votre adversaire à décidé de ne pas acheter de cartes."}},
             {"IaCarteAchat", new []{"Votre adversaire à acheté la carte &."}},
             {"ZeroArgent", new []{"Vous n'avez pas assez d'argent"}},
             {"Gagné", new []{"Vous gagnez car vous avez le plus d'argent"}},
             {"Perdu", new []{"Vous perdez car l'adversaire est le plus riche"}},
             {"Egalité", new []{"Vous êtes à égalité car vous avez autant d'argent que votre adversaire"}},
-            {"", new []{""}},
+            {"NoAchat", new []{"Vous avez décidé de ne pas acheter de cartes."}},
         };
 
         public static string[] GetData(string key)
@@ -47,13 +48,13 @@ namespace MinivillesURSR46
         
         public static string[] GetData(string key, string data)
         {
-            string[] array = chatData[key];
-            foreach (string text in array)
+            List<string> result = new List<string>();
+            foreach (string text in chatData[key])
             {
-                text.Replace("&", data);
+                result.Add(text.Replace("&", data));
             }
 
-            return array;
+            return result.ToArray();
         }
 
         public static string GetDataString(string key)
@@ -63,13 +64,13 @@ namespace MinivillesURSR46
         
         public static string GetDataString(string key, string data)
         {
-            string[] array = chatData[key];
-            foreach (string text in array)
+            List<string> result = new List<string>();
+            foreach (string text in chatData[key])
             {
-                text.Replace("&", data);
+                result.Add(text.Replace("&", data));
             }
 
-            return array[0];
+            return result.ToArray()[0];
         }
     }
 }

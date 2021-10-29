@@ -107,21 +107,21 @@ namespace MinivillesURSR46
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
             screen.DisplayElement(titleOptions);
 
-            Layer choice = new Layer(1); 
+            Layer choiceP = new Layer(1); 
             Element facile = new Element(new Coordinates((screen.width-34)/4 *1, screen.height/2+2), "10 pièces");
             Element normal = new Element(new Coordinates((screen.width-34)/4 *2, screen.height/2+2), "20 pièces");
             Element difficile = new Element(new Coordinates((screen.width-34)/4 *3, screen.height/2+2), "30 pièces");
             // TODO add expert
-            choice.Add(facile);
-            choice.Add(normal);
-            choice.Add(difficile);
-            screen.DisplayLayer(choice);
-            int choix = screen.Select(new Element[3] {facile, normal, difficile});
-            screen.HideLayer(choice);
-            choice.Clear();
+            choiceP.Add(facile);
+            choiceP.Add(normal);
+            choiceP.Add(difficile);
+            screen.DisplayLayer(choiceP);
+            int choixP = screen.Select(new Element[3] {facile, normal, difficile});
+            screen.HideLayer(choiceP);
+            choiceP.Clear();
             screen.HideElement(titleOptions);
 
-            gainFinish = 10 * (choix + 1);
+            gainFinish = 10 * (choixP + 1);
 
             /*
             1. Le joueur A lance le dé.

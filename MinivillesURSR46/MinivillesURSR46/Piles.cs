@@ -41,7 +41,7 @@ namespace MinivillesURSR46
         /// Méthode permettant d'obtenir la première cartes du paquet/de la pile
         /// </summary>
         /// <returns>Renvoi la carte en première position de la pile</returns>
-        public CardsInfo GetCards()
+        public CardsInfo GetCard()
         {
             // vérification pile non vide
             if (pile.Count == 0)

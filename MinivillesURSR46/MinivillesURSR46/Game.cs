@@ -148,6 +148,7 @@ namespace MinivillesURSR46
                 screen.DisplayLayer(dieLayer);
                 Thread.Sleep(3000);
                 screen.HideLayer(dieLayer);
+                chat.AddText(TextManagement.GetDataString("NombreDé", resultDie.ToString()));
 
                 
                 CardsActivation(playerH, playerIA, resultDie);

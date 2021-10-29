@@ -55,5 +55,21 @@ namespace MinivillesURSR46
 
             return array;
         }
+
+        public static string GetDataString(string key)
+        {
+            return chatData[key][0];
+        }
+        
+        public static string GetDataString(string key, string data)
+        {
+            string[] array = chatData[key];
+            foreach (string text in array)
+            {
+                text.Replace("&", data);
+            }
+
+            return array[0];
+        }
     }
 }

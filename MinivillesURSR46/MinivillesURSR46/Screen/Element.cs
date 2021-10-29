@@ -64,22 +64,22 @@ namespace MinivillesURSR46
 
         public Element GetEmptyClone()
         {
-            Element clone = new Element(this.text, this.coordinates, Animation.None, this.placement, ConsoleColor.White,
-                ConsoleColor.Black, true);
             
-            for (int i = 0; i < clone.text.Length; i++)
+            List<string> textClone = new List<string>();
+            for (int i = 0; i < this.text.Length; i++)
             {
-                clone.text[i] = new string(' ', clone.text[i].Length);
+                textClone.Add(new string(' ', this.text[i].Length));
             }
+            return new Element(textClone.ToArray(), this.coordinates, Animation.None, this.placement, ConsoleColor.White, ConsoleColor.Black);
 
-            return clone;
+                
         }
     }
 
     public enum Animation
     {
         None,
-        LetterByLetter
+        Typing
     }
 
     public enum Placement

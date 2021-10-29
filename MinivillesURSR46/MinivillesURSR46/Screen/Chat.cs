@@ -63,24 +63,40 @@ namespace MinivillesURSR46
 
         public void Display()
         {
+            screen.HideLayer(textLayer);
             textLayer.Clear();
             
             Stack<string[]> stack = new Stack<string[]>(textStack.Reverse());
             int height = 0;
+            int index = 0;
+            Element firstElement = new Element(coordinates, "");
             while (stack.Count > 0)
             {
                 string[] currentString = stack.Pop();
                 height += currentString.Length;
-                if (height > this.height) return;
-                
-                Element element = new Element(currentString, 
-                                              new Coordinates(coordinates.x+1, coordinates.y - height-1),
-                                              Animation.None, Placement.topLeft,
-                                        ConsoleColor.White, ConsoleColor.Black);
+                if (height >= this.height) return;
 
-                textLayer.Add(element);
+                if (index == 0)
+                {
+                    firstElement = new Element(currentString, 
+                        new Coordinates(coordinates.x+1, coordinates.y - height-1),
+                        Animation.Typing, Placement.topLeft,
+                        ConsoleColor.White, ConsoleColor.Black);
+                }
+                
+                else
+                {
+                    Element element = new Element(currentString,
+                        new Coordinates(coordinates.x + 1, coordinates.y - height - 1),
+                        Animation.None, Placement.topLeft,
+                        ConsoleColor.White, ConsoleColor.Black);
+
+                    textLayer.Add(element);
+                }
+                index++;
             }
 
+            textLayer.Add(firstElement);
             screen.DisplayLayer(textLayer);
         }
         

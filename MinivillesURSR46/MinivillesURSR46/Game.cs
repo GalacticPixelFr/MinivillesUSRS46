@@ -67,6 +67,8 @@ namespace MinivillesURSR46
         public void DisplayHands()
         {
             screen.HideLayer(hands);
+            hands.Clear();
+            
             List<int> cards = new List<int>();
             for (int i = 0; i < playerIA.UserHand.Count; i++)
             {
@@ -74,6 +76,11 @@ namespace MinivillesURSR46
                 cards.Add(playerIA.UserHand[i].Id);
                 Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + i*(18+2)+9, +3);
                 Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);//TODO le nombre de carte
+                Element amount = new Element(new string[1] {"x" + playerIA.GetNumberCard(playerIA.UserHand[i].Id)},
+                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (18 + 2) / 2 + i * (18 + 2) + 9, 5),
+                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+                
+                hands.Add(amount);
                 hands.Add(elements[0]);
                 hands.Add(elements[1]);
             }
@@ -85,6 +92,11 @@ namespace MinivillesURSR46
                 cards.Add(playerH.UserHand[i].Id);
                 Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(18+2)/2 + i*(18+2)+9, screen.height-3);
                 Element[] elements = playerH.UserHand[i].ToElementSemi(true,playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);//TODO le nombre de carte
+                Element amount = new Element(new string[1] {"x" + playerH.GetNumberCard(playerH.UserHand[i].Id)},
+                    new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (18 + 2) / 2 + i * (18 + 2) + 9, screen.height-6),
+                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+                
+                hands.Add(amount);
                 hands.Add(elements[0]);
                 hands.Add(elements[1]);
             }
@@ -309,19 +321,19 @@ namespace MinivillesURSR46
             {
                 background.Add(new Element(TextManagement.GetData("Gagné")
                                                     , new Coordinates((screen.width-34)/2, screen.height/2+1),
-                                                    Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
+                                                    Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else if (playerIA.UserMoney > playerH.UserMoney)
             {
                 background.Add(new Element(TextManagement.GetData("Perdu")
                                     , new Coordinates((screen.width-34)/2, screen.height/2+1),
-                                    Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
+                                    Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             else // egalité des sommes d'argent
             {
                 background.Add(new Element(TextManagement.GetData("Egalité")
                             , new Coordinates((screen.width-34)/2, screen.height/2+1),
-                            Animation.LetterByLetter, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
+                            Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
             }
             screen.DisplayLayer(background);
         }

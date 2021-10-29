@@ -43,7 +43,7 @@ namespace MinivillesURSR46
                 if (IdCards.Contains(c.Id))
                 {
                     cpt++;
-                    IdCards.Remove(c.Id);
+                    IdCards[c.Id] = -1;
                 }
             }
 

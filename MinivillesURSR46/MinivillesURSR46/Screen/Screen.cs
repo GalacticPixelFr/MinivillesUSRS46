@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace MinivillesURSR46
 {
@@ -138,10 +139,9 @@ namespace MinivillesURSR46
 
                 if (element.animationIndex[i] >= element.text[i].Length) element.animationIndex[i] = -1;
 
-                if (element.animationIndex[i] != -1) //TODO régler le problème
+                if (element.animation == Animation.Typing) //TODO régler le problème
                 {
-                    Console.SetCursorPosition(Console.CursorLeft+element.text[i].Length - element.animationIndex[i], Console.CursorTop);
-                    Console.Write(string.Join("", element.text[i].Skip(element.text[i].Length - element.animationIndex[i]-1).Take(1)));
+                    Typing(element, i);
                 }
                 else Console.Write(element.text[i]);
                         
@@ -150,6 +150,17 @@ namespace MinivillesURSR46
                 Console.BackgroundColor = ConsoleColor.Black;
             }
             Console.SetCursorPosition(0, 0); //On reset la position du cursor
+        }
+
+        private void Typing(Element element, int index)
+        {
+            for (int i = 0; i < element.text[index].Length; i++)
+            {
+                //SetCursorElement(element, element.text[i], index);
+                //Console.SetCursorPosition(Console.CursorLeft + i, Console.CursorTop);
+                Console.Write(element.text[index][i]);
+                Task.Delay(5).Wait();
+            }   
         }
 
         public void AddLayer(Layer layer)

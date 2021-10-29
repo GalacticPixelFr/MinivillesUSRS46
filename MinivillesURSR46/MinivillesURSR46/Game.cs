@@ -102,6 +102,27 @@ namespace MinivillesURSR46
             Thread.Sleep(500);
             screen.HideLayer(creditsLayer);
 
+            Element titleOptions = new Element(new string[] {"Quelle partie voulez-vous faire ?",}
+                        , new Coordinates((screen.width-34)/2, screen.height / 2),
+                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            screen.DisplayElement(titleOptions);
+
+            Layer choiceP = new Layer(1); 
+            Element facile = new Element(new Coordinates((screen.width-34)/4 *1, screen.height/2+2), "10 pièces");
+            Element normal = new Element(new Coordinates((screen.width-34)/4 *2, screen.height/2+2), "20 pièces");
+            Element difficile = new Element(new Coordinates((screen.width-34)/4 *3, screen.height/2+2), "30 pièces");
+            // TODO add expert
+            choiceP.Add(facile);
+            choiceP.Add(normal);
+            choiceP.Add(difficile);
+            screen.DisplayLayer(choiceP);
+            int choixP = screen.Select(new Element[3] {facile, normal, difficile});
+            screen.HideLayer(choiceP);
+            choiceP.Clear();
+            screen.HideElement(titleOptions);
+
+            gainFinish = 10 * (choixP + 1);
+
             /*
             1. Le joueur A lance le dé.
             2. Le joueur B regarde s’il a des cartes bleues ou rouges qui s’activent et il en applique les effets

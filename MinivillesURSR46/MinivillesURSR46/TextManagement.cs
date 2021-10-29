@@ -69,8 +69,8 @@ namespace MinivillesURSR46
             {
                 result.Add(text.Replace("&", data));
             }
-
-            return result.ToArray()[0];
+            
+            return result[0];
         }
     }
 }

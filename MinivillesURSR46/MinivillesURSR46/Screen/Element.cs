@@ -64,8 +64,8 @@ namespace MinivillesURSR46
 
         public Element GetEmptyClone()
         {
-            
             List<string> textClone = new List<string>();
+        
             for (int i = 0; i < this.text.Length; i++)
             {
                 textClone.Add(new string(' ', this.text[i].Length));
@@ -79,7 +79,8 @@ namespace MinivillesURSR46
     public enum Animation
     {
         None,
-        Typing
+        Typing //Fait une pose pour le reste de l'affichage
+
     }
 
     public enum Placement

@@ -106,7 +106,8 @@ namespace MinivillesURSR46
         public void Run()
         {
             Layer creditsLayer = new Layer(1);
-            creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates((screen.width-34) / 2, screen.height / 2), Animation.None, Placement.mid,
+            creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates((screen.width-34) / 2, screen.height / 2),
+                Animation.None, Placement.mid,
                 ConsoleColor.White,
                 ConsoleColor.Black));
             screen.DisplayLayer(creditsLayer);

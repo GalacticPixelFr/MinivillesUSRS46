@@ -25,7 +25,7 @@ namespace MinivillesURSR46
             }},
             {"EnterDé", new []{"Tapez Enter pour Lancer le dé."}},
             {"NombreDé", new []{"Vous avez fait &."}},
-            {"Revenu", new []{"Vos gagnez & pièces(s)."}},
+            {"Revenu", new []{"Vous gagnez & pièces(s)."}},
             {"RevenuIa", new []{"Votre adversaire gagne & pièces."}},
             {"Achat", new []{"Voulez vous acheter ?"}},
             {"CarteAchat", new []{"Vous avez acheté &."}},

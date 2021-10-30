@@ -286,7 +286,25 @@ namespace MinivillesURSR46
 
                 // tour joueur IA
                 resultDie = die.Lancer();
+                
+                dieLayer = new Layer(1);
+                for (int i = 0; i < 5; i++)
+                {
+                    dieLayer.Add(new Element(Die.ToStrings(rnd.Next(1, 7))
+                        , new Coordinates((screen.width-34)/2, screen.height/2),
+                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+                    Thread.Sleep(300);
+                    screen.DisplayLayer(dieLayer);
+                }
+                dieLayer.Add(new Element(Die.ToStrings(resultDie)
+                    , new Coordinates((screen.width-34)/2, screen.height/2),
+                    Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+                screen.DisplayLayer(dieLayer);
+                Thread.Sleep(3000);
+                screen.HideLayer(dieLayer);
+                
                 chat.AddText(TextManagement.GetDataString("IaDé", resultDie.ToString()));
+                
                 incomePlayer = playerH.UserMoney;
                 incomeIa = playerIA.UserMoney;
                 CardsActivation(playerIA, playerH, resultDie);

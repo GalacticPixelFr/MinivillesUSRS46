@@ -127,9 +127,10 @@ namespace MinivillesURSR46
             screen.DisplayElement(titleOptions);
 
             Layer choiceP = new Layer(1); 
-            Element facile = new Element(new Coordinates((screen.width-34)/4 *1, screen.height/2+2), "10 pièces");
-            Element normal = new Element(new Coordinates((screen.width-34)/4 *2, screen.height/2+2), "20 pièces");
-            Element difficile = new Element(new Coordinates((screen.width-34)/4 *3, screen.height/2+2), "30 pièces");
+            Element facile = new Element(new Coordinates((screen.width-34)/5 * 1, screen.height/2+2), "Rapide");
+            Element normal = new Element(new Coordinates((screen.width-34)/5 * 2, screen.height/2+2), "Normal");
+            Element difficile = new Element(new Coordinates((screen.width-34)/5 * 3, screen.height/2+2), "Difficile");
+            Element expert = new Element(new Coordinates((screen.width-34)/5 * 4, screen.height/2+2), "Expert");
             // TODO add expert
             choiceP.Add(facile);
             choiceP.Add(normal);
@@ -140,7 +141,14 @@ namespace MinivillesURSR46
             choiceP.Clear();
             screen.HideElement(titleOptions);
 
-            gainFinish = 10 * (choixP + 1);
+            if (choixP == 3)
+            {
+                gainFinish = 30;
+            }
+            else
+            {
+                gainFinish = 10 * (choixP + 1);
+            }
 
             /*
             1. Le joueur A lance le dé.
@@ -151,7 +159,7 @@ namespace MinivillesURSR46
             */
 
             // condition fin
-            while (playerH.UserMoney < gainFinish && playerIA.UserMoney < gainFinish)
+            while (true)
             {
                 DisplayHands();
                 DisplayMoney();
@@ -286,8 +294,11 @@ namespace MinivillesURSR46
                 }
 
                 // verification condition de fin
-
-                if(playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish) { break; }
+                if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
+                {
+                    if (choixP != 3) { break; }
+                    else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
+                }
 
 
                 // tour joueur IA
@@ -353,6 +364,14 @@ namespace MinivillesURSR46
                     {
                         chat.AddText(TextManagement.GetDataString("NoIaAchat"));
                     }
+                }
+
+
+                // verification condition de fin
+                if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
+                {
+                    if (choixP != 3) { break; }
+                    else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
                 }
 
             }

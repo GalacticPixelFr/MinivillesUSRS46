@@ -273,6 +273,7 @@ namespace MinivillesURSR46
                             playerH.BuyCard(c, pile);
                             chat.AddText(TextManagement.GetDataString("CarteAchat", c.Name));
                             DisplayHands();
+                            DisplayMoney();
                             action = true;
                         }
                         else

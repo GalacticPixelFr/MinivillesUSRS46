@@ -353,17 +353,15 @@ namespace MinivillesURSR46
 
                     // on vérifie que la carte est encore disponible et qu'elle est encore achetable
 
-                    if (c.Cost < playerIA.UserMoney && pile.GetNumberCard(choix) == 0)
+                    if (c.Cost < playerIA.UserMoney + 2 && pile.GetNumberCard(choix) > 0)
                     {
                         playerIA.BuyCard(c, pile);
                         chat.AddText(TextManagement.GetDataString("IaCarteAchat", c.ToString()));
-
                     }
-
-                    if (choix == 0)
-                    {
-                        chat.AddText(TextManagement.GetDataString("NoIaAchat"));
-                    }
+                }
+                else
+                {
+                    chat.AddText(TextManagement.GetDataString("NoIaAchat"));
                 }
 
 

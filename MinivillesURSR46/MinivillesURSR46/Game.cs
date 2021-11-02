@@ -120,7 +120,7 @@ namespace MinivillesURSR46
         {
             while (!Menu.Display(screen, this))
             {
-                
+                screen = new Screen(screen.width, screen.height);
             }
         }
         
@@ -355,7 +355,7 @@ namespace MinivillesURSR46
                 // verification condition de fin
                 if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
                 {
-                    if (gameOption.difficultee != 2) { break; }
+                    if (gameOption.difficultee != 1) { break; }
                     else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
                 }
                 DisplayHands();
@@ -408,7 +408,7 @@ namespace MinivillesURSR46
                 // verification condition de fin
                 if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
                 {
-                    if (gameOption.difficultee != 2) { break; }
+                    if (gameOption.difficultee != 1) { break; }
                     else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
                 }
 

@@ -216,9 +216,9 @@ namespace MinivillesURSR46
             return Select(choixElements.ToArray()); //On call Select avec les éléments précedement créé
         }
 
-        public int Select(Element[] elementArray)
+        public int Select(Element[] elementArray, int startPosition)
         {
-            int choice = 0;
+            int choice = startPosition;
 
             while(true)
             {
@@ -252,6 +252,11 @@ namespace MinivillesURSR46
             }
             
             return choice;
+        }
+
+        public int Select(Element[] elementArray)
+        {
+            return Select(elementArray, 0);
         }
     }
 }

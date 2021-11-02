@@ -15,6 +15,34 @@ public static class Menu
         @"$$ | \_/ $$ |$$ |$$ |  $$ |$$ |   \$  /   $$ |$$ |$$ |\$$$$$$$\ $$$$$$$  |",
         @"\__|     \__|\__|\__|  \__|\__|    \_/    \__|\__|\__| \_______|\_______/ \"
     };
+    
+    private static string[] city = new string[]
+    {
+        @"                   _________                                                         ",
+        @"                  |MMMMMMMMM|                _                                       ",
+        @"     ________     |MMMMMMMMM|              _|l|_                                     ",
+        @"     |!!!!!!!_|___|MMMMMMMMM|             |lllll|                                    ",
+        @"     |!!!!!!|=========|MMMMM|             |lllll|_______                             ",
+        @"     |!!!!!!|=========|MMMMM|            _|lllll|HHHHHHH|                            ",
+        @"     |!!!!!!|=========|MMMMM|   ________|lllllllll|HHHHH|                            ",
+        @"     |!!!!!!|=========|MMMMM|  |unununun|lllllllll|HHHHH|______                      ",
+        @"     |!!!!!!|=========|MMMMM|  |nunununu|lllllllll|HH|:::::::::|                     ",
+        @"     |!!!!!!|=========|MMM__|..|un__unun|lllllllll|HH|:::::::::|                     ",
+        @"     |!!!!!!|=======_=|M_( ')' );' .)unu|lllllllll|HH|:::::::::|                     ",
+        @"     |!!!_!!|======( )|(. ` ,) (_ ', )un|lllllllll|HH|:::::::::| ~~~                 ",
+        @"     |!!(.)!|===__(`.')_(_ ')_,)(. _)unu|lllllllll|HH|:__::::::|~~  ~~               ",
+        @"     |!(.`')|==( .)' .)MMM|M|| |un|nunun|lllllllll|``|( ,)_::::| ~~~~ ~              ",
+        @"      -(: _)|=(`. ')_)|---|- '  ``|`````|lll____ll|  (_; `'):::|~~~  ~~~             ",
+        @"  (.)     |  |==(_'_)|=|    ______        ''/\   \'   |(_'_)::::|\~~~~__|)__         ",
+        @"  (_')       |   ''''|''o/`.-``~~~~~ ``-.     /--\___\    ``|`````` /____\____/      ",
+        @" (: _)rei        |  h ( `; ~~~ ~~  ~ )    |M_|#_#|      ' --   __________|~~~~   ~~~ ",
+        @"   |       --   *      '-.._~~__~..-'   --           -* -     /  ~~~~ ~~~~~~  ~~~~   ",
+        @"     *   -   -      --           ----         ---         _.-'~~~~~     ~ ~~~        ",
+        @"_______--_________............-------------'''''''''''''''` ~~~~~    ~~~ ~~~~~    ~~~",
+        @"     ~~    ~~~~~~~~     ~~~~~~~   ~~~~~~~~~   ~~~~~~~~~~      ~~~~~~~     ~~~  ~~    ",
+        @"~~   ~~~~~~~~~  ~~~~  ~~~~~ ~~~~~~~~~ ~ ~      ~~~~~~ ~~~~~~     ~~~~    ~~~~~~~~    ",
+        @"  ~~ ~~~~~~~~     ~~~~~~~~~~~~~~~        ~~~~~~~~~~~~ ~~~~~~  ~~~ ~~~~~~  ~~~   ~~   "
+    };
 
     private static string[] jouer = new string[6]
     {
@@ -110,11 +138,15 @@ public static class Menu
         Element titleElement = new Element(title, new Coordinates(screen.width / 2, 10),
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
         
+        Element cityElement = new Element(city, new Coordinates(screen.width / 6 *4, 30),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+
         background.Add(titleElement);
+        background.Add(cityElement);
         screen.DisplayLayer(background);
 
         Element jouerElement = new Element(jouer, new Coordinates(5, screen.height / 5 * 2),
-            Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black);
+            Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
         Element creditsElement = new Element(credits, new Coordinates(5, screen.height / 5 * 3),
             Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black);
         Element quitterElement = new Element(quitter, new Coordinates(5, screen.height / 5 * 4),
@@ -168,12 +200,12 @@ public static class Menu
         background.Add(dureeMoyen);
         background.Add(dureeLong);
         
-        Element difficulteeFacile = new Element(new string[]{"facile"}, 
+        Element difficulteeNormale = new Element(new string[]{"normale"}, 
             new Coordinates(screen.width/5*2, screen.height / 6 * 3)
             ,Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-        Element difficulteeDifficle = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 3), "difficile");
-        background.Add(difficulteeFacile);
-        background.Add(difficulteeDifficle);
+        Element difficulteeExpert = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 3), "expert");
+        background.Add(difficulteeNormale);
+        background.Add(difficulteeExpert);
         
         Element niveauIADebile = new Element(new string[]{"débile"}, 
             new Coordinates(screen.width/5*2, screen.height / 6 * 4)
@@ -192,29 +224,33 @@ public static class Menu
         screen.DisplayLayer(background);
 
         int choix = -1;
-        //
+        int startPosition = 0;
 
         while (choix != 4)
         {
-            choix = screen.Select(new Element[] {dureeDeLaPartie, difficultee, niveauIA, modeDeJeu, commencerElement});
+            choix = screen.Select(new Element[] {dureeDeLaPartie, difficultee, niveauIA, modeDeJeu, commencerElement}, startPosition);
             if (choix == 0)
             {
-                gameOption.duree = screen.Select(new Element[3] {dureeCourt, dureeMoyen, dureeLong});
+                gameOption.duree = screen.Select(new Element[3] {dureeCourt, dureeMoyen, dureeLong}, gameOption.duree);
+                startPosition = 0;
                 choix = -1;
             }
             else if (choix == 1)
             {
-                gameOption.difficultee = screen.Select(new Element[2] {difficulteeFacile, difficulteeDifficle});
+                gameOption.difficultee = screen.Select(new Element[2] {difficulteeNormale, difficulteeExpert}, gameOption.difficultee);
+                startPosition = 1;
                 choix = -1;
             }
             else if (choix == 2)
             {
-                gameOption.niveauIA = screen.Select(new Element[2] {niveauIADebile, niveauIAGenie});
+                gameOption.niveauIA = screen.Select(new Element[2] {niveauIADebile, niveauIAGenie}, gameOption.niveauIA);
+                startPosition = 2;
                 choix = -1;
             }
             else if (choix == 3)
             {
-                gameOption.modeDeJeu = screen.Select(new Element[2] {modeDeJeuURSS, modeDeJeuUSA});
+                gameOption.modeDeJeu = screen.Select(new Element[2] {modeDeJeuURSS, modeDeJeuUSA}, gameOption.modeDeJeu);
+                startPosition = 3;
                 choix = -1;
             }
         }

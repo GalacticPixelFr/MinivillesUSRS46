@@ -42,6 +42,7 @@
         <Compile Include="CardsInfo.cs" />
         <Compile Include="Die.cs" />
         <Compile Include="Game.cs" />
+        <Compile Include="GameOption.cs" />
         <Compile Include="obj\Debug\.NETFramework,Version=v4.7.1.AssemblyAttributes.cs" />
         <Compile Include="Piles.cs" />
         <Compile Include="Player.cs" />
@@ -50,6 +51,7 @@
         <Compile Include="Screen\Chat.cs" />
         <Compile Include="Screen\Element.cs" />
         <Compile Include="Screen\Layer.cs" />
+        <Compile Include="Screen\Menu.cs" />
         <Compile Include="Screen\Screen.cs" />
         <Compile Include="TextManagement.cs" />
     </ItemGroup>

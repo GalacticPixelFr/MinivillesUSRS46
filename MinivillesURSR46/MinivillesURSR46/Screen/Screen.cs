@@ -219,14 +219,15 @@ namespace MinivillesURSR46
         public int Select(Element[] elementArray)
         {
             int choice = 0;
+
             while(true)
             {
                 int newChoice = 0;
 
                 ConsoleKey key = Console.ReadKey().Key;
-                if (key == ConsoleKey.RightArrow || key == ConsoleKey.UpArrow) {
+                if (key == ConsoleKey.RightArrow || key == ConsoleKey.DownArrow) {
                     newChoice = choice + 1;
-                } else if (key == ConsoleKey.LeftArrow || key == ConsoleKey.DownArrow) {
+                } else if (key == ConsoleKey.LeftArrow || key == ConsoleKey.UpArrow) {
                     newChoice = choice - 1;
                 } else if (key == ConsoleKey.Enter) {
                     break;

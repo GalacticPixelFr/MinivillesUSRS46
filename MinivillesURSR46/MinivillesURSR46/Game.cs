@@ -22,6 +22,8 @@ namespace MinivillesURSR46
         private Chat chat;
 
         private Random rnd;
+        
+        private int nbTurn = 0;
 
         public Game(int gain)
         {
@@ -209,10 +211,12 @@ namespace MinivillesURSR46
             // condition fin
             while (true)
             {
+                nbTurn++;
                 DisplayHands();
                 DisplayMoney();
                 int resultDie;
                 // tour joueur humain
+                chat.AddText(TextManagement.GetDataString("TourJ", nbTurn.ToString()));
                 while (true)
                 {
                     Element pressEnter = new Element(TextManagement.GetData("EnterDé")
@@ -283,6 +287,10 @@ namespace MinivillesURSR46
                     screen.HideLayer(choice);
                     choice.Clear();
                     screen.HideElement(title);
+                    if (choix == 0)
+                    {
+                        chat.AddText(TextManagement.GetDataString("NoAchat"));
+                    }
                     if (choix == 1)
                     {
                         List<Element> cardsElements = new List<Element>();
@@ -311,7 +319,7 @@ namespace MinivillesURSR46
 
 
                         // selection carte choisi
-                        CardsInfo c = CardChoice(choix); 
+                        CardsInfo c = CardChoice(choix);
 
                         // on vérifie que la carte est encore disponible
                         if (pile.GetNumberCard(choix) == 0)
@@ -342,11 +350,6 @@ namespace MinivillesURSR46
                     }
                     else { action = true; }
 
-                    if (choix == 0)
-                    {
-                        chat.AddText(TextManagement.GetDataString("NoAchat"));
-                    }
-                    
                 }
 
                 // verification condition de fin
@@ -359,6 +362,7 @@ namespace MinivillesURSR46
                 DisplayMoney();
 
                 // tour joueur IA
+                chat.AddText(TextManagement.GetDataString("TourIa", nbTurn.ToString()));
                 resultDie = die.Lancer();
                 
                 dieLayer = new Layer(1);
@@ -448,9 +452,10 @@ namespace MinivillesURSR46
             return c;
         }
 
+        //Check des cartes en main et activation des effets selon la couleur
         public void CardsActivation(Player userPlayer, Player opponentPlayer, int dice)
         {
-            foreach (CardsInfo card in userPlayer.UserHand)
+            foreach (CardsInfo card in userPlayer.UserHand) 
             {
                 if (card.Dice == dice)
                 {

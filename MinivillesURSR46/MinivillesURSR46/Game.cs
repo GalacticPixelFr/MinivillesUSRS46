@@ -303,7 +303,8 @@ namespace MinivillesURSR46
                     if (choixP != 3) { break; }
                     else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
                 }
-
+                DisplayHands();
+                DisplayMoney();
 
                 // tour joueur IA
                 resultDie = die.Lancer();
@@ -360,7 +361,7 @@ namespace MinivillesURSR46
                     if (c.Cost < playerIA.UserMoney - 1 && pile.GetNumberCard(choix) > 0)
                     {
                         playerIA.BuyCard(c, pile);
-                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", c.ToString()));
+                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", c.Name));
                     }
                     else
                     {

@@ -555,7 +555,7 @@ namespace MinivillesURSR46
                 }
 
                 // si on a décidé d'acheter
-                if (c == null)
+                if (c != null)
                 {
                     playerIA.BuyCard(c, pile);
                     chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));

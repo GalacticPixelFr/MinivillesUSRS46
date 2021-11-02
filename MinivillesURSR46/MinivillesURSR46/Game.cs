@@ -126,10 +126,16 @@ namespace MinivillesURSR46
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
             screen.DisplayElement(titleOptions);
 
-            Layer choiceP = new Layer(1); 
-            Element facile = new Element(new Coordinates((screen.width-34)/5 * 1, screen.height/2+2), "Rapide");
-            Element normal = new Element(new Coordinates((screen.width-34)/5 * 2, screen.height/2+2), "Normal");
-            Element difficile = new Element(new Coordinates((screen.width-34)/5 * 3, screen.height/2+2), "Difficile");
+            Layer choiceP = new Layer(1);
+            Element facile = new Element(new string[] {"Rapide",},
+                new Coordinates((screen.width-34)/4 * 1, screen.height/2+2),
+                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            Element normal = new Element(new string[] {"Normal",},
+                new Coordinates((screen.width-34)/4 * 2, screen.height/2+2),
+                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            Element difficile = new Element(new string[] {"Difficile",},
+                new Coordinates((screen.width-34)/4 * 3, screen.height/2+2),
+                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
             Element expert = new Element(new Coordinates((screen.width-34)/5 * 4, screen.height/2+2), "Expert");
             // TODO add expert
             choiceP.Add(facile);

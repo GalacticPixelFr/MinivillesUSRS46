@@ -74,7 +74,7 @@ namespace MinivillesURSR46
             {
                 string[] currentString = stack.Pop();
                 height += currentString.Length;
-                if (height >= this.height-2) break;
+                if (height >= this.height-1) break;
 
                 if (index == 0)
                 {

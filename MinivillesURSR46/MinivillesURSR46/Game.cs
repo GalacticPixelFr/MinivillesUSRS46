@@ -53,11 +53,11 @@ namespace MinivillesURSR46
         {
             money.Add(new Element(new string[] {playerIA.UserMoney+" pièces", }
                 , new Coordinates(1, 1),
-                Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black));
+                Animation.None, Placement.topLeft, playerH.UserMoney<0 ? ConsoleColor.Red : ConsoleColor.White, ConsoleColor.Black));
 
             money.Add(new Element(new string[] {playerH.UserMoney+" pièces", }
                 , new Coordinates(1, screen.height-2),
-                Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black));
+                Animation.None, Placement.topLeft, playerH.UserMoney<0 ? ConsoleColor.Red : ConsoleColor.White, ConsoleColor.Black));
             
             screen.DisplayLayer(money);
             

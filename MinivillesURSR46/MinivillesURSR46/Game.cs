@@ -409,14 +409,14 @@ namespace MinivillesURSR46
         {
             CardsInfo c;
 
-            if (i == 0) { c = new Cards().CreateBoulangerie(); }
-            else if (i == 1) { c = new Cards().CreateCafe(); }
-            else if (i == 2) { c = new Cards().CreateChampDeBle(); }
-            else if (i == 3) { c = new Cards().CreateFerme(); }
-            else if (i == 4) { c = new Cards().CreateForet(); }
-            else if (i == 5) { c = new Cards().CreateRestaurant(); }
-            else if (i == 6) { c = new Cards().CreateStade(); }
-            else { c = new Cards().CreateSuperette(); }
+            if (i == 0) { c = new Cards().CreateChampDeBle(); }
+            else if (i == 1) { c = new Cards().CreateFerme(); }
+            else if (i == 2) { c = new Cards().CreateBoulangerie(); }
+            else if (i == 3) { c = new Cards().CreateCafe(); }
+            else if (i == 4) { c = new Cards().CreateSuperette(); }
+            else if (i == 5) { c = new Cards().CreateForet(); }
+            else if (i == 6) { c = new Cards().CreateRestaurant(); }
+            else { c = new Cards().CreateStade(); }
 
             return c;
         }

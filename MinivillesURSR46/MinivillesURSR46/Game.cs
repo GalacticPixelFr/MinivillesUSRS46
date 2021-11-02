@@ -70,19 +70,25 @@ namespace MinivillesURSR46
             hands.Clear();
             
             List<int> cards = new List<int>();
+            int i_ = 0;
             for (int i = 0; i < playerIA.UserHand.Count; i++)
             {
-                if (cards.Contains(playerIA.UserHand[i].Id)) continue;
+                if (cards.Contains(playerIA.UserHand[i].Id)){
+                    i_ -= 1;
+                    continue;
+                } 
+                    
                 cards.Add(playerIA.UserHand[i].Id);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + i*(18+2)+9, +3);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + i_*(18+2)+9, +3);
                 Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);//TODO le nombre de carte
                 Element amount = new Element(new string[1] {"x" + playerIA.GetNumberCard(playerIA.UserHand[i].Id)},
-                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (18 + 2) / 2 + i * (18 + 2) + 9, 5),
+                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (18 + 2) / 2 + i_ * (18 + 2) + 9, 5),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 
                 hands.Add(amount);
                 hands.Add(elements[0]);
                 hands.Add(elements[1]);
+                i_ += 1;
             }
             
             cards = new List<int>();

@@ -36,14 +36,14 @@ namespace MinivillesURSR46
         public int GetNumberCardType()
         {
             int cpt = 0;
-            List<int> IdCards = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 };
+            List<int> IdCards = new List<int>();
 
             foreach(CardsInfo c in UserHand)
             {
-                if (IdCards.Contains(c.Id))
+                if (!IdCards.Contains(c.Id))
                 {
                     cpt++;
-                    IdCards[c.Id] = -1;
+                    IdCards.Add(c.Id);
                 }
             }
 

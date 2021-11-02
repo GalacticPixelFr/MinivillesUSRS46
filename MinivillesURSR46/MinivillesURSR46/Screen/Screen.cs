@@ -246,9 +246,7 @@ namespace MinivillesURSR46
                 DisplayElement(elementArray[choice]);
 
                 choice = newChoice;
-                
-                
-                Console.Write(choice); //Debug
+
                 this.Display(); //On display l'écran avec les modifications
             }
             

@@ -69,37 +69,43 @@ namespace MinivillesURSR46
             screen.HideLayer(hands);
             hands.Clear();
             
-            List<int> cards = new List<int>();
-            int i_ = 0;
+            List<string> cards = new List<string>();
+            int index = -1;
             for (int i = 0; i < playerIA.UserHand.Count; i++)
             {
-                if (cards.Contains(playerIA.UserHand[i].Id)){
-                    i_ -= 1;
+                index += 1;
+                if (cards.Contains(playerIA.UserHand[i].Name)){
+                    index -= 1;
                     continue;
                 } 
                     
-                cards.Add(playerIA.UserHand[i].Id);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + i_*(18+2)+9, +3);
-                Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);//TODO le nombre de carte
+                cards.Add(playerIA.UserHand[i].Name);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + index*(18+2)+9, +3);
+                Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);
                 Element amount = new Element(new string[1] {"x" + playerIA.GetNumberCard(playerIA.UserHand[i].Id)},
-                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (18 + 2) / 2 + i_ * (18 + 2) + 9, 5),
+                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (18 + 2) / 2 + index * (18 + 2) + 9, 5),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 
                 hands.Add(amount);
                 hands.Add(elements[0]);
                 hands.Add(elements[1]);
-                i_ += 1;
             }
             
-            cards = new List<int>();
+            cards.Clear();
+            index = -1;
             for (int i = 0; i < playerH.UserHand.Count; i++)
             {
-                if (cards.Contains(playerH.UserHand[i].Id)) continue;
-                cards.Add(playerH.UserHand[i].Id);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(18+2)/2 + i*(18+2)+9, screen.height-3);
-                Element[] elements = playerH.UserHand[i].ToElementSemi(true,playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);//TODO le nombre de carte
+                index += 1;
+                if (cards.Contains(playerH.UserHand[i].Name)){
+                    index -= 1;
+                    continue;
+                }
+                
+                cards.Add(playerH.UserHand[i].Name);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(18+2)/2 + index*(18+2)+9, screen.height-3);
+                Element[] elements = playerH.UserHand[i].ToElementSemi(true, playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);
                 Element amount = new Element(new string[1] {"x" + playerH.GetNumberCard(playerH.UserHand[i].Id)},
-                    new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (18 + 2) / 2 + i * (18 + 2) + 9, screen.height-6),
+                    new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (18 + 2) / 2 + index * (18 + 2) + 9, screen.height-6),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 
                 hands.Add(amount);

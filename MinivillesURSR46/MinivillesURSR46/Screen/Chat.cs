@@ -49,9 +49,18 @@ namespace MinivillesURSR46
 
                 if (currentString.Length > width-2)
                 {
-                    lines.Add(currentString.Substring(0, width-2));
+                    char space = (char)32;
+                    int indexOfSpace = 0; //currentString.LastIndexOf(" ", 0, width - 2);
+                    for (int i = 0; i <= width - 2; i++)
+                    {
+                        if (currentString[i] == space)
+                        {
+                            indexOfSpace = i;
+                        }
+                    }
+                    lines.Add(currentString.Substring(0, indexOfSpace));
                     
-                    stack.Push(currentString.Substring(width-2));
+                    stack.Push(currentString.Substring(indexOfSpace + 1));
                 }
                 else lines.Add(currentString);
             }

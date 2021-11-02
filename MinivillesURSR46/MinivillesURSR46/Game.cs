@@ -325,6 +325,7 @@ namespace MinivillesURSR46
                 incomePlayer = playerH.UserMoney;
                 incomeIa = playerIA.UserMoney;
                 CardsActivation(playerIA, playerH, resultDie);
+                DisplayMoney();
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIa = playerIA.UserMoney - incomeIa;
                 chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
@@ -353,10 +354,14 @@ namespace MinivillesURSR46
 
                     // on vérifie que la carte est encore disponible et qu'elle est encore achetable
 
-                    if (c.Cost < playerIA.UserMoney + 2 && pile.GetNumberCard(choix) > 0)
+                    if (c.Cost < playerIA.UserMoney + 1 && pile.GetNumberCard(choix) > 0)
                     {
                         playerIA.BuyCard(c, pile);
                         chat.AddText(TextManagement.GetDataString("IaCarteAchat", c.ToString()));
+                    }
+                    else
+                    {
+                        chat.AddText(TextManagement.GetDataString("NoIaAchat"));
                     }
                 }
                 else

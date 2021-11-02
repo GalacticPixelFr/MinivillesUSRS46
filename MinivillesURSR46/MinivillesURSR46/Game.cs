@@ -114,12 +114,30 @@ namespace MinivillesURSR46
             screen.DisplayLayer(hands);
         }
 
-        public void Run()
+        public void StartGame()
         {
-            Menu.Display(screen);
-            chat = new Chat(screen, new Coordinates(screen.width-34, screen.height), 34, screen.height);
-
+            while (!Menu.Display(screen, this))
+            {
+                
+            }
+        }
+        
+        public void Run(GameOption gameOption)
+        {
+            gainFinish = 10 * (1 + gameOption.duree);
             
+            bool Urss = false;
+            if (gameOption.modeDeJeu == 0)
+            {
+                pile.nameChange();
+                playerH.nameChange();
+                playerIA.nameChange();
+                Urss = true;
+            }
+            
+            
+            chat = new Chat(screen, new Coordinates(screen.width-34, screen.height), 34, screen.height);
+            /*
             Layer creditsLayer = new Layer(1);
             creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates((screen.width-34) / 2, screen.height / 2),
                 Animation.None, Placement.mid,
@@ -170,7 +188,6 @@ namespace MinivillesURSR46
                 Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
             background.Add(deckOptions);
             int choixDeck = screen.Choice(new string[] {"USA", "URSS"}, screen.height / 2 + 2, background);
-            bool Urss = false;
             if (choixDeck == 1)
             {
                 pile.nameChange();
@@ -179,7 +196,7 @@ namespace MinivillesURSR46
                 Urss = true;
             }
             screen.HideLayer(background);
-            background.Clear();
+            background.Clear();*/
 
             /*
             1. Le joueur A lance le dé.
@@ -335,7 +352,7 @@ namespace MinivillesURSR46
                 // verification condition de fin
                 if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
                 {
-                    if (choixP != 3) { break; }
+                    if (gameOption.difficultee != 2) { break; }
                     else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
                 }
                 DisplayHands();
@@ -381,13 +398,13 @@ namespace MinivillesURSR46
                 //IA bleue et vert
 
                 // difficulté de l'IA et action
-                actionIA(0, Urss);
+                actionIA(gameOption.niveauIA, Urss);
 
 
                 // verification condition de fin
                 if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
                 {
-                    if (choixP != 3) { break; }
+                    if (gameOption.difficultee != 2) { break; }
                     else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
                 }
 

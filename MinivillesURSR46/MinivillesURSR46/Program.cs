@@ -24,7 +24,7 @@ namespace MinivillesURSR46
             Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight); 
             ShowWindow(ThisConsole, MAXIMIZE); 
             Game game = new Game(20);
-            game.Run();
+            game.StartGame();
             
         }
     }

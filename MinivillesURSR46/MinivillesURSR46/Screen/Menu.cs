@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using MinivillesURSR46;
 
 public static class Menu
@@ -66,13 +67,46 @@ public static class Menu
         @"| \__/\ (_) | | | | | | | | | | |  __/ | | | (_|  __/ |   ",
         @" \____/\___/|_| |_| |_|_| |_| |_|\___|_| |_|\___\___|_|   ",
     };
+
+    private static string[] jordan = new string[]
+    {
+        @"   ___               _              ______                       _   ",
+        @"  |_  |             | |             | ___ \                     | |  ",
+        @"    | | ___  _ __ __| | __ _ _ __   | |_/ /_   _ _ __ _ __   ___| |_ ",
+        @"    | |/ _ \| '__/ _` |/ _` | '_ \  | ___ \ | | | '__| '_ \ / _ \ __|",
+        @"/\__/ / (_) | | | (_| | (_| | | | | | |_/ / |_| | |  | | | |  __/ |_ ",
+        @"\____/ \___/|_|  \__,_|\__,_|_| |_| \____/ \__,_|_|  |_| |_|\___|\__|",
+    };
+
+    private static string[] didier = new string[]
+    {
+        @" ___  ___      _   _     _            ______ _     _ _           ",
+        @" |  \/  |     | | | |   (_)           |  _  (_)   | (_)          ",
+        @" | .  . | __ _| |_| |__  _  __ _ ___  | | | |_  __| |_  ___ _ __ ",
+        @" | |\/| |/ _` | __| '_ \| |/ _` / __| | | | | |/ _` | |/ _ \ '__|",
+        @" | |  | | (_| | |_| | | | | (_| \__ \ | |/ /| | (_| | |  __/ |   ",
+        @" \_|  |_/\__,_|\__|_| |_|_|\__,_|___/ |___/ |_|\__,_|_|\___|_|   ",
+    };
+
+    private static string[] camille = new string[]
+    {
+        @" _____                 _ _ _       ______    _      ",
+        @"/  __ \               (_) | |      | ___ \  | |     ",
+        @"| /  \/ __ _ _ __ ___  _| | | ___  | |_/ /__| | ___ ",
+        @"| |    / _` | '_ ` _ \| | | |/ _ \ |  __/ _ \ |/ _ \",
+        @"| \__/\ (_| | | | | | | | | |  __/ | | |  __/ |  __/",
+        @" \____/\__,_|_| |_| |_|_|_|_|\___| \_|  \___|_|\___|"
+    };
     
     private static Layer background = new Layer(1);
     private static Layer selectMainMenu = new Layer(1);
-    private static Layer selectGameCreation = new Layer(1);
     
-    public static void Display(Screen screen)
+    public static bool Display(Screen screen, Game game)
     {
+        screen.HideLayer(background);
+        screen.HideLayer(selectMainMenu);
+        background.Clear();
+            
         Element titleElement = new Element(title, new Coordinates(screen.width / 2, 10),
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
         
@@ -92,12 +126,13 @@ public static class Menu
         screen.DisplayLayer(selectMainMenu);
         int choix = screen.Select(new Element[3] {jouerElement, creditsElement, quitterElement});
         
-        if (choix == 0) DisplayCreateGame(screen);
-        else if (choix == 1) DisplayCreateGame(screen);
+        if (choix == 0) return DisplayCreateGame(screen, game);
+        else if (choix == 1) return DisplayCredits(screen);
+        return true;
 
     }
 
-    public static void DisplayCreateGame(Screen screen)
+    public static bool DisplayCreateGame(Screen screen, Game game)
     {
         screen.HideLayer(background);
         screen.HideLayer(selectMainMenu);
@@ -112,13 +147,15 @@ public static class Menu
         
         Element dureeDeLaPartie = new Element(new Coordinates(5, screen.height / 6 * 2), "Durée de la partie :");
         Element difficultee = new Element(new Coordinates(5, screen.height / 6 * 3), "Difficultée :");
-        Element modeDeJeu = new Element(new Coordinates(5, screen.height / 6 * 4), "Mode de jeu :");
+        Element niveauIA = new Element(new Coordinates(5, screen.height / 6 * 4), "Niveau de l'IA :");
+        Element modeDeJeu = new Element(new Coordinates(5, screen.height / 6 * 5), "Mode de jeu :");
         
-        Element commencerElement = new Element(commencer, new Coordinates(screen.width / 2, screen.height - 7),
+        Element commencerElement = new Element(commencer, new Coordinates(screen.width / 2, screen.height - 5),
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
         
         background.Add(dureeDeLaPartie);
         background.Add(difficultee);
+        background.Add(niveauIA);
         background.Add(modeDeJeu);
         background.Add(commencerElement);
         
@@ -134,14 +171,21 @@ public static class Menu
         Element difficulteeFacile = new Element(new string[]{"facile"}, 
             new Coordinates(screen.width/5*2, screen.height / 6 * 3)
             ,Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-        Element difficulteeComplique = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 3), "compliquée");
+        Element difficulteeDifficle = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 3), "difficile");
         background.Add(difficulteeFacile);
-        background.Add(difficulteeComplique);
+        background.Add(difficulteeDifficle);
         
-        Element modeDeJeuURSS = new Element(new string[]{"URSS"},
+        Element niveauIADebile = new Element(new string[]{"débile"}, 
             new Coordinates(screen.width/5*2, screen.height / 6 * 4)
             ,Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-        Element modeDeJeuUSA = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 4), "USA");
+        Element niveauIAGenie = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 4), "génie");
+        background.Add(niveauIADebile);
+        background.Add(niveauIAGenie);
+        
+        Element modeDeJeuURSS = new Element(new string[]{"URSS"},
+            new Coordinates(screen.width/5*2, screen.height / 6 * 5)
+            ,Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
+        Element modeDeJeuUSA = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 5), "USA");
         background.Add(modeDeJeuURSS);
         background.Add(modeDeJeuUSA);
         
@@ -150,9 +194,9 @@ public static class Menu
         int choix = -1;
         //
 
-        while (choix != 3)
+        while (choix != 4)
         {
-            choix = screen.Select(new Element[] {dureeDeLaPartie, difficultee, modeDeJeu, commencerElement});
+            choix = screen.Select(new Element[] {dureeDeLaPartie, difficultee, niveauIA, modeDeJeu, commencerElement});
             if (choix == 0)
             {
                 gameOption.duree = screen.Select(new Element[3] {dureeCourt, dureeMoyen, dureeLong});
@@ -160,21 +204,46 @@ public static class Menu
             }
             else if (choix == 1)
             {
-                gameOption.difficultee = screen.Select(new Element[2] {difficulteeFacile, difficulteeComplique});
+                gameOption.difficultee = screen.Select(new Element[2] {difficulteeFacile, difficulteeDifficle});
                 choix = -1;
             }
             else if (choix == 2)
+            {
+                gameOption.niveauIA = screen.Select(new Element[2] {niveauIADebile, niveauIAGenie});
+                choix = -1;
+            }
+            else if (choix == 3)
             {
                 gameOption.modeDeJeu = screen.Select(new Element[2] {modeDeJeuURSS, modeDeJeuUSA});
                 choix = -1;
             }
         }
-
+        screen.HideLayer(background);
+        background.Clear();
+        game.Run(gameOption);
+        return false;
     }
 
-    public static void DisplayCredits(Screen screen)
+    public static bool DisplayCredits(Screen screen)
     {
-        //TODO
+        screen.HideLayer(background);
+        screen.HideLayer(selectMainMenu);
+        background.Clear();
+        
+        Element jordanElement = new Element(jordan, new Coordinates(screen.width / 2, screen.height / 4*1),
+            Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+        Element didierElement = new Element(didier, new Coordinates(screen.width / 2, screen.height / 4*2),
+            Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+        Element camilleElement = new Element(camille, new Coordinates(screen.width / 2, screen.height / 4*3),
+            Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+        background.Add(jordanElement);
+        background.Add(didierElement);
+        background.Add(camilleElement);
+
+        screen.DisplayLayer(background);
+        
+        Thread.Sleep(3000);
+        return false;
     }
 }
 

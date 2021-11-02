@@ -238,18 +238,21 @@ namespace MinivillesURSR46
                     if (choix == 1)
                     {
                         List<Element> cardsElements = new List<Element>();
-
-                        int index = 0;
+                        
                         for (int i = 0; i <= 7; i++)
                         {
                             Coordinates coordinates = new Coordinates((screen.width-34)/2 - 4*(18+2)/2+i%4*(18+2)+9, 
-                                                                        screen.height/2 - 2*(9+2)/2 + (i >= 4 ? 11 : 0)+4);
-                            Element[] card = CardChoice(index).ToElementFull(coordinates);
+                                screen.height/2 - 2*(9+2)/2 + (i >= 4 ? 11 : 0)+4);
+                            Element amount = new Element(new string[1] {"x " + pile.GetNumberCard(i)},
+                                new Coordinates(
+                                    (screen.width - 34) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
+                                    screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 16 : -5) + 4), Animation.None, Placement.mid,
+                                ConsoleColor.White, ConsoleColor.Black);
+                            Element[] card = CardChoice(i).ToElementFull(coordinates);
+                            middle.Add(amount);
                             middle.Add(card[0]);
                             middle.Add(card[1]);
                             cardsElements.Add(card[1]);
-
-                            index++;
                         }
                         screen.DisplayLayer(middle);
                         choix = screen.Select(cardsElements.ToArray());
@@ -354,10 +357,14 @@ namespace MinivillesURSR46
 
                     // on vérifie que la carte est encore disponible et qu'elle est encore achetable
 
-                    if (c.Cost < playerIA.UserMoney + 2 && pile.GetNumberCard(choix) > 0)
+                    if (c.Cost < playerIA.UserMoney - 1 && pile.GetNumberCard(choix) > 0)
                     {
                         playerIA.BuyCard(c, pile);
                         chat.AddText(TextManagement.GetDataString("IaCarteAchat", c.ToString()));
+                    }
+                    else
+                    {
+                        chat.AddText(TextManagement.GetDataString("NoIaAchat"));
                     }
                 }
                 else

@@ -256,7 +256,6 @@ namespace MinivillesURSR46
                         screen.HideLayer(middle);
                         middle.Clear();
 
-                        
 
                         // selection carte choisi
                         CardsInfo c = CardChoice(choix); 
@@ -273,6 +272,7 @@ namespace MinivillesURSR46
                         {
                             playerH.BuyCard(c, pile);
                             chat.AddText(TextManagement.GetDataString("CarteAchat", c.Name));
+                            DisplayHands();
                             action = true;
                         }
                         else

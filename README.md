@@ -19,8 +19,8 @@ C'est un jeu de cartes dans lequel le joueur doit obtenir un certain montant d'a
 Pour deux joueurs A et B, le tour du joueur A va se dérouler comme suit :
 
 -Le joueur A lance le dé.
--Le joueur B regarde s’il a des cartes bleues ou rouges qui s’activent et il en applique les effets
--Le joueur A regarde s’il a des cartes bleues ou vertes qui s’activent et il en applique les effets
+-Le joueur B regarde s’il a des cartes bleues ou rouges qui s’activent et il en applique les effets.
+-Le joueur A regarde s’il a des cartes bleues ou vertes qui s’activent et il en applique les effets.
 -Le joueur A peut acheter une nouvelle carte et l’ajouter à sa ville. Il est possible d’avoir plusieurs fois la même carte, les effets s’additionnent.
 -Une fois le tour du joueur A terminé, c’est au tour du joueur B de réaliser les mêmes actions.
 

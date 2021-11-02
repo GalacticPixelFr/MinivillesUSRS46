@@ -39,6 +39,7 @@ namespace MinivillesURSR46
 
         private void Initialize()
         {
+            Console.CursorVisible = false;
             this.AddLayer(defaultLayer);
             string background = string.Join("", BuildBorder(this.width, this.height)); // on crée les bord de l'écran
             Console.Write(background); //On affiche le bords

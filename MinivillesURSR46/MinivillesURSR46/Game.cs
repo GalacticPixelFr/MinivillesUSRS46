@@ -239,7 +239,7 @@ namespace MinivillesURSR46
                     {
                         List<Element> cardsElements = new List<Element>();
                         
-                        for (int i = 0; i <= 7; i++)
+                        for (int i = 0; i <= 7; i++) //En faire une fonction
                         {
                             Coordinates coordinates = new Coordinates((screen.width-34)/2 - 4*(18+2)/2+i%4*(18+2)+9, 
                                 screen.height/2 - 2*(9+2)/2 + (i >= 4 ? 11 : 0)+4);
@@ -285,7 +285,9 @@ namespace MinivillesURSR46
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
                         screen.DisplayLayer(background);
-                        
+                        Thread.Sleep(1000);
+                        screen.HideLayer(background);
+
                     }
                     else { action = true; }
 

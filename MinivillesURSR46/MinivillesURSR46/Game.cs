@@ -377,33 +377,8 @@ namespace MinivillesURSR46
                 //H bleue et rouge
                 //IA bleue et vert
 
-                // cette méthode pose probleme, l'IA va de moins en moins acheter de batiments car il y aura moins de cartes disponbles au fur et a mesure de la partie
-
-                // action au hasard
-                if (rnd.Next(0, 2) == 0 && playerIA.UserMoney > 0)
-                {
-                    // choix d'une carte a acheter au hasard
-                    int choix = rnd.Next(0, 8);
-
-                    // selection carte choisi
-                    CardsInfo c = CardChoice(choix); 
-
-                    // on vérifie que la carte est encore disponible et qu'elle est encore achetable
-
-                    if (c.Cost < playerIA.UserMoney - 1 && pile.GetNumberCard(choix) > 0)
-                    {
-                        playerIA.BuyCard(c, pile);
-                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));
-                    }
-                    else
-                    {
-                        chat.AddText(TextManagement.GetDataString("NoIaAchat"));
-                    }
-                }
-                else
-                {
-                    chat.AddText(TextManagement.GetDataString("NoIaAchat"));
-                }
+                // difficulté de l'IA et action
+                actionIA(0, Urss);
 
 
                 // verification condition de fin
@@ -479,6 +454,90 @@ namespace MinivillesURSR46
                         userPlayer.UserMoney -= card.Gain;
 
                     }
+                }
+            }
+        }
+
+        public void actionIA(int difficulty, bool Urss)
+        {
+            if (difficulty == 0) // IA choix au hasard
+            {
+                // action au hasard
+                if (rnd.Next(0, 2) == 0 && playerIA.UserMoney > 0)
+                {
+                    // choix d'une carte a acheter au hasard
+                    int choix = rnd.Next(0, 8);
+
+                    // selection carte choisi
+                    CardsInfo c = CardChoice(choix); 
+
+                    // on vérifie que la carte est encore disponible et qu'elle est encore achetable
+                    if (c.Cost < playerIA.UserMoney - 1 && pile.GetNumberCard(choix) > 0)
+                    {
+                        playerIA.BuyCard(c, pile);
+                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));
+                    }
+                    else { chat.AddText(TextManagement.GetDataString("NoIaAchat")); }
+                }
+                else { chat.AddText(TextManagement.GetDataString("NoIaAchat")); }
+            }
+            else if (difficulty == 1) // agit selon état de la partie (argent du joueur par rapport à l'argent maximal)
+            {
+                bool tranquille = true; // détermine l'état de l'IA (entre tranquille et panique)
+                /*
+                condition pour être en panique :
+                - 1/3 si argent joueur dans 2e quart de gain finish
+                - 2/3 si argent joueur dans 3e quart de gain finish
+                - si argent joueur dans 4e quart de gain finish
+                */
+                if ((playerH.UserMoney > gainFinish/4 && playerH.UserMoney <= gainFinish/2 && rnd.Next(0, 4) == 0) || 
+                    (playerH.UserMoney > gainFinish/2 && playerH.UserMoney < (gainFinish*3)/4 && rnd.Next(0, 4) > 0) || 
+                    (playerH.UserMoney >= (gainFinish*3)/4)){ tranquille = false; }
+
+                CardsInfo c = null; // futur carte acheté
+
+                // tranquille signifie qu'elle va osciller entre acheter vert et bleu afin d'augmenter ses gains (priorité au bleu car plus rentable)
+                if (tranquille){
+                    /*
+                    1/5 de ne rien faire
+                    1/5 de faire vert
+                    3/5 de faire bleu
+                    */
+                    int choix = rnd.Next(0,6);
+                    if (choix == 0){ //vert
+                        if (playerIA.UserMoney >= 3) { // si choix entre ferme et foret possible (argent suffisant)
+                            if (rnd.Next(0, 2) == 0 && pile.GetNumberCard(2) > 0) { c = CardChoice(2); } // 1/2 achat boulangerie
+                            else if (pile.GetNumberCard(4) > 0) { c = CardChoice(4); } // 1/2 achat superette
+                            }
+                        else if (playerIA.UserMoney >= 2 && pile.GetNumberCard(2) > 0) { c = CardChoice(2); }
+                        }
+                    else if (choix < 5){ //bleu
+                        if (playerIA.UserMoney >= 1 && pile.GetNumberCard(0) > 0) { c = CardChoice(0); } // si achat champs possible
+                        else if (playerIA.UserMoney >= 2 && (pile.GetNumberCard(1) > 0 || pile.GetNumberCard(5) > 0)) {
+                            if (pile.GetNumberCard(1) == 0){ c = CardChoice(5); } // si plus de ferme, achat foret
+                            else if (pile.GetNumberCard(5) == 0) { c = CardChoice(1); } // si plus de foret, achat ferme
+                            else if (rnd.Next(0, 2) == 0) { c = CardChoice(1); } // sinon achat aleatoire, 1/2 pour chaque
+                            else { c = CardChoice(5); }
+                            }
+                        else if (playerIA.UserMoney >= 4 && pile.GetNumberCard(7) > 0) { c = CardChoice(7); }
+                        }
+                    }
+                else
+                {
+                    // quand on panique, on essaye d'acheter des cartes rouges pour diminuer l'argent de l'adversaire
+                    if (playerIA.UserMoney >= 4 && pile.GetNumberCard(6) > 0) { c = CardChoice(6); } // achat de restaurant en priorité (valeur plus grande)
+                    else if (playerIA.UserMoney >= 2 && pile.GetNumberCard(3) > 0) { c = CardChoice(3); }
+                }
+
+                // si on a décidé d'acheter
+                if (c == null)
+                {
+                    playerIA.BuyCard(c, pile);
+                    chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));
+                }	
+                else
+                {
+                    chat.AddText(TextManagement.GetDataString("NoIaAchat"));
                 }
             }
         }

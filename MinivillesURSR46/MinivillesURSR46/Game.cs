@@ -46,7 +46,6 @@ namespace MinivillesURSR46
             middle = new Layer(3);
             money = new Layer(2);
             background = new Layer(1);
-            chat = new Chat(screen, new Coordinates(screen.width-34, screen.height), 34, screen.height);
         }
 
         public void DisplayMoney()
@@ -117,6 +116,10 @@ namespace MinivillesURSR46
 
         public void Run()
         {
+            Menu.Display(screen);
+            chat = new Chat(screen, new Coordinates(screen.width-34, screen.height), 34, screen.height);
+
+            
             Layer creditsLayer = new Layer(1);
             creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates((screen.width-34) / 2, screen.height / 2),
                 Animation.None, Placement.mid,

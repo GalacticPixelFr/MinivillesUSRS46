@@ -32,7 +32,7 @@ namespace MinivillesURSR46
             {"Indisponible", new []{"La carte n'est plus disponible."}},
             {"IaDé", new []{"Votre adversaire lance le dé, il a fait &."}},
             {"IaAchat", new []{"Votre adversaire à décidé d'acheter une carte."}},
-            {"NoIaAchat", new []{"Votre adversairen'a rien acheté."}},
+            {"NoIaAchat", new []{"Votre adversaire n'a rien acheté."}},
             {"IaCarteAchat", new []{"Votre adversaire à acheté la carte &."}},
             {"ZeroArgent", new []{"Vous n'avez pas assez d'argent"}},
             {"Gagné", new []{"Vous gagnez car vous avez le plus d'argent"}},

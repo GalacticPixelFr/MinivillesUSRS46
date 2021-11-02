@@ -176,6 +176,7 @@ namespace MinivillesURSR46
                 Urss = true;
             }
             screen.HideLayer(background);
+            background.Clear();
 
             /*
             1. Le joueur A lance le dé.

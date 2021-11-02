@@ -8,16 +8,18 @@ namespace MinivillesURSR46
         public Color Color { get; set; }
         public int Cost { get; set; }
         public string Name { get; set; }
+        public string NameURSS { get; set; }
         public string Effect { get; set; }
         public int Dice { get; set; }
         public int Gain { get; set; }
 
-        public CardsInfo(int id, Color color, int cost, string name, string effect, int dice, int gain)
+        public CardsInfo(int id, Color color, int cost, string name, string nameUrss, string effect, int dice, int gain)
         {
             Id = id;
             Color = color;
             Cost = cost;
             Name = name;
+            NameURSS = nameUrss;
             Effect = effect;
             Dice = dice;
             Gain = gain;
@@ -30,7 +32,7 @@ namespace MinivillesURSR46
         /// <param name="cardsInfo">Les infos de la carte</param>
         /// <param name="coordinates">les coordonnées de la carte</param>
         /// <returns>liste d'element pour afficher une carte</returns>
-        public Element[] ToElementFull(Coordinates coordinates)
+        public Element[] ToElementFull(Coordinates coordinates, bool urss)
         {
             string[] stringBackground = new string[9]{
                 "+----------------+",
@@ -61,13 +63,14 @@ namespace MinivillesURSR46
             Element background = new Element(stringBackground, coordinates, Animation.None, Placement.mid, color, ConsoleColor.Black);
 
             string[] stringInfos = new string[5]{
-                this.Name,
+                urss ? this.NameURSS : this.Name,
                 "",
                 this.Cost+"  pièces",
                 "",
                 this.Dice.ToString()
             };
-            Element infos = new Element(stringInfos, new Coordinates(coordinates.x, coordinates.y), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+
+                Element infos = new Element(stringInfos, new Coordinates(coordinates.x, coordinates.y), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
 
             return new Element[2]{background, infos};
         }

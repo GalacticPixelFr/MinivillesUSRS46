@@ -19,6 +19,14 @@ namespace MinivillesURSR46
             pile = liste;
         }
 
+        public void nameChange()
+        {
+            foreach (CardsInfo card in pile)
+            {
+                card.Name = card.NameURSS;
+            }
+        }
+
         /// <summary>
         /// Méthode permettant de mélanger les cartes du paquet
         /// </summary>

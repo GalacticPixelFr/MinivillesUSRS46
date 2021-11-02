@@ -149,6 +149,21 @@ namespace MinivillesURSR46
             {
                 gainFinish = 10 * (choixP + 1);
             }
+            
+            Element deckOptions = new Element(new string[] {"Quel deck voulez vous jouer avec ?",}
+                , new Coordinates((screen.width-34) / 2, screen.height / 2),
+                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            background.Add(deckOptions);
+            int choixDeck = screen.Choice(new string[] {"USA", "URSS"}, screen.height / 2 + 2, background);
+            bool Urss = false;
+            if (choixDeck == 1)
+            {
+                pile.nameChange();
+                playerH.nameChange();
+                playerIA.nameChange();
+                Urss = true;
+            }
+            screen.HideLayer(background);
 
             /*
             1. Le joueur A lance le dé.
@@ -248,7 +263,9 @@ namespace MinivillesURSR46
                                     (screen.width - 34) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
                                     screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 16 : -5) + 4), Animation.None, Placement.mid,
                                 ConsoleColor.White, ConsoleColor.Black);
-                            Element[] card = CardChoice(i).ToElementFull(coordinates);
+                            
+                            Element[] card = Urss ? CardChoice(i).ToElementFull(coordinates, true) : CardChoice(i).ToElementFull(coordinates, false);
+                            
                             middle.Add(amount);
                             middle.Add(card[0]);
                             middle.Add(card[1]);
@@ -274,7 +291,7 @@ namespace MinivillesURSR46
                         else if (c.Cost <= playerH.UserMoney)
                         {
                             playerH.BuyCard(c, pile);
-                            chat.AddText(TextManagement.GetDataString("CarteAchat", c.Name));
+                            chat.AddText(TextManagement.GetDataString("CarteAchat", Urss ? c.NameURSS : c.Name));
                             DisplayHands();
                             DisplayMoney();
                             action = true;
@@ -363,7 +380,7 @@ namespace MinivillesURSR46
                     if (c.Cost < playerIA.UserMoney - 1 && pile.GetNumberCard(choix) > 0)
                     {
                         playerIA.BuyCard(c, pile);
-                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", c.Name));
+                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));
                     }
                     else
                     {

@@ -15,6 +15,14 @@ namespace MinivillesURSR46
             UserHand.Add(pile.GetCard(2));
         }
 
+        public void nameChange()
+        {
+            foreach (CardsInfo card in UserHand)
+            {
+                card.Name = card.NameURSS;
+            }
+        }
+
         public void BuyCard(CardsInfo card, Piles pile)
         {
             UserMoney -= card.Cost;

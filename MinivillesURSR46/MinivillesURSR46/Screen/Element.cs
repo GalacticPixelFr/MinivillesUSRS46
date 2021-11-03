@@ -12,7 +12,6 @@ namespace MinivillesURSR46
         public Placement placement;
         public ConsoleColor foreground;
         public ConsoleColor background;
-        public int[] animationIndex;
         public bool temp { get; private set; } = false;
 
         public Element(Coordinates coordinates, string text)
@@ -25,8 +24,6 @@ namespace MinivillesURSR46
             this.foreground = ConsoleColor.White;
             this.background = ConsoleColor.Black;
 
-            this.animationIndex = new int[1]{text.Length};
-
         }
 
         public Element(string[] text, Coordinates coordinates, Animation animation, Placement placement, ConsoleColor foreground, ConsoleColor background)
@@ -37,8 +34,6 @@ namespace MinivillesURSR46
             this.placement = placement;
             this.foreground = foreground;
             this.background = background;
-
-            this.animationIndex = text.AsEnumerable().Select(x => x.Length).ToArray();
         }
 
         public Element(string[] text, Coordinates coordinates, Animation animation, Placement placement, ConsoleColor foreground, ConsoleColor background, bool temp)
@@ -50,29 +45,33 @@ namespace MinivillesURSR46
             this.foreground = foreground;
             this.background = background;
             this.temp = temp;
-
-            this.animationIndex = text.AsEnumerable().Select(x => x.Length).ToArray();
         }
         
+        /// <summary>
+        /// Permet de savoir si un élément est le même qu'un autre
+        /// </summary>
+        /// <param name="other">L'élément avec lequel on veut comparer celui-ci</param>
+        /// <returns>true si les éléments son les mêmes</returns>
         public bool CompareTo(Element other)
         {
-            bool result = this.text == other.text && this.coordinates == other.coordinates &&
-                          this.animation == other.animation && this.placement == other.placement &&
-                          this.foreground == other.foreground && this.background == other.background;
-            return result;
+            return this.text == other.text && this.coordinates == other.coordinates &&
+                   this.animation == other.animation && this.placement == other.placement &&
+                   this.foreground == other.foreground && this.background == other.background;
         }
 
+        /// <summary>
+        /// Permet de faire une copie d'un élément mais remplie d'espace
+        /// </summary>
+        /// <returns>L'élément vide</returns>
         public Element GetEmptyClone()
         {
             List<string> textClone = new List<string>();
         
             for (int i = 0; i < this.text.Length; i++)
             {
-                textClone.Add(new string(' ', this.text[i].Length));
+                textClone.Add(new string(' ', this.text[i].Length)); //On creer des string rempli d'espaces
             }
             return new Element(textClone.ToArray(), this.coordinates, Animation.None, this.placement, ConsoleColor.White, ConsoleColor.Black);
-
-                
         }
     }
 

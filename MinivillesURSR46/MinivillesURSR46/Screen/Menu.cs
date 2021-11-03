@@ -177,7 +177,9 @@ public static class Menu
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
         background.Add(titleElement);
         
-        Element dureeDeLaPartie = new Element(new Coordinates(5, screen.height / 6 * 2), "Durée de la partie :");
+        Element dureeDeLaPartie = new Element(new string[]{"Durée de la partie :"},
+            new Coordinates(5, screen.height / 6 * 2),
+            Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
         Element difficultee = new Element(new Coordinates(5, screen.height / 6 * 3), "Difficultée :");
         Element niveauIA = new Element(new Coordinates(5, screen.height / 6 * 4), "Niveau de l'IA :");
         Element modeDeJeu = new Element(new Coordinates(5, screen.height / 6 * 5), "Mode de jeu :");

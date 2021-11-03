@@ -29,6 +29,9 @@ namespace MinivillesURSR46
             WriteBorders();
         }
 
+        /// <summary>
+        /// Permet d'afficher les contours du chat
+        /// </summary>
         public void WriteBorders()
         {
             List<string> lines = Screen.BuildBorder(this.width, this.height);
@@ -37,59 +40,62 @@ namespace MinivillesURSR46
             screen.DisplayLayer(background);
         }
 
+        /// <summary>
+        /// Permet d'ajouter un élément dans le chat
+        /// </summary>
+        /// <param name="text">le texte à ajouter</param>
         public void AddText(string text)
         {
-            List<string> lines = new List<string>();
-            Stack<string> stack = new Stack<string>();
+            List<string> lines = new List<string>(); //Les différentes lignes du textes
+            Stack<string> stack = new Stack<string>(); //La pile qui va permettre de couper le texte
             stack.Push(text);
             while (stack.Count > 0)
             {
-                string currentString = stack.Pop();
-                //Console.Write(currentString.Take(width).ToString().Length);
+                string currentString = stack.Pop(); //On récupère le dernier élément ajouté
 
-                if (currentString.Length > width-2)
+                if (currentString.Length > width-2) //Si le texte dépasse du chat (-2 pour les 2 bords)
                 {
-                    char space = (char)32;
-                    int indexOfSpace = 0; //currentString.LastIndexOf(" ", 0, width - 2);
+                    int indexOfSpace = width-2; //L'index du dernier espace dans le texte, si il n'y a aucun espace on en imagine un à la fin
+                    //On cherche ou se trouve le dernier espace dans le texte
                     for (int i = 0; i <= width - 2; i++)
                     {
-                        if (currentString[i] == space)
+                        if (currentString[i] == ' ')
                         {
                             indexOfSpace = i;
                         }
                     }
-                    lines.Add(currentString.Substring(0, indexOfSpace));
+                    lines.Add(currentString.Substring(0, indexOfSpace)); //On ajoute la partie qui dépasse pas dans les lignes
                     
-                    stack.Push(currentString.Substring(indexOfSpace + 1));
+                    stack.Push(currentString.Substring(indexOfSpace + 1)); //On ajoute la partie qui dépasse dans la pile
                 }
-                else lines.Add(currentString);
+                else lines.Add(currentString); //Si le texte dépasse pas on l'ajoute en entier au lignes
             }
 
-            textStack.Push(lines.ToArray());
+            textStack.Push(lines.ToArray()); //On ajoutes les lignes à la pile du chat
 
-            Display();
+            Display(); //On affiche le chat une fois l'élément ajouté
         }
 
         public void Display()
         {
-            screen.HideLayer(textLayer);
-            textLayer.Clear();
+            screen.HideLayer(textLayer); //On efface le chat
+            textLayer.Clear(); //Puis on le clear (car tous les éléments on changé)
             
-            Stack<string[]> stack = new Stack<string[]>(textStack.Reverse());
-            int height = 0;
-            int index = 0;
-            Element firstElement = new Element(coordinates, "");
+            Stack<string[]> stack = new Stack<string[]>(textStack.Reverse()); //On copie la pile du chat en la renversant
+            int height = 0; //La hauteur à laquel se situe l'élément à ajouter
+            int index = 0; //L'index de lélément, pour savoir si c'est le premier
+            Element firstElement = new Element(coordinates, ""); //On instancie le premier élément pour pouvoir l'afficher en dernier et différement
             while (stack.Count > 0)
             {
-                string[] currentString = stack.Pop();
-                height += currentString.Length;
-                if (height >= this.height-1) break;
+                string[] currentString = stack.Pop(); //On récupère le dernier élément ajouté
+                height += currentString.Length; //On calcule la hauteur à laquel il doit être afficher
+                if (height >= this.height-1) break; //Si la hauteur est trop haute on l'affiche pas
 
-                if (index == 0)
+                if (index == 0) //Si c'est le premier élément
                 {
                     firstElement = new Element(currentString, 
                         new Coordinates(coordinates.x+1, coordinates.y - height-1),
-                        Animation.Typing, Placement.topLeft,
+                        Animation.Typing, Placement.topLeft, //On met son animation en Typing pour faire plus beau
                         ConsoleColor.White, ConsoleColor.Black);
                 }
                 
@@ -105,7 +111,7 @@ namespace MinivillesURSR46
                 index++;
             }
 
-            textLayer.Add(firstElement);
+            textLayer.Add(firstElement); //On ajoute le permier élément pour qu'il afficher en dernier
             screen.DisplayLayer(textLayer);
         }
         

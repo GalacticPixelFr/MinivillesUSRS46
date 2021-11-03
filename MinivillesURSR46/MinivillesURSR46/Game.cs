@@ -521,14 +521,14 @@ namespace MinivillesURSR46
         {
             List<Element> cards = new List<Element>();
 
-            for (int i = 0; i <= 7; i++) //En faire une fonction
+            for (int i = 0; i <= 11; i++) //En faire une fonction
             {
-                Coordinates coordinates = new Coordinates((screen.width - offset) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
-                    screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 11 : 0) + 4);
+                Coordinates coordinates = new Coordinates((screen.width - offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
+                    screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 11 : 0) + 4);
                 Element amount = new Element(new string[1] { "x " + pile.GetNumberCard(i) },
                     new Coordinates(
-                        (screen.width - offset) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
-                        screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 16 : -5) + 4), Animation.None, Placement.mid,
+                        (screen.width - offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
+                        screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 16 : -5) + 4), Animation.None, Placement.mid,
                     ConsoleColor.White, ConsoleColor.Black);
 
                 Element[] card = Urss ? CardChoice(i).ToElementFull(coordinates, true) : CardChoice(i).ToElementFull(coordinates, false);

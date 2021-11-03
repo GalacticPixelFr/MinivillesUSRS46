@@ -194,7 +194,7 @@ namespace MinivillesURSR46
                 Console.SetCursorPosition(element.coordinates.x, element.coordinates.y + index);
 
             else if (element.placement == Placement.mid)
-                Console.SetCursorPosition(element.coordinates.x - (element.text[index].Length/2), (element.coordinates.y - element.text[index].Length/2) + index);
+                Console.SetCursorPosition(element.coordinates.x - (element.text[index].Length/2), (element.coordinates.y - element.text.Length/2) + index);
 
             else if (element.placement == Placement.topRight)
                 Console.SetCursorPosition(element.coordinates.x - element.text[index].Length, element.coordinates.y + index);

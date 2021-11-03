@@ -22,8 +22,6 @@ namespace MinivillesURSR46
         private Chat chat;
 
         private Random rnd;
-        
-        private int nbTurn = 0;
 
         public Game(int gain)
         {
@@ -37,9 +35,6 @@ namespace MinivillesURSR46
             }
 
             gainFinish = gain;
-
-            playerH = new Player(new List<CardsInfo>(), pile);
-            playerIA = new Player(new List<CardsInfo>(), pile);
 
             die = new Die();
             rnd = new Random();
@@ -126,6 +121,10 @@ namespace MinivillesURSR46
         
         public void Run(GameOption gameOption)
         {
+            playerH = new Player(new List<CardsInfo>(), pile);
+            playerIA = new Player(new List<CardsInfo>(), pile);
+            int nbTurn = 0;
+            
             gainFinish = 10 * (1 + gameOption.duree);
             
             bool Urss = false;
@@ -137,76 +136,7 @@ namespace MinivillesURSR46
                 Urss = true;
             }
             
-            
             chat = new Chat(screen, new Coordinates(screen.width-34, screen.height), 34, screen.height);
-            /*
-            Layer creditsLayer = new Layer(1);
-            creditsLayer.Add(new Element(TextManagement.GetData("Accueil"), new Coordinates((screen.width-34) / 2, screen.height / 2),
-                Animation.None, Placement.mid,
-                ConsoleColor.White,
-                ConsoleColor.Black));
-            screen.DisplayLayer(creditsLayer);
-
-            Thread.Sleep(500);
-            screen.HideLayer(creditsLayer);
-
-            Element titleOptions = new Element(new string[] {"Quelle partie voulez-vous faire ?",}
-                        , new Coordinates((screen.width-34)/2, screen.height / 2),
-                        Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-            screen.DisplayElement(titleOptions);
-
-            Layer choiceP = new Layer(1);
-            Element facile = new Element(new string[] {"Rapide",},
-                new Coordinates((screen.width-34)/4 * 1, screen.height/2+2),
-                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-            Element normal = new Element(new string[] {"Normal",},
-                new Coordinates((screen.width-34)/4 * 2, screen.height/2+2),
-                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-            Element difficile = new Element(new string[] {"Difficile",},
-                new Coordinates((screen.width-34)/4 * 3, screen.height/2+2),
-                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-            Element expert = new Element(new Coordinates((screen.width-34)/5 * 4, screen.height/2+2), "Expert");
-            // TODO add expert
-            choiceP.Add(facile);
-            choiceP.Add(normal);
-            choiceP.Add(difficile);
-            screen.DisplayLayer(choiceP);
-            int choixP = screen.Select(new Element[3] {facile, normal, difficile});
-            screen.HideLayer(choiceP);
-            choiceP.Clear();
-            screen.HideElement(titleOptions);
-
-            if (choixP == 3)
-            {
-                gainFinish = 30;
-            }
-            else
-            {
-                gainFinish = 10 * (choixP + 1);
-            }
-            
-            Element deckOptions = new Element(new string[] {"Quel deck voulez vous jouer avec ?",}
-                , new Coordinates((screen.width-34) / 2, screen.height / 2),
-                Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-            background.Add(deckOptions);
-            int choixDeck = screen.Choice(new string[] {"USA", "URSS"}, screen.height / 2 + 2, background);
-            if (choixDeck == 1)
-            {
-                pile.nameChange();
-                playerH.nameChange();
-                playerIA.nameChange();
-                Urss = true;
-            }
-            screen.HideLayer(background);
-            background.Clear();*/
-
-            /*
-            1. Le joueur A lance le dé.
-            2. Le joueur B regarde s’il a des cartes bleues ou rouges qui s’activent et il en applique les effets
-            3. Le joueur A regarde s’il a des cartes bleues ou vertes qui s’activent et il en applique les effets
-            4. Le joueur A peut acheter une nouvelle carte et l’ajouter à sa ville. Il est possible d’avoir plusieurs fois la même carte, les effets s’additionnent.
-            Une fois le tour du joueur A terminé, c’est au tour du joueur B de réaliser les mêmes actions.
-            */
 
             // condition fin
             while (true)

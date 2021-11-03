@@ -129,6 +129,7 @@ namespace MinivillesURSR46
             playerIA = new Player(new List<CardsInfo>(), pile);
             int nbTurn = 0;
 
+            // Variables de compte pour les stats de fin
             int buyCardIA = 0;
             int buyCardPlayer = 0;
             int gainMoneyIA = 0;
@@ -138,6 +139,7 @@ namespace MinivillesURSR46
             
             gainFinish = 10 * (1 + gameOption.duree);
             
+            //Changement des noms des cartes si choix URSS
             bool Urss = false;
             if (gameOption.modeDeJeu == 0)
             {
@@ -200,7 +202,7 @@ namespace MinivillesURSR46
                 chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
                 if (incomeIA < 0)
                 {
-                    lossMoneyIA += incomeIA;
+                    lossMoneyIA -= incomeIA;
                     chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIA.ToString()));
                 }
                 else
@@ -327,6 +329,7 @@ namespace MinivillesURSR46
                 
                 chat.AddText(TextManagement.GetDataString("IaDé", resultDie.ToString()));
                 
+                //Activation des cartes et ajout des textes dans le chat en fonction des revenus du joueur
                 incomePlayer = playerH.UserMoney;
                 incomeIA = playerIA.UserMoney;
                 CardsActivation(playerIA, playerH, resultDie);
@@ -335,7 +338,7 @@ namespace MinivillesURSR46
                 chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
                 if (incomePlayer < 0)
                 {
-                    lossMoneyPlayer += incomePlayer;
+                    lossMoneyPlayer -= incomePlayer;
                     chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
                 }
                 else

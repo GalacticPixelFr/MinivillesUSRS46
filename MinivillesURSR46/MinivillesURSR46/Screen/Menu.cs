@@ -312,10 +312,10 @@ public static class Menu
         background.Add(cityElement);
         screen.DisplayLayer(background);
 
-        Element jouerElement = new Element(jouer, new Coordinates(5, screen.height / 5 * 2),
+        Element jouerElement = new Element(jouer, new Coordinates(5, screen.height / 5 * 1),
             Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
         Element cartesElement = new Element(cartes, new Coordinates(5, screen.height / 5 * 2),
-            Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
+            Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black);
         Element creditsElement = new Element(credits, new Coordinates(5, screen.height / 5 * 3),
             Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black);
         Element quitterElement = new Element(quitter, new Coordinates(5, screen.height / 5 * 4),
@@ -326,7 +326,7 @@ public static class Menu
         selectMainMenu.Add(creditsElement);
         selectMainMenu.Add(quitterElement);
         screen.DisplayLayer(selectMainMenu);
-        int choix = screen.Select(new Element[3] {jouerElement, creditsElement, quitterElement});
+        int choix = screen.Select(new Element[] {jouerElement, cartesElement, creditsElement, quitterElement});
         
         if (choix == 0) return DisplayCreateGame(screen, game);
         if (choix == 1) return DisplayCards(screen, game);

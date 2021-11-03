@@ -6,7 +6,7 @@ namespace MinivillesURSR46
     {
         public List<CardsInfo> UserHand = new List<CardsInfo>();
 
-        public int UserMoney = 3;
+        public int UserMoney = 20;
 
         public Player(List<CardsInfo> userHand, Piles pile)
         {

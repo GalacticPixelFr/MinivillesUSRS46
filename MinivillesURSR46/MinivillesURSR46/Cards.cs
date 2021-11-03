@@ -19,6 +19,11 @@ namespace MinivillesURSR46
             EachCards.Add(CreateForet());
             EachCards.Add(CreateRestaurant());
             EachCards.Add(CreateStade());
+            EachCards.Add(CreateStation());
+            EachCards.Add(CreateCinema());
+            EachCards.Add(CreateLegend1());
+            EachCards.Add(CreateLegend2());
+            
         }
 
         public CardsInfo CreateChampDeBle()

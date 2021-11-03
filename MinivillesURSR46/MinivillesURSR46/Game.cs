@@ -203,7 +203,7 @@ namespace MinivillesURSR46
                 gainMoneyPlayer += incomePlayer;
                 if (incomeIA < 0)
                 {
-                    lossMoneyIA -= incomeIA;
+                    lossMoneyIA += Math.Abs(incomeIA);
                     chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIA.ToString()));
                 }
                 else
@@ -340,7 +340,7 @@ namespace MinivillesURSR46
                 gainMoneyIA += incomeIA;
                 if (incomePlayer < 0)
                 {
-                    lossMoneyPlayer -= incomePlayer;
+                    lossMoneyPlayer += Math.Abs(incomePlayer);
                     chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
                 }
                 else

@@ -184,6 +184,21 @@ public static class Menu
         @"\__|       \_______|\__|       \_______| \______/ "
     };
 
+    private static string[] egal = new string[]
+    {
+        @"$$$$$$$$\                    $$\ $$\   $$\               ",
+        @"$$  _____|                   $$ |\__|  $$ |              ",
+        @"$$ |      $$$$$$\   $$$$$$\  $$ |$$\ $$$$$$\    $$$$$$\  ",
+        @"$$$$$\   $$  __$$\  \____$$\ $$ |$$ |\_$$  _|  $$  __$$\ ",
+        @"$$  __|  $$ /  $$ | $$$$$$$ |$$ |$$ |  $$ |    $$$$$$$$ |",
+        @"$$ |     $$ |  $$ |$$  __$$ |$$ |$$ |  $$ |$$\ $$   ____|",
+        @"$$$$$$$$\\$$$$$$$ |\$$$$$$$ |$$ |$$ |  \$$$$  |\$$$$$$$\ ",
+        @"\________|\____$$ | \_______|\__|\__|   \____/  \_______|",
+        @"         $$\   $$ |                                      ",
+        @"         \$$$$$$  |                                      ",
+        @"          \______/                                       "
+    };
+
     private static string[][] numberList = new string[][]
     {
         new string[] {
@@ -438,7 +453,7 @@ public static class Menu
     /// <param name="gainMoney2">le montant d'argent amassé par le joueur de droite</param>
     /// <param name="lossMoney1">le montant d'argent perdu par le joueur de gauche</param>
     /// <param name="lossMoney2">le montant d'argent perdu par le joueur de droite</param>
-    public static void DisplayEnd(Screen screen, Layer layer, bool win, int buyCard1, int buyCard2, int gainMoney1,
+    public static void DisplayEnd(Screen screen, Layer layer, bool win, bool equality, int buyCard1, int buyCard2, int gainMoney1,
         int gainMoney2, int lossMoney1, int lossMoney2)
     {
         //Ajout de la bordure de gauche
@@ -450,7 +465,7 @@ public static class Menu
             new Coordinates(screen.width-57, 0), Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black));
         
         //Ajout du titre du milieu
-        layer.Add(new Element((win ? gagne : perdu), new Coordinates(screen.width / 2, screen.height / 2),
+        layer.Add(new Element((win ? gagne : equality ? egal : perdu), new Coordinates(screen.width / 2, screen.height / 2),
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
         
         //Ajout du titre de gauche
@@ -536,4 +551,3 @@ public static class Menu
         return result;
     }
 }
-

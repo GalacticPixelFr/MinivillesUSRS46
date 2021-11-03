@@ -124,6 +124,13 @@ namespace MinivillesURSR46
             playerH = new Player(new List<CardsInfo>(), pile);
             playerIA = new Player(new List<CardsInfo>(), pile);
             int nbTurn = 0;
+
+            int buyCardIA = 0;
+            int buyCardPlayer = 0;
+            int gainMoneyIA = 0;
+            int gainMoneyPlayer = 0;
+            int lossMoneyIA = 0;
+            int lossMoneyPlayer = 0;
             
             gainFinish = 10 * (1 + gameOption.duree);
             
@@ -181,19 +188,21 @@ namespace MinivillesURSR46
                 chat.AddText(TextManagement.GetDataString("NombreDé", resultDie.ToString()));
 
                 int incomePlayer = playerH.UserMoney;
-                int incomeIa = playerIA.UserMoney;
+                int incomeIA = playerIA.UserMoney;
                 CardsActivation(playerH, playerIA, resultDie);
                 incomePlayer = playerH.UserMoney - incomePlayer;
-                incomeIa = playerIA.UserMoney - incomeIa;
+                incomeIA = playerIA.UserMoney - incomeIA;
                 DisplayMoney();
                 chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
-                if (incomeIa < 0)
+                if (incomeIA < 0)
                 {
-                    chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIa.ToString()));
+                    lossMoneyIA += incomeIA;
+                    chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIA.ToString()));
                 }
                 else
                 {
-                    chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
+                    gainMoneyIA += incomeIA;
+                    chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
                 }
                 //IA bleue et rouge
                 //H bleue et vert
@@ -261,6 +270,7 @@ namespace MinivillesURSR46
                         // on vérifie que le joueur a assez d'argent
                         else if (c.Cost <= playerH.UserMoney)
                         {
+                            buyCardPlayer += 1;
                             playerH.BuyCard(c, pile);
                             chat.AddText(TextManagement.GetDataString("CarteAchat", Urss ? c.NameURSS : c.Name));
                             DisplayHands();
@@ -314,17 +324,19 @@ namespace MinivillesURSR46
                 chat.AddText(TextManagement.GetDataString("IaDé", resultDie.ToString()));
                 
                 incomePlayer = playerH.UserMoney;
-                incomeIa = playerIA.UserMoney;
+                incomeIA = playerIA.UserMoney;
                 CardsActivation(playerIA, playerH, resultDie);
                 incomePlayer = playerH.UserMoney - incomePlayer;
-                incomeIa = playerIA.UserMoney - incomeIa;
-                chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIa.ToString()));
+                incomeIA = playerIA.UserMoney - incomeIA;
+                chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
                 if (incomePlayer < 0)
                 {
+                    lossMoneyPlayer += incomePlayer;
                     chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
                 }
                 else
                 {
+                    gainMoneyPlayer += incomePlayer;
                     chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
                 }
                 
@@ -332,8 +344,7 @@ namespace MinivillesURSR46
                 //IA bleue et vert
 
                 // difficulté de l'IA et action
-                actionIA(gameOption.niveauIA, Urss);
-
+                actionIA(gameOption.niveauIA, Urss, ref buyCardIA);
 
                 // verification condition de fin
                 if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
@@ -345,24 +356,23 @@ namespace MinivillesURSR46
             }
             
             screen.Clear();
+            Layer endLayer = new Layer(1);
             if (playerH.UserMoney > playerIA.UserMoney)
             {
-                background.Add(new Element(TextManagement.GetData("Gagné")
-                                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
-                                                    Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
+                Menu.DisplayEnd(screen, endLayer, true, false, buyCardIA, buyCardPlayer, 
+                    gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
+                Thread.Sleep(10000);
             }
             else if (playerIA.UserMoney > playerH.UserMoney)
             {
-                background.Add(new Element(TextManagement.GetData("Perdu")
-                                    , new Coordinates((screen.width-34)/2, screen.height/2+1),
-                                    Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
-            }
+                Menu.DisplayEnd(screen, endLayer, false, false, buyCardIA, buyCardPlayer, 
+                    gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
+                Thread.Sleep(10000);            }
             else // egalité des sommes d'argent
             {
-                background.Add(new Element(TextManagement.GetData("Egalité")
-                            , new Coordinates((screen.width-34)/2, screen.height/2+1),
-                            Animation.Typing, Placement.mid, ConsoleColor.White, ConsoleColor.Black, true));
-            }
+                Menu.DisplayEnd(screen, endLayer, false, true, buyCardIA, buyCardPlayer, 
+                    gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
+                Thread.Sleep(10000);            }
             screen.DisplayLayer(background);
         }
 
@@ -413,7 +423,7 @@ namespace MinivillesURSR46
             }
         }
 
-        public void actionIA(int difficulty, bool Urss)
+        public void actionIA(int difficulty, bool Urss, ref int buyCardIA)
         {
             if (difficulty == 0) // IA choix au hasard
             {
@@ -429,6 +439,7 @@ namespace MinivillesURSR46
                     // on vérifie que la carte est encore disponible et qu'elle est encore achetable
                     if (c.Cost < playerIA.UserMoney - 1 && pile.GetNumberCard(choix) > 0)
                     {
+                        buyCardIA += 1;
                         playerIA.BuyCard(c, pile);
                         chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));
                     }

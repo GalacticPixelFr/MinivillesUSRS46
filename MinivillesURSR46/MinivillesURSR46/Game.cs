@@ -507,5 +507,30 @@ namespace MinivillesURSR46
                 }
             }
         }
+
+        public List<Element> DisplayCards(bool Urss)
+        {
+            List<Element> cards = new List<Element>();
+
+            for (int i = 0; i <= 7; i++) //En faire une fonction
+            {
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - 4*(18+2)/2+i%4*(18+2)+9, 
+                    screen.height/2 - 2*(9+2)/2 + (i >= 4 ? 11 : 0)+4);
+                Element amount = new Element(new string[1] {"x " + pile.GetNumberCard(i)},
+                    new Coordinates(
+                        (screen.width - 34) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
+                        screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 16 : -5) + 4), Animation.None, Placement.mid,
+                    ConsoleColor.White, ConsoleColor.Black);
+                
+                Element[] card = CardChoice(i).ToElementFull(coordinates, Urss);
+                
+                middle.Add(amount);
+                middle.Add(card[0]);
+                middle.Add(card[1]);
+                cards.Add(card[1]);
+            }
+
+            return cards;
+        }
     }
 }

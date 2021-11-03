@@ -71,7 +71,7 @@ namespace MinivillesURSR46
                 DisplayElement(layer.elements[i]); //On affiche l'élément
                 if (layer.elements[i].temp) //Si l'élément est témporaire on le supprime du layer
                 {
-                    layer.Delete(layer.elements[i]);
+                    layer.Add(layer.elements[i].GetEmptyClone());
                     i--;
                 }
             }

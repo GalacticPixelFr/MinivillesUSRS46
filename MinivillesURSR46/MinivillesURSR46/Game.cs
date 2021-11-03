@@ -26,13 +26,17 @@ namespace MinivillesURSR46
         public Game(int gain)
         {
             pile = new Piles();
-            for(int i = 0; i < 6; i++)
+            //Ajout des cartes dans la pile selon le nombre de carte possible.
+            Cards card = new Cards();
+            for (int j = 0; j < card.EachCards.Count - 2; j++)
             {
-                foreach(CardsInfo c in new Cards().EachCards)
+                for (int h = 0; h < 4; h++)
                 {
-                    pile.AddCard(c);
+                    pile.AddCard(card.EachCards[j]);
                 }
             }
+            pile.AddCard(card.EachCards[10]);
+            pile.AddCard(card.EachCards[11]);
 
             gainFinish = gain;
 
@@ -76,10 +80,10 @@ namespace MinivillesURSR46
                 } 
                     
                 cards.Add(playerIA.UserHand[i].Name);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + index*(18+2)+9, +3);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(11+2)/2 + index*(11+2)+9, +3);
                 Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);
                 Element amount = new Element(new string[1] {"x" + playerIA.GetNumberCard(playerIA.UserHand[i].Id)},
-                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (18 + 2) / 2 + index * (18 + 2) + 9, 5),
+                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (11 + 2) / 2 + index * (11 + 2) + 9, 5),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 
                 hands.Add(amount);
@@ -98,10 +102,10 @@ namespace MinivillesURSR46
                 }
                 
                 cards.Add(playerH.UserHand[i].Name);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(18+2)/2 + index*(18+2)+9, screen.height-3);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(11+2)/2 + index*(11+2)+9, screen.height-3);
                 Element[] elements = playerH.UserHand[i].ToElementSemi(true, playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);
                 Element amount = new Element(new string[1] {"x" + playerH.GetNumberCard(playerH.UserHand[i].Id)},
-                    new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (18 + 2) / 2 + index * (18 + 2) + 9, screen.height-6),
+                    new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (11 + 2) / 2 + index * (11 + 2) + 9, screen.height-6),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 
                 hands.Add(amount);
@@ -234,14 +238,14 @@ namespace MinivillesURSR46
                     {
                         List<Element> cardsElements = new List<Element>();
                         
-                        for (int i = 0; i <= 7; i++) //En faire une fonction
+                        for (int i = 0; i <= 11; i++) //En faire une fonction
                         {
-                            Coordinates coordinates = new Coordinates((screen.width-34)/2 - 4*(18+2)/2+i%4*(18+2)+9, 
-                                screen.height/2 - 2*(9+2)/2 + (i >= 4 ? 11 : 0)+4);
+                            Coordinates coordinates = new Coordinates((screen.width-34)/2 - 6*(18+2)/2+i%6*(18+2)+9, 
+                                screen.height/2 - 2*(9+2)/2 + (i >= 6 ? 11 : 0)+4);
                             Element amount = new Element(new string[1] {"x " + pile.GetNumberCard(i)},
                                 new Coordinates(
-                                    (screen.width - 34) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
-                                    screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 16 : -5) + 4), Animation.None, Placement.mid,
+                                    (screen.width - 34) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
+                                    screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 16 : -5) + 4), Animation.None, Placement.mid,
                                 ConsoleColor.White, ConsoleColor.Black);
                             
                             Element[] card = Urss ? CardChoice(i).ToElementFull(coordinates, true) : CardChoice(i).ToElementFull(coordinates, false);
@@ -387,7 +391,11 @@ namespace MinivillesURSR46
             else if (i == 4) { c = new Cards().CreateSuperette(); }
             else if (i == 5) { c = new Cards().CreateForet(); }
             else if (i == 6) { c = new Cards().CreateRestaurant(); }
-            else { c = new Cards().CreateStade(); }
+            else if (i == 7) { c = new Cards().CreateStade(); }
+            else if (i == 8) { c = new Cards().CreateStation(); }
+            else if (i == 9) { c = new Cards().CreateCinema(); }
+            else if (i == 10) { c = new Cards().CreateLegend1(); }
+            else { c = new Cards().CreateLegend2(); }
 
             return c;
         }
@@ -400,6 +408,14 @@ namespace MinivillesURSR46
                 if (card.Dice == dice)
                 {
                     if (card.Color == Color.Bleu || card.Color == Color.Vert )
+                    {
+                        userPlayer.UserMoney += card.Gain;
+                    }
+                }
+
+                if (dice == 1 || dice == 3 || dice == 5)
+                {
+                    if (card.Id == 11)
                     {
                         userPlayer.UserMoney += card.Gain;
                     }
@@ -418,6 +434,11 @@ namespace MinivillesURSR46
                         opponentPlayer.UserMoney += card.Gain;
                         userPlayer.UserMoney -= card.Gain;
 
+                    }
+                    else if (card.Id == 10)
+                    {
+                        opponentPlayer.UserMoney += card.Gain;
+                        userPlayer.UserMoney -= card.Gain - 2;
                     }
                 }
             }

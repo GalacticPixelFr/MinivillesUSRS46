@@ -573,8 +573,9 @@ public static class Menu
 
         // affichage des cartes
         GameOption gameOption = new GameOption();
+        Chat chat = new Chat(screen, new Coordinates(screen.width - 34, screen.height), 34, screen.height);
 
-        while(true)
+        while (true)
         {
             List<Element> cards = game.DisplayCards(false, background);
 
@@ -584,7 +585,7 @@ public static class Menu
             }
 
             Element back = new Element(new String[1] { "Back" },
-                                        new Coordinates(screen.width / 2, screen.height - 2),
+                                        new Coordinates((screen.width - 34) / 2, screen.height - 2),
                                         Animation.None,
                                         Placement.mid,
                                         ConsoleColor.White,
@@ -633,7 +634,7 @@ public static class Menu
                                         ConsoleColor.Black)); // info carte
 
             background.Add(new Element(new String[1] {"Press Enter to go Back"},
-                                        new Coordinates(screen.width / 2, screen.height - 2),
+                                        new Coordinates((screen.width - 34) / 2, screen.height - 2),
                                         Animation.None,
                                         Placement.mid,
                                         ConsoleColor.White,

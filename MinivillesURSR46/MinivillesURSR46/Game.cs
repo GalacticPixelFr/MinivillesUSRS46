@@ -200,6 +200,7 @@ namespace MinivillesURSR46
                 incomeIA = playerIA.UserMoney - incomeIA;
                 DisplayMoney();
                 chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
+                gainMoneyPlayer += incomePlayer;
                 if (incomeIA < 0)
                 {
                     lossMoneyIA -= incomeIA;
@@ -336,6 +337,7 @@ namespace MinivillesURSR46
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
                 chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
+                gainMoneyIA += incomeIA;
                 if (incomePlayer < 0)
                 {
                     lossMoneyPlayer -= incomePlayer;

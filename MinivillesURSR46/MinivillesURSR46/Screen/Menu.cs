@@ -573,11 +573,10 @@ public static class Menu
 
         // affichage des cartes
         GameOption gameOption = new GameOption();
-        Chat chat = new Chat(screen, new Coordinates(screen.width - 34, screen.height), 34, screen.height);
 
         while (true)
         {
-            List<Element> cards = game.DisplayCards(false, background);
+            List<Element> cards = game.DisplayCards(false, background, 0);
 
             foreach (Element e in cards)
             {
@@ -585,7 +584,7 @@ public static class Menu
             }
 
             Element back = new Element(new String[1] { "Back" },
-                                        new Coordinates((screen.width - 34) / 2, screen.height - 2),
+                                        new Coordinates(screen.width / 2, screen.height - 2),
                                         Animation.None,
                                         Placement.mid,
                                         ConsoleColor.White,
@@ -621,12 +620,12 @@ public static class Menu
             else if (ci.Color == Color.Vert){couleur = "Carte Verte : s'active lors de votre tour"; }
 
             background.Add(new Element(new String[7] {couleur, 
-                                                    $" ",
-                                                    $"S'active pour un dé valant {ci.Dice}",
-                                                    $" ",
-                                                    $"Capacité : {ci.Effect}",
-                                                    $" ",
-                                                    $"Prix : {ci.Cost} pieces"},
+                                                      $" ",
+                                                      $"S'active pour un dé valant {ci.Dice}",
+                                                      $" ",
+                                                      $"Capacité : {ci.Effect}",
+                                                      $" ",
+                                                      $"Prix : {ci.Cost} pieces"},
                                         new Coordinates(50, screen.height / 2 - 3),
                                         Animation.None,
                                         Placement.topLeft,
@@ -634,7 +633,7 @@ public static class Menu
                                         ConsoleColor.Black)); // info carte
 
             background.Add(new Element(new String[1] {"Press Enter to go Back"},
-                                        new Coordinates((screen.width - 34) / 2, screen.height - 2),
+                                        new Coordinates(screen.width / 2, screen.height - 2),
                                         Animation.None,
                                         Placement.mid,
                                         ConsoleColor.White,

@@ -232,7 +232,7 @@ namespace MinivillesURSR46
                     }
                     if (choix == 1)
                     {
-                        List<Element> cardsElements = DisplayCards(Urss, middle);
+                        List<Element> cardsElements = DisplayCards(Urss, middle, 34);
                         screen.DisplayLayer(middle);
                         choix = screen.Select(cardsElements.ToArray());
                         screen.HideLayer(middle);
@@ -490,17 +490,17 @@ namespace MinivillesURSR46
             }
         }
 
-        public List<Element> DisplayCards(bool Urss, Layer layer)
+        public List<Element> DisplayCards(bool Urss, Layer layer, int offset)
         {
             List<Element> cards = new List<Element>();
 
             for (int i = 0; i <= 7; i++) //En faire une fonction
             {
-                Coordinates coordinates = new Coordinates((screen.width - 34) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
+                Coordinates coordinates = new Coordinates((screen.width - offset) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
                     screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 11 : 0) + 4);
                 Element amount = new Element(new string[1] { "x " + pile.GetNumberCard(i) },
                     new Coordinates(
-                        (screen.width - 34) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
+                        (screen.width - offset) / 2 - 4 * (18 + 2) / 2 + i % 4 * (18 + 2) + 9,
                         screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 4 ? 16 : -5) + 4), Animation.None, Placement.mid,
                     ConsoleColor.White, ConsoleColor.Black);
 

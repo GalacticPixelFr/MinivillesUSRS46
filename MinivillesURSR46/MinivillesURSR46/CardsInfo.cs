@@ -56,8 +56,10 @@ namespace MinivillesURSR46
                     color = ConsoleColor.Red;
                     break;
                 case Color.Vert:
-
                     color = ConsoleColor.Green;
+                    break;
+                case Color.Jaune:
+                    color = ConsoleColor.Yellow;
                     break;
             }
             Element background = new Element(stringBackground, coordinates, Animation.None, Placement.mid, color, ConsoleColor.Black);
@@ -85,20 +87,22 @@ namespace MinivillesURSR46
         /// <returns></returns>
         public Element[] ToElementSemi(bool top, int amount, Coordinates coordinates)
         {
-            string[] stringBackground = new string[4]{
-                "|                |",
-                "|                |",
-                "|                |",
-                "+----------------+"
+            string[] stringBackground = new string[]{
+                "|         |",
+                "|         |",
+                "|         |",
+                "|         |",
+                "+---------+"
             };
 
             if (top) 
             {
-                stringBackground = new string[4]{
-                    "+----------------+",
-                    "|                |",
-                    "|                |",
-                    "|                |"
+                stringBackground = new string[]{
+                    "+---------+",
+                    "|         |",
+                    "|         |",
+                    "|         |",
+                    "|         |"
                 };
             }
 
@@ -114,17 +118,23 @@ namespace MinivillesURSR46
                 case Color.Vert:
                     color = ConsoleColor.Green;
                     break;
+                case Color.Jaune:
+                    color = ConsoleColor.Yellow;
+                    break;
             }
-            Element background = new Element(stringBackground, coordinates, Animation.None, Placement.mid, color, ConsoleColor.Black);
+            Element background = new Element(stringBackground, new Coordinates(coordinates.x, coordinates.y + (top ? -1 : 0)), Animation.None, Placement.mid, color, ConsoleColor.Black);
 
-            string[] stringInfos = new string[3]{
-                this.Name,
+            string[] name = Chat.ReturnToLine(this.Name, 11);
+            
+            string[] stringInfos = new string[]{
+                name[0],
+                name.Length >= 2 ? name[1] : "",
                 this.Dice.ToString(),
                 "+"+this.Gain
             };
-            Element infos = new Element(stringInfos, new Coordinates(coordinates.x, coordinates.y + (top ? 0 : -1)), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+            Element infos = new Element(stringInfos, coordinates, Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
 
-            return new Element[2]{background, infos};
+            return new Element[]{background, infos};
         }
         
     }
@@ -132,6 +142,7 @@ namespace MinivillesURSR46
     {
         Bleu,
         Vert,
-        Rouge
+        Rouge,
+        Jaune
     }
 }

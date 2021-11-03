@@ -326,7 +326,8 @@ public static class Menu
         selectMainMenu.Add(creditsElement);
         selectMainMenu.Add(quitterElement);
         screen.DisplayLayer(selectMainMenu);
-        int choix = screen.Select(new Element[4] {jouerElement, cartesElement, creditsElement, quitterElement});
+      
+        int choix = screen.Select(new Element[] {jouerElement, cartesElement, creditsElement, quitterElement});
         
         if (choix == 0) return DisplayCreateGame(screen, game);
         if (choix == 1) return DisplayCards(screen, game);

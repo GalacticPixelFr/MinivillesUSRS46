@@ -26,13 +26,17 @@ namespace MinivillesURSR46
         public Game(int gain)
         {
             pile = new Piles();
-            for(int i = 0; i < 6; i++)
+            //Ajout des cartes dans la pile selon le nombre de carte possible.
+            Cards card = new Cards();
+            for (int j = 0; j < card.EachCards.Count - 2; j++)
             {
-                foreach(CardsInfo c in new Cards().EachCards)
+                for (int h = 0; h < 4; h++)
                 {
-                    pile.AddCard(c);
+                    pile.AddCard(card.EachCards[j]);
                 }
             }
+            pile.AddCard(card.EachCards[10]);
+            pile.AddCard(card.EachCards[11]);
 
             gainFinish = gain;
 
@@ -76,10 +80,10 @@ namespace MinivillesURSR46
                 } 
                     
                 cards.Add(playerIA.UserHand[i].Name);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(18+2)/2 + index*(18+2)+9, +3);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(11+2)/2 + index*(11+2)+9, +3);
                 Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);
                 Element amount = new Element(new string[1] {"x" + playerIA.GetNumberCard(playerIA.UserHand[i].Id)},
-                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (18 + 2) / 2 + index * (18 + 2) + 9, 5),
+                    new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (11 + 2) / 2 + index * (11 + 2) + 9, 5),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 
                 hands.Add(amount);
@@ -98,10 +102,10 @@ namespace MinivillesURSR46
                 }
                 
                 cards.Add(playerH.UserHand[i].Name);
-                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(18+2)/2 + index*(18+2)+9, screen.height-3);
+                Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(11+2)/2 + index*(11+2)+9, screen.height-3);
                 Element[] elements = playerH.UserHand[i].ToElementSemi(true, playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);
                 Element amount = new Element(new string[1] {"x" + playerH.GetNumberCard(playerH.UserHand[i].Id)},
-                    new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (18 + 2) / 2 + index * (18 + 2) + 9, screen.height-6),
+                    new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (11 + 2) / 2 + index * (11 + 2) + 9, screen.height-6),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
                 
                 hands.Add(amount);
@@ -125,6 +129,7 @@ namespace MinivillesURSR46
             playerIA = new Player(new List<CardsInfo>(), pile);
             int nbTurn = 0;
 
+            // Variables de compte pour les stats de fin
             int buyCardIA = 0;
             int buyCardPlayer = 0;
             int gainMoneyIA = 0;
@@ -134,6 +139,7 @@ namespace MinivillesURSR46
             
             gainFinish = 10 * (1 + gameOption.duree);
             
+            //Changement des noms des cartes si choix URSS
             bool Urss = false;
             if (gameOption.modeDeJeu == 0)
             {
@@ -194,9 +200,10 @@ namespace MinivillesURSR46
                 incomeIA = playerIA.UserMoney - incomeIA;
                 DisplayMoney();
                 chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
+                gainMoneyPlayer += incomePlayer;
                 if (incomeIA < 0)
                 {
-                    lossMoneyIA += incomeIA;
+                    lossMoneyIA += Math.Abs(incomeIA);
                     chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIA.ToString()));
                 }
                 else
@@ -233,6 +240,7 @@ namespace MinivillesURSR46
                     if (choix == 1)
                     {
                         List<Element> cardsElements = DisplayCards(Urss, middle, 34);
+                      
                         screen.DisplayLayer(middle);
                         choix = screen.Select(cardsElements.ToArray());
                         screen.HideLayer(middle);
@@ -305,15 +313,17 @@ namespace MinivillesURSR46
                 
                 chat.AddText(TextManagement.GetDataString("IaDé", resultDie.ToString()));
                 
+                //Activation des cartes et ajout des textes dans le chat en fonction des revenus du joueur
                 incomePlayer = playerH.UserMoney;
                 incomeIA = playerIA.UserMoney;
                 CardsActivation(playerIA, playerH, resultDie);
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
                 chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
+                gainMoneyIA += incomeIA;
                 if (incomePlayer < 0)
                 {
-                    lossMoneyPlayer += incomePlayer;
+                    lossMoneyPlayer += Math.Abs(incomePlayer);
                     chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
                 }
                 else
@@ -369,7 +379,11 @@ namespace MinivillesURSR46
             else if (i == 4) { c = new Cards().CreateSuperette(); }
             else if (i == 5) { c = new Cards().CreateForet(); }
             else if (i == 6) { c = new Cards().CreateRestaurant(); }
-            else { c = new Cards().CreateStade(); }
+            else if (i == 7) { c = new Cards().CreateStade(); }
+            else if (i == 8) { c = new Cards().CreateStation(); }
+            else if (i == 9) { c = new Cards().CreateCinema(); }
+            else if (i == 10) { c = new Cards().CreateLegend1(); }
+            else { c = new Cards().CreateLegend2(); }
 
             return c;
         }
@@ -382,6 +396,14 @@ namespace MinivillesURSR46
                 if (card.Dice == dice)
                 {
                     if (card.Color == Color.Bleu || card.Color == Color.Vert )
+                    {
+                        userPlayer.UserMoney += card.Gain;
+                    }
+                }
+
+                if (dice == 1 || dice == 3 || dice == 5)
+                {
+                    if (card.Id == 11)
                     {
                         userPlayer.UserMoney += card.Gain;
                     }
@@ -400,6 +422,11 @@ namespace MinivillesURSR46
                         opponentPlayer.UserMoney += card.Gain;
                         userPlayer.UserMoney -= card.Gain;
 
+                    }
+                    else if (card.Id == 10)
+                    {
+                        opponentPlayer.UserMoney += card.Gain;
+                        userPlayer.UserMoney -= card.Gain - 2;
                     }
                 }
             }

@@ -46,6 +46,13 @@ namespace MinivillesURSR46
         /// <param name="text">le texte à ajouter</param>
         public void AddText(string text)
         {
+            textStack.Push(ReturnToLine(text, this.width-2)); //On ajoutes les lignes à la pile du chat
+
+            Display(); //On affiche le chat une fois l'élément ajouté
+        }
+
+        public static string[] ReturnToLine(string text, int width)
+        {
             List<string> lines = new List<string>(); //Les différentes lignes du textes
             Stack<string> stack = new Stack<string>(); //La pile qui va permettre de couper le texte
             stack.Push(text);
@@ -53,11 +60,11 @@ namespace MinivillesURSR46
             {
                 string currentString = stack.Pop(); //On récupère le dernier élément ajouté
 
-                if (currentString.Length > width-2) //Si le texte dépasse du chat (-2 pour les 2 bords)
+                if (currentString.Length > width) //Si le texte dépasse du chat
                 {
-                    int indexOfSpace = width-2; //L'index du dernier espace dans le texte, si il n'y a aucun espace on en imagine un à la fin
+                    int indexOfSpace = width; //L'index du dernier espace dans le texte, si il n'y a aucun espace on en imagine un à la fin
                     //On cherche ou se trouve le dernier espace dans le texte
-                    for (int i = 0; i <= width - 2; i++)
+                    for (int i = 0; i <= width ; i++)
                     {
                         if (currentString[i] == ' ')
                         {
@@ -70,10 +77,7 @@ namespace MinivillesURSR46
                 }
                 else lines.Add(currentString); //Si le texte dépasse pas on l'ajoute en entier au lignes
             }
-
-            textStack.Push(lines.ToArray()); //On ajoutes les lignes à la pile du chat
-
-            Display(); //On affiche le chat une fois l'élément ajouté
+            return lines.ToArray();
         }
 
         public void Display()

@@ -35,12 +35,17 @@ Pour plus de diversité, les cartes possèdent une version USA et URSS (capitali
 ------------------------------------------------------------------------------------------
 CONDITION DE VICTOIRE :
 
-| Difficulté | Pièces necessaires | Conditions supplémentaires |
-| ---------- | ------------------ | -------------------------- |
-| Facile | 10 |  |
-| Normal | 20 |	 |
-| Difficile | 30 |  |
-| Expert | 30 | Posseder une carte de chaque type |
+| Durée | Pièces necessaires |
+| ---------- | ------------------ 
+| Court | 10 |
+| Normal | 20 |
+| Long | 30 |
+
+DIFFÉRENTES DIFFICULTÉES :
+| Difficulté | Condition de victoire |
+| ---------- | ------------------ 
+| Normal | Le nombre de pièces necessaires |
+| Expert | Posseder une carte de chaque type + Le nombre de pièces necessaires |
 
 ------------------------------------------------------------------------------------------
 CARTES DU JEU :

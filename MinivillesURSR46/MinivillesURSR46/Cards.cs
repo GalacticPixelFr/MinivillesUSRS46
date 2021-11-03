@@ -48,7 +48,7 @@ namespace MinivillesURSR46
 
         public CardsInfo CreateForet()
         {
-            return new CardsInfo(5, Color.Bleu, 2, "DisneyLand", "Taiga", "Recevez 1 pièces", 5, 1);
+            return new CardsInfo(5, Color.Bleu, 2, "Parc Forestier", "Taiga", "Recevez 1 pièces", 5, 1);
         }
         
         public CardsInfo CreateRestaurant()
@@ -59,6 +59,28 @@ namespace MinivillesURSR46
         public CardsInfo CreateStade()
         {
             return new CardsInfo(7, Color.Bleu, 6, "Wall Street", "Moscow Exchange", "Recevez 4 pièces", 6, 4);
+        }
+
+        public CardsInfo CreateStation()
+        {
+            return new CardsInfo(8, Color.Vert, 4, "Station Nasa", "Station Spoutnik", "Recevez 4 pièces", 4, 4);
+        }
+
+        public CardsInfo CreateCinema()
+        {
+            return new CardsInfo(9, Color.Rouge, 6, "Cinéma", "Opéra", "Recevez 3 pièces du joueur qui à lancé le dé",
+                6, 3);
+        }
+
+        public CardsInfo CreateLegend1()
+        {
+            return new CardsInfo(10, Color.Jaune, 10, "Mont Rushmore", "Palais d'Hiver",
+                "Recevez 5 pièces dont 3 du joueur qui à lancé le dé", 2, 5);
+        }
+
+        public CardsInfo CreateLegend2()
+        {
+            return new CardsInfo(11, Color.Jaune, 10, "Liberty Statue", "Puit Kola", "Recevez 2 pièces", 1, 2);
         }
     }
 }

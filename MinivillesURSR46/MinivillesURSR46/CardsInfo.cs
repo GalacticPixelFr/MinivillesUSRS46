@@ -56,8 +56,10 @@ namespace MinivillesURSR46
                     color = ConsoleColor.Red;
                     break;
                 case Color.Vert:
-
                     color = ConsoleColor.Green;
+                    break;
+                case Color.Jaune:
+                    color = ConsoleColor.Yellow;
                     break;
             }
             Element background = new Element(stringBackground, coordinates, Animation.None, Placement.mid, color, ConsoleColor.Black);
@@ -137,6 +139,7 @@ namespace MinivillesURSR46
     {
         Bleu,
         Vert,
-        Rouge
+        Rouge,
+        Jaune
     }
 }

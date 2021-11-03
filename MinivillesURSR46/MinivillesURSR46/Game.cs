@@ -394,6 +394,14 @@ namespace MinivillesURSR46
                         userPlayer.UserMoney += card.Gain;
                     }
                 }
+
+                if (dice == 1 || dice == 3 || dice == 5)
+                {
+                    if (card.Id == 11)
+                    {
+                        userPlayer.UserMoney += card.Gain;
+                    }
+                }
             }
             foreach (CardsInfo card in opponentPlayer.UserHand)
             {
@@ -408,6 +416,11 @@ namespace MinivillesURSR46
                         opponentPlayer.UserMoney += card.Gain;
                         userPlayer.UserMoney -= card.Gain;
 
+                    }
+                    else if (card.Id == 10)
+                    {
+                        opponentPlayer.UserMoney += card.Gain;
+                        userPlayer.UserMoney -= card.Gain - 2;
                     }
                 }
             }

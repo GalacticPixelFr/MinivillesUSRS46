@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using MinivillesURSR46;
 
@@ -124,6 +125,147 @@ public static class Menu
         @"| |    / _` | '_ ` _ \| | | |/ _ \ |  __/ _ \ |/ _ \",
         @"| \__/\ (_| | | | | | | | | |  __/ | | |  __/ |  __/",
         @" \____/\__,_|_| |_| |_|_|_|_|\___| \_|  \___|_|\___|"
+    };
+
+    private static string[] statsIA = new string[]
+    {
+        @"  _____ _        _       ",
+        @" / ____| |      | |      ",
+        @"| (___ | |_ __ _| |_ ___ ",
+        @" \___ \| __/ _` | __/ __|",
+        @" ____) | || (_| | |_\__ \",
+        @"|_____/_\__\__,_|\__|___/",
+        @"    |_   _|   /\         ",
+        @"      | |    /  \        ",
+        @"      | |   / /\ \       ",
+        @"     _| |_ / ____ \      ",
+        @"    |_____/_/    \_\     "
+    };
+
+    private static string[] statsJoueur = new string[]
+    {
+        @"       _____ _        _             ",
+        @"      / ____| |      | |            ",
+        @"     | (___ | |_ __ _| |_ ___       ",
+        @"      \___ \| __/ _` | __/ __|      ",
+        @"      ____) | || (_| | |_\__ \      ",
+        @"     |_____/ \__\__,_|\__|___/      ",
+        @"     | |                            ",
+        @"     | | ___  _   _  ___ _   _ _ __ ",
+        @" _   | |/ _ \| | | |/ _ \ | | | '__|",
+        @"| |__| | (_) | |_| |  __/ |_| | |   ",
+        @" \____/ \___/ \__,_|\___|\__,_|_|   "
+    };
+
+    private static string[] gagne = new string[]
+    {
+        @" $$$$$$\                                          ",
+        @"$$  __$$\                                         ",
+        @"$$ /  \__| $$$$$$\   $$$$$$\  $$$$$$$\   $$$$$$\  ",
+        @"$$ |$$$$\  \____$$\ $$  __$$\ $$  __$$\ $$  __$$\ ",
+        @"$$ |\_$$ | $$$$$$$ |$$ /  $$ |$$ |  $$ |$$$$$$$$ |",
+        @"$$ |  $$ |$$  __$$ |$$ |  $$ |$$ |  $$ |$$   ____|",
+        @"\$$$$$$  |\$$$$$$$ |\$$$$$$$ |$$ |  $$ |\$$$$$$$\ ",
+        @" \______/  \_______| \____$$ |\__|  \__| \_______|",
+        @"                    $$\   $$ |                    ",
+        @"                    \$$$$$$  |                    ",
+        @"                     \______/                     "
+    };
+
+    private static string[] perdu = new string[]
+    {
+        @"$$$$$$$\                            $$\           ",
+        @"$$  __$$\                           $$ |          ",
+        @"$$ |  $$ | $$$$$$\   $$$$$$\   $$$$$$$ |$$\   $$\ ",
+        @"$$$$$$$  |$$  __$$\ $$  __$$\ $$  __$$ |$$ |  $$ |",
+        @"$$  ____/ $$$$$$$$ |$$ |  \__|$$ /  $$ |$$ |  $$ |",
+        @"$$ |      $$   ____|$$ |      $$ |  $$ |$$ |  $$ |",
+        @"$$ |      \$$$$$$$\ $$ |      \$$$$$$$ |\$$$$$$  |",
+        @"\__|       \_______|\__|       \_______| \______/ "
+    };
+
+    private static string[][] numberList = new string[][]
+    {
+        new string[] {
+            @"  ___  ",
+            @" / _ \ ",
+            @"| | | |",
+            @"| | | |",
+            @"| |_| |",
+            @" \___/ "
+        },
+        new string[] {
+            @" __ ",
+            @"/_ |",
+            @" | |",
+            @" | |",
+            @" | |",
+            @" |_|",
+        },
+        new string[] {
+            @" ___  ",
+            @"|__ \ ",
+            @"   ) |",
+            @"  / / ",
+            @" / /_ ",
+            @"|____|"
+        },
+        new string[] {
+            @" ____  ",
+            @"|___ \ ",
+            @"  __) |",
+            @" |__ < ",
+            @" ___) |",
+            @"|____/ "
+        },
+        new string[] {
+            @" _  _   ",
+            @"| || |  ",
+            @"| || |_ ",
+            @"|__   _|",
+            @"   | |  ",
+            @"   |_|  "
+        },
+        new string[] {
+            @" _____ ",
+            @"| ____|",
+            @"| |__  ",
+            @"|___ \ ",
+            @" ___) |",
+            @"|____/ "
+        },
+        new string[] {
+            @"   __  ",
+            @"  / /  ",
+            @" / /_  ",
+            @"| '_ \ ",
+            @"| (_) |",
+            @" \___/ "
+        },
+        new string[] {
+            @" ______ ",
+            @"|____  |",
+            @"    / / ",
+            @"   / /  ",
+            @"  / /   ",
+            @" /_/    "
+        },
+        new string[] {
+            @"  ___  ",
+            @" / _ \ ",
+            @"| (_) |",
+            @" > _ < ",
+            @"| (_) |",
+            @" \___/ "
+        },
+        new string[] {
+            @"  ___  ",
+            @" / _ \ ",
+            @"| (_) |",
+            @" \__, |",
+            @"   / / ",
+            @"  /_/  "
+        }
     };
     
     private static Layer background = new Layer(1);
@@ -282,6 +424,116 @@ public static class Menu
         
         Thread.Sleep(3000);
         return false;
+    }
+
+    /// <summary>
+    /// Permet d'afficher l'écran de fin de partie
+    /// </summary>
+    /// <param name="screen">le screen qui sert à affichjer le rendu</param>
+    /// <param name="layer">la layer sur lequel mettre les éléments</param>
+    /// <param name="win">si c'est une victoire ou pas</param>
+    /// <param name="buyCard1">le nombre de cartes acheté par le joueur de gauche</param>
+    /// <param name="buyCard2">le nombre de cartes acheté par le joueur de droite</param>
+    /// <param name="gainMoney1">le montant d'argent amassé par le joueur de gauche</param>
+    /// <param name="gainMoney2">le montant d'argent amassé par le joueur de droite</param>
+    /// <param name="lossMoney1">le montant d'argent perdu par le joueur de gauche</param>
+    /// <param name="lossMoney2">le montant d'argent perdu par le joueur de droite</param>
+    public static void DisplayEnd(Screen screen, Layer layer, bool win, int buyCard1, int buyCard2, int gainMoney1,
+        int gainMoney2, int lossMoney1, int lossMoney2)
+    {
+        //Ajout de la bordure de gauche
+        layer.Add(new Element(Screen.BuildBorder(57, screen.height).ToArray(), 
+            new Coordinates(0, 0), Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout de la bordure de droite
+        layer.Add(new Element(Screen.BuildBorder(57, screen.height).ToArray(), 
+            new Coordinates(screen.width-57, 0), Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout du titre du milieu
+        layer.Add(new Element((win ? gagne : perdu), new Coordinates(screen.width / 2, screen.height / 2),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout du titre de gauche
+        layer.Add(new Element(statsIA, new Coordinates(28, 7),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout du titre de gauche
+        layer.Add(new Element(statsJoueur, new Coordinates(screen.width-28, 7),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un petit titre à gauche
+        layer.Add(new Element(new string[]{"nombres de cartes acheté"}, new Coordinates(28, 15),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un petit titre à droite
+        layer.Add(new Element(new string[]{"nombres de cartes acheté"}, new Coordinates(screen.width-28, 15),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un nombre à gauche
+        layer.Add(new Element(GetAsciiNumber(buyCard1), new Coordinates(28, 20),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un nombre à droite
+        layer.Add(new Element(GetAsciiNumber(buyCard2), new Coordinates(screen.width-28, 20),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un petit titre à gauche
+        layer.Add(new Element(new string[]{"montant d'argent amassé au total"}, new Coordinates(28, 25),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un petit titre à droite
+        layer.Add(new Element(new string[]{"montant d'argent amassé au total"}, new Coordinates(screen.width-28, 25),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un nombre à gauche
+        layer.Add(new Element(GetAsciiNumber(gainMoney1), new Coordinates(28, 30),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un nombre à droite
+        layer.Add(new Element(GetAsciiNumber(gainMoney2), new Coordinates(screen.width-28, 30),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un petit titre à gauche
+        layer.Add(new Element(new string[]{"montant d'argent perdu"}, new Coordinates(28, 35),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un petit titre à droite
+        layer.Add(new Element(new string[]{"montant d'argent perdu"}, new Coordinates(screen.width-28, 35),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un nombre à gauche
+        layer.Add(new Element(GetAsciiNumber(lossMoney1), new Coordinates(28, 40),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        //Ajout d'un nombre à droite
+        layer.Add(new Element(GetAsciiNumber(lossMoney2), new Coordinates(screen.width-28, 40),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
+        
+        screen.DisplayLayer(layer);
+    }
+    
+    /// <summary>
+    /// Permet de transformer un int en code ascii
+    /// </summary>
+    /// <param name="number">le nombre que l'on veut transformer</param>
+    /// <returns>la liste des lignes</returns>
+    public static string[] GetAsciiNumber(int number)
+    {
+        string stringInt = number.ToString();
+        string[] result = new string[] { };
+        
+        for (int i = 0; i < stringInt.Length; i++)
+        {
+            if (i == 0) result = numberList[Int32.Parse(stringInt[i].ToString())];
+            else
+            {
+                for (int j = 0; j < result.Length; j++)
+                {
+                    result[j] += numberList[Int32.Parse(stringInt[i].ToString())][j];
+                }
+            }
+        }
+        return result;
     }
 }
 

@@ -312,10 +312,10 @@ public static class Menu
         background.Add(cityElement);
         screen.DisplayLayer(background);
 
-        Element jouerElement = new Element(jouer, new Coordinates(5, screen.height / 5 * 2),
+        Element jouerElement = new Element(jouer, new Coordinates(5, screen.height / 5 * 1),
             Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
         Element cartesElement = new Element(cartes, new Coordinates(5, screen.height / 5 * 2),
-            Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
+            Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black);
         Element creditsElement = new Element(credits, new Coordinates(5, screen.height / 5 * 3),
             Animation.None, Placement.topLeft, ConsoleColor.White, ConsoleColor.Black);
         Element quitterElement = new Element(quitter, new Coordinates(5, screen.height / 5 * 4),
@@ -326,7 +326,7 @@ public static class Menu
         selectMainMenu.Add(creditsElement);
         selectMainMenu.Add(quitterElement);
         screen.DisplayLayer(selectMainMenu);
-        int choix = screen.Select(new Element[3] {jouerElement, creditsElement, quitterElement});
+        int choix = screen.Select(new Element[4] {jouerElement, cartesElement, creditsElement, quitterElement});
         
         if (choix == 0) return DisplayCreateGame(screen, game);
         if (choix == 1) return DisplayCards(screen, game);
@@ -573,33 +573,43 @@ public static class Menu
 
         // affichage des cartes
         GameOption gameOption = new GameOption();
-        List<Element> cards = game.DisplayCards(false);
 
         while(true)
         {
+            List<Element> cards = game.DisplayCards(false, background);
+
             foreach (Element e in cards)
             {
                 background.Add(e);
             }
 
+            Element back = new Element(new String[1] { "Back" },
+                                        new Coordinates(screen.width / 2, screen.height - 2),
+                                        Animation.None,
+                                        Placement.mid,
+                                        ConsoleColor.White,
+                                        ConsoleColor.Black);
+            cards.Add(back);
+            background.Add(back); //go back
+
             screen.DisplayLayer(background);
-            if (Console.ReadKey().Key != ConsoleKey.Enter) { break; }
 
             int choix = screen.Select(cards.ToArray());
-            screen.DisplayLayer(background);
-
+            screen.HideLayer(background);
             background.Clear();
 
+            if (choix == cards.Count -1) { break; }
+
             // affichage info carte
-            background.Add(new Element(new Coordinates(0, screen.height / 2 - 1), "Version USA              Version URSS"));
+            background.Add(new Element(new Coordinates(1, screen.height / 2 - 6), "Version USA              Version URSS"));
 
             Cards c = new Cards();
             CardsInfo ci = c.EachCards[choix]; 
-            Element[] card = ci.ToElementFull(new Coordinates(0, screen.height / 2), false); // version USA
+            Element[] card = ci.ToElementFull(new Coordinates(10, screen.height / 2), false); // version USA
             background.Add(card[0]);
             background.Add(card[1]);
 
-            card = ci.ToElementFull(new Coordinates(25, screen.height / 2), true); // version URSS
+            card = ci.ToElementFull(new Coordinates(35, screen.height / 2), true); // version URSS
             background.Add(card[0]);
             background.Add(card[1]);
 
@@ -616,14 +626,14 @@ public static class Menu
                                                     $"Capacité : {ci.Effect}",
                                                     $" ",
                                                     $"Prix : {ci.Cost} pieces"},
-                                        new Coordinates(50, screen.height / 2 + 1),
+                                        new Coordinates(50, screen.height / 2 - 3),
                                         Animation.None,
                                         Placement.topLeft,
                                         ConsoleColor.White,
                                         ConsoleColor.Black)); // info carte
 
             background.Add(new Element(new String[1] {"Press Enter to go Back"},
-                                        new Coordinates(screen.width / 2, screen.height - 1),
+                                        new Coordinates(screen.width / 2, screen.height - 2),
                                         Animation.None,
                                         Placement.mid,
                                         ConsoleColor.White,
@@ -631,6 +641,8 @@ public static class Menu
 
             screen.DisplayLayer(background);
             while(Console.ReadKey().Key != ConsoleKey.Enter){ } // attente enter presser
+
+            screen.HideLayer(background);
             background.Clear();
         }
 

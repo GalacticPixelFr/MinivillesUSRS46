@@ -583,8 +583,13 @@ public static class Menu
                 background.Add(e);
             }
 
-            Element back = new Element(new String[1] { "Back" },
-                                        new Coordinates(screen.width / 2, screen.height - 2),
+            Element back = new Element(new String[6] {@" ____             _    ",
+                                                      @"|  _ \           | |   ",
+                                                      @"| |_) | __ _  ___| | __",
+                                                      @"|  _  </ _` |/ __| |/ /",
+                                                      @"| |_) | (_| | (__|   < ",
+                                                      @"|____/ \__,_|\___|_|\_\", },
+                                        new Coordinates(screen.width / 2, screen.height - 8),
                                         Animation.None,
                                         Placement.mid,
                                         ConsoleColor.White,

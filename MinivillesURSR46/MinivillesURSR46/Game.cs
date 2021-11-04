@@ -11,7 +11,7 @@ namespace MinivillesURSR46
         public Player playerIA;
         public Die die;
         public Piles pile;
-        public int gainFinish; // en prévision du bonus changer condition fin pour partie rapide/normal/lente
+        public int gainFinish;
 
         // screen
         private Screen screen;

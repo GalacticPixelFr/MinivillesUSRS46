@@ -60,3 +60,12 @@ CARTES DU JEU :
 | Vert | Superette | Walmart | Marché Kolkhoziens | 4 | 2 | Recevez 3 pièces |
 | Rouge | Café | Starbuck | Perlov Tea House | 3 | 2 | Recevez 1 pièce du joueur qui a lancé le dé |
 | Rouge | Restaurant | McDonald | Le Goum | 5 | 4 | Recevez 2 pièces du joueur qui a lancé le dé |
+
+CARTES Ajoutées :
+
+| Couleur | Nom version USA | Nom version URSS | Valeur d'activation (dé) | Coût d'achat de la carte | Effet de la carte |
+| ------- | --------------- | ---------------- | ------------------------ | ------------------------ | ----------------- |
+| Bleu | Station Nasa | Station Spoutnik | 4 | 6 | Recevez 4 pièce |
+| Rouge | Cinéma | Opéra | 6 | 6 | Recevez 3 pièces du joueur qui à lancé le dé |
+| Jaune(Rouge) | Palais d'Hiver | Mont Rushmore | 2 | 10 | Recevez 5 pièces dont 3 du joueur qui à lancé le dé |
+| Jaune(Bleu) | Liberty Statue | Puit Kola | 1-3-5 | 10 | Recevez 2 pièces |

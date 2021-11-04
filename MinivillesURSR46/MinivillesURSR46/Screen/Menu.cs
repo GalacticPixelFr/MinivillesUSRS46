@@ -329,6 +329,7 @@ public static class Menu
         selectMainMenu.Add(creditsElement);
         selectMainMenu.Add(quitterElement);
         screen.DisplayLayer(selectMainMenu);
+      
         int choix = screen.Select(new Element[] {jouerElement, cartesElement, creditsElement, quitterElement});
         
         if (choix == 0) return DisplayCreateGame(screen, game);
@@ -576,57 +577,74 @@ public static class Menu
 
         // affichage des cartes
         GameOption gameOption = new GameOption();
-        List<Element> cards = game.DisplayCards(false);
 
-        while(true)
+        while (true)
         {
+            List<Element> cards = game.DisplayCards(false, background, 0);
+
             foreach (Element e in cards)
             {
                 background.Add(e);
             }
 
+            Element back = new Element(new String[6] {@" ____             _    ",
+                                                      @"|  _ \           | |   ",
+                                                      @"| |_) | __ _  ___| | __",
+                                                      @"|  _  </ _` |/ __| |/ /",
+                                                      @"| |_) | (_| | (__|   < ",
+                                                      @"|____/ \__,_|\___|_|\_\", },
+                                        new Coordinates(screen.width / 2, screen.height - 8),
+                                        Animation.None,
+                                        Placement.mid,
+                                        ConsoleColor.White,
+                                        ConsoleColor.Black);
+            cards.Add(back);
+            background.Add(back); //go back
+
             screen.DisplayLayer(background);
-            if (Console.ReadKey().Key != ConsoleKey.Enter) { break; }
 
             int choix = screen.Select(cards.ToArray());
-            screen.DisplayLayer(background);
-
+            screen.HideLayer(background);
             background.Clear();
 
+            if (choix == cards.Count -1) { break; }
+
             // affichage info carte
-            background.Add(new Element(new Coordinates(0, screen.height / 2 - 1), "Version USA              Version URSS"));
+            background.Add(new Element(new Coordinates(screen.width / 5 * 2 - 30, screen.height / 2 - 6), "Version USA              Version URSS"));
 
             Cards c = new Cards();
             CardsInfo ci = c.EachCards[choix]; 
-            Element[] card = ci.ToElementFull(new Coordinates(0, screen.height / 2), false); // version USA
+            Element[] card = ci.ToElementFull(new Coordinates(screen.width / 5 * 2 - 25, screen.height / 2), false); // version USA
             background.Add(card[0]);
             background.Add(card[1]);
 
-            card = ci.ToElementFull(new Coordinates(25, screen.height / 2), true); // version URSS
+            card = ci.ToElementFull(new Coordinates(screen.width / 5 * 2, screen.height / 2), true); // version URSS
             background.Add(card[0]);
             background.Add(card[1]);
 
             // affichage informations
             string couleur = "";
-            if (ci.Color == Color.Bleu){couleur = "Carte Bleu : s'active lors de chaque tour"; }
+            if (ci.Color == Color.Bleu){couleur = "Carte Bleue : s'active lors de chaque tour"; }
             else if (ci.Color == Color.Rouge){couleur = "Carte Rouge : s'active lors du tour adverse"; }
             else if (ci.Color == Color.Vert){couleur = "Carte Verte : s'active lors de votre tour"; }
+            else if (ci.Color == Color.Jaune && ci.Id == 10) { couleur = "Carte Jaune/Rouge : Légendaire (unique), s'active lors du tour adverse"; }
+            else if (ci.Color == Color.Jaune && ci.Id == 11) { couleur = "Carte Jaune/Bleue : Légendaire (unique), s'active lors de votre tour"; }
 
             background.Add(new Element(new String[7] {couleur, 
-                                                    $" ",
-                                                    $"S'active pour un dé valant {ci.Dice}",
-                                                    $" ",
-                                                    $"Capacité : {ci.Effect}",
-                                                    $" ",
-                                                    $"Prix : {ci.Cost} pieces"},
-                                        new Coordinates(50, screen.height / 2 + 1),
+                                                      $" ",
+                                                      $"S'active pour un dé valant {ci.Dice}",
+                                                      $" ",
+                                                      $"Capacité : {ci.Effect}",
+                                                      $" ",
+                                                      $"Prix : {ci.Cost} pieces"},
+                                        new Coordinates(screen.width / 5 * 2 + 15, screen.height / 2 - 3),
                                         Animation.None,
                                         Placement.topLeft,
                                         ConsoleColor.White,
                                         ConsoleColor.Black)); // info carte
 
             background.Add(new Element(new String[1] {"Press Enter to go Back"},
-                                        new Coordinates(screen.width / 2, screen.height - 1),
+                                        new Coordinates(screen.width / 2, screen.height - 2),
                                         Animation.None,
                                         Placement.mid,
                                         ConsoleColor.White,
@@ -634,6 +652,8 @@ public static class Menu
 
             screen.DisplayLayer(background);
             while(Console.ReadKey().Key != ConsoleKey.Enter){ } // attente enter presser
+
+            screen.HideLayer(background);
             background.Clear();
         }
 

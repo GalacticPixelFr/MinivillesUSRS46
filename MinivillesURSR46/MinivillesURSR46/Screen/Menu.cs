@@ -607,23 +607,25 @@ public static class Menu
             if (choix == cards.Count -1) { break; }
 
             // affichage info carte
-            background.Add(new Element(new Coordinates(1, screen.height / 2 - 6), "Version USA              Version URSS"));
+            background.Add(new Element(new Coordinates(screen.width / 5 * 2 - 30, screen.height / 2 - 6), "Version USA              Version URSS"));
 
             Cards c = new Cards();
             CardsInfo ci = c.EachCards[choix]; 
-            Element[] card = ci.ToElementFull(new Coordinates(10, screen.height / 2), false); // version USA
+            Element[] card = ci.ToElementFull(new Coordinates(screen.width / 5 * 2 - 25, screen.height / 2), false); // version USA
             background.Add(card[0]);
             background.Add(card[1]);
 
-            card = ci.ToElementFull(new Coordinates(35, screen.height / 2), true); // version URSS
+            card = ci.ToElementFull(new Coordinates(screen.width / 5 * 2, screen.height / 2), true); // version URSS
             background.Add(card[0]);
             background.Add(card[1]);
 
             // affichage informations
             string couleur = "";
-            if (ci.Color == Color.Bleu){couleur = "Carte Bleu : s'active lors de chaque tour"; }
+            if (ci.Color == Color.Bleu){couleur = "Carte Bleue : s'active lors de chaque tour"; }
             else if (ci.Color == Color.Rouge){couleur = "Carte Rouge : s'active lors du tour adverse"; }
             else if (ci.Color == Color.Vert){couleur = "Carte Verte : s'active lors de votre tour"; }
+            else if (ci.Color == Color.Jaune && ci.Id == 10) { couleur = "Carte Jaune/Rouge : Légendaire (unique), s'active lors du tour adverse"; }
+            else if (ci.Color == Color.Jaune && ci.Id == 11) { couleur = "Carte Jaune/Bleue : Légendaire (unique), s'active lors de votre tour"; }
 
             background.Add(new Element(new String[7] {couleur, 
                                                       $" ",
@@ -632,7 +634,7 @@ public static class Menu
                                                       $"Capacité : {ci.Effect}",
                                                       $" ",
                                                       $"Prix : {ci.Cost} pieces"},
-                                        new Coordinates(50, screen.height / 2 - 3),
+                                        new Coordinates(screen.width / 5 * 2 + 15, screen.height / 2 - 3),
                                         Animation.None,
                                         Placement.topLeft,
                                         ConsoleColor.White,

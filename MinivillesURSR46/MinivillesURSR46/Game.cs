@@ -231,7 +231,7 @@ namespace MinivillesURSR46
                 gainMoneyPlayer += incomePlayer; // On ajoute la différence aux gains totaux du joueur
                 if (incomeIA < 0)
                 {
-                    lossMoneyIA += Math.Abs(incomeIA); // On ajoute la valeur absolue des pertes aux pertes total
+                    lossMoneyIA -= incomeIA; // On ajoute la valeur absolue des pertes aux pertes total
                     chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIA.ToString()));
                 }
                 else
@@ -357,7 +357,7 @@ namespace MinivillesURSR46
                 gainMoneyIA += incomeIA;  // On ajoute la différence aux gains totaux de l'ia
                 if (incomePlayer < 0)
                 {
-                    lossMoneyPlayer += Math.Abs(incomePlayer); // On ajoute la valeur absolue des pertes aux pertes total
+                    lossMoneyPlayer -= incomePlayer; // On ajoute la valeur absolue des pertes aux pertes total
                     chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
                 }
                 else
@@ -382,19 +382,19 @@ namespace MinivillesURSR46
             // Conditions de fin
             if (playerH.UserMoney > playerIA.UserMoney)
             {
-                Menu.DisplayEnd(screen, endLayer, true, false, buyCardIA, buyCardPlayer, 
+                Menu.DisplayEnd(screen, endLayer, true, false, playerIA.UserHand.Count-2, playerH.UserHand.Count-2, 
                     gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
                 Thread.Sleep(10000);
             }
             else if (playerIA.UserMoney > playerH.UserMoney)
             {
-                Menu.DisplayEnd(screen, endLayer, false, false, buyCardIA, buyCardPlayer, 
+                Menu.DisplayEnd(screen, endLayer, false, false, playerIA.UserHand.Count-2, playerH.UserHand.Count-2, 
                     gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
                 Thread.Sleep(10000);
             }
             else // egalité des sommes d'argent
             {
-                Menu.DisplayEnd(screen, endLayer, false, true, buyCardIA, buyCardPlayer, 
+                Menu.DisplayEnd(screen, endLayer, false, true, playerIA.UserHand.Count-2, playerH.UserHand.Count-2, 
                     gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
                 Thread.Sleep(10000);
             }

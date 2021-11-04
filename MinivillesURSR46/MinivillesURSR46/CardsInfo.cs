@@ -131,7 +131,7 @@ namespace MinivillesURSR46
             string[] stringInfos = new string[]{
                 name[0],
                 name.Length >= 2 ? name[1] : "",
-                this.Dice.ToString(),
+                this.Id == 11 ? "1-3-5" : this.Dice.ToString(),
                 "+"+this.Gain
             };
             Element infos = new Element(stringInfos, coordinates, Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);

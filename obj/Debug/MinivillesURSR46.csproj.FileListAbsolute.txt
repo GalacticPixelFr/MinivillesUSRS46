@@ -1,0 +1,6 @@
+C:\Users\Travail\Documents\USRS46\MinivillesUSRS46\MinivillesURSR46\MinivillesURSR46\bin\Debug\MinivillesURSR46.exe
+C:\Users\Travail\Documents\USRS46\MinivillesUSRS46\MinivillesURSR46\MinivillesURSR46\bin\Debug\MinivillesURSR46.pdb
+C:\Users\Travail\Documents\USRS46\MinivillesUSRS46\MinivillesURSR46\MinivillesURSR46\obj\Debug\MinivillesURSR46.csproj.AssemblyReference.cache
+C:\Users\Travail\Documents\USRS46\MinivillesUSRS46\MinivillesURSR46\MinivillesURSR46\obj\Debug\MinivillesURSR46.csproj.CoreCompileInputs.cache
+C:\Users\Travail\Documents\USRS46\MinivillesUSRS46\MinivillesURSR46\MinivillesURSR46\obj\Debug\MinivillesURSR46.exe
+C:\Users\Travail\Documents\USRS46\MinivillesUSRS46\MinivillesURSR46\MinivillesURSR46\obj\Debug\MinivillesURSR46.pdb

@@ -5,6 +5,7 @@ using System.Linq;
 
 namespace MinivillesURSR46
 {
+    //Classe qui instancie la pile de carte du jeu et donc gère le nombre de cartes restantes
     public class Piles
     {
         public List<CardsInfo> pile;
@@ -19,6 +20,9 @@ namespace MinivillesURSR46
             pile = liste;
         }
 
+        /// <summary>
+        /// Fonction qui permet de changer le nom des cartes par la version URSS
+        /// </summary>
         public void nameChange()
         {
             foreach (CardsInfo card in pile)
@@ -88,6 +92,11 @@ namespace MinivillesURSR46
             return c;
         }
 
+        /// <summary>
+        /// Fonction qui retourne le nombre de carte similaire dans la pile
+        /// </summary>
+        /// <param name="ID"></param>
+        /// <returns></returns>
         public int GetNumberCard(int ID)
         {
             int cpt = 0;

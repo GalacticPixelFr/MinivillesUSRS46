@@ -4,10 +4,10 @@ using System.Resources;
 
 namespace MinivillesURSR46
 {
+    //Classe qui créé les différentes cartes et les instancies dans une liste
     public class Cards
     {
         public List<CardsInfo> EachCards = new List<CardsInfo>();
-        public bool Urss = false;
 
         public Cards()
         {
@@ -26,6 +26,10 @@ namespace MinivillesURSR46
             
         }
 
+        /// <summary>
+        /// Chaque fonctions suivantes permettent la création d'une carte spécifique.
+        /// </summary>
+        /// <returns></returns>
         public CardsInfo CreateChampDeBle()
         {
             return new CardsInfo(0, Color.Bleu, 1, "Champ de maïs", "Kolkhoze", "Recevez 1 pièce", 1, 1);

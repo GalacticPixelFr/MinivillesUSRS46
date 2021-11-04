@@ -85,7 +85,7 @@ public static class Menu
         @" \_/\_\\__,_|_|\__|\__\___|_|   ",
     };
 
-    private static string[] creationduJeu = new string[8]
+    private static string[] creationDuJeu = new string[8]
     {
         @" _____                _   _                   _           _            ",
         @"/  __ \              | | (_)                 | |         (_)           ",
@@ -349,7 +349,7 @@ public static class Menu
 
     }
 
-    public static bool DisplayCreateGame(Screen screen, Game game)
+    private static bool DisplayCreateGame(Screen screen, Game game)
     {
         screen.HideLayer(background);
         screen.HideLayer(selectMainMenu);
@@ -358,7 +358,7 @@ public static class Menu
         
         background.Clear();
         
-        Element titleElement = new Element(creationduJeu, new Coordinates(screen.width / 2, 7),
+        Element titleElement = new Element(creationDuJeu, new Coordinates(screen.width / 2, 7),
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
         background.Add(titleElement);
         
@@ -456,7 +456,7 @@ public static class Menu
         return false;
     }
 
-    public static bool DisplayCredits(Screen screen)
+    private static bool DisplayCredits(Screen screen)
     {
         screen.HideLayer(background);
         screen.HideLayer(selectMainMenu);

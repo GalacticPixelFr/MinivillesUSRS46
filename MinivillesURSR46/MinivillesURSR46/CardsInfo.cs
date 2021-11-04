@@ -2,6 +2,7 @@
 
 namespace MinivillesURSR46
 {
+    //Classe permettant la construction des cartes
     public class CardsInfo
     {
         public int Id { get; set; }
@@ -85,7 +86,7 @@ namespace MinivillesURSR46
         /// <param name="cardsInfo">Les infos de la carte</param>
         /// <param name="coordinates">les coordonnées de la carte</param>
         /// <returns></returns>
-        public Element[] ToElementSemi(bool top, int amount, Coordinates coordinates)
+        public Element[] ToElementSemi(bool top, Coordinates coordinates)
         {
             string[] stringBackground = new string[]{
                 "|         |",

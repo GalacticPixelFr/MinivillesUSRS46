@@ -123,10 +123,6 @@ namespace MinivillesURSR46
         /// <param name="gameOption">les différentes options de jeu</param>
         public void Run(GameOption gameOption)
         {
-            // On instantie les joueurs
-            playerH = new Player(new List<CardsInfo>(), pile);
-            playerIA = new Player(new List<CardsInfo>(), pile);
-            
             pile = new Piles();
             //Ajout des cartes dans la pile selon le nombre de carte possible.
             Cards card = new Cards();
@@ -139,7 +135,11 @@ namespace MinivillesURSR46
             }
             pile.AddCard(card.EachCards[10]);
             pile.AddCard(card.EachCards[11]);
-            
+
+            // On instantie les joueurs
+            playerH = new Player(new List<CardsInfo>(), pile);
+            playerIA = new Player(new List<CardsInfo>(), pile);
+
             int nbTurn = 0;
 
             // Variables de compte pour les stats de fin

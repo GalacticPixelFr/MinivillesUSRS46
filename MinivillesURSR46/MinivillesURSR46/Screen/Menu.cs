@@ -577,7 +577,7 @@ public static class Menu
         for (int i = 0; i < stringInt.Length; i++)
         {
             int index;
-            if (int.TryParse(stringInt[i].ToString(), out index));
+            if (int.TryParse(stringInt[i].ToString(), out index))
             {
                 if (i == 0) result = numberList[index];
                 else

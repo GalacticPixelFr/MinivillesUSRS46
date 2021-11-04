@@ -288,7 +288,7 @@ namespace MinivillesURSR46
                             DisplayMoney(); // On actualise aussi leur argent
                             action = true; // On dit que le joueur a fait une action
                         }
-                        else // Et si le joueur n'a pas assez d'argent
+                        else if (c.Cost >= playerH.UserMoney) // Et si le joueur n'a pas assez d'argent
                         {
                             // On ajoute l'élément pour dire au joueur qu'il n'a pas assez d'argent au background
                             background.Add(new Element(TextManagement.GetData("ZeroArgent")

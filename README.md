@@ -2,9 +2,7 @@
 ------------------------------------------------------------------------------------------
 CREDITS :
 
-PELE Camille
-BURNET Jordan
-DIDIER Mathias
+PELE Camille - BURNET Jordan - DIDIER Mathias
 
 Exécution en Console grâce à un affichage ASCII
 Développé sur Rider et VS Code

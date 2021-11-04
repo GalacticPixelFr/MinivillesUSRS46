@@ -565,37 +565,36 @@ namespace MinivillesURSR46
                     else { chat.AddText(TextManagement.GetDataString("NoIaAchat")); }
                 }
             }
-        }
         
-        /// <summary>
-        /// Fonction qui affiche les cartes au moment de l'achat et dans le menu des cartes.
-        /// </summary>
-        /// <param name="Urss"></param>
-        /// <param name="layer"></param>
-        /// <param name="offset"></param>
-        /// <returns></returns>
-        public List<Element> DisplayCards(bool Urss, Layer layer, int offset)
-        {
-            List<Element> cards = new List<Element>();
-
-            for (int i = 0; i <= 11; i++)
+            /// <summary>
+            /// Fonction qui affiche les cartes au moment de l'achat et dans le menu des cartes.
+            /// </summary>
+            /// <param name="Urss"></param>
+            /// <param name="layer"></param>
+            /// <param name="offset"></param>
+            /// <returns></returns>
+            public List<Element> DisplayCards(bool Urss, Layer layer, int offset)
             {
-                Coordinates coordinates = new Coordinates((screen.width + offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
-                    screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 11 : 0) + 4);
-                Element amount = new Element(new string[1] { "x " + pile.GetNumberCard(i) },
-                    new Coordinates(
-                        (screen.width + offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
-                        screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 16 : -5) + 4), Animation.None, Placement.mid,
-                    ConsoleColor.White, ConsoleColor.Black);
+                List<Element> cards = new List<Element>();
 
-                Element[] card = Urss ? CardChoice(i).ToElementFull(coordinates, true) : CardChoice(i).ToElementFull(coordinates, false);
+                for (int i = 0; i <= 11; i++)
+                {
+                    Coordinates coordinates = new Coordinates((screen.width + offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
+                        screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 11 : 0) + 4);
+                    Element amount = new Element(new string[1] { "x " + pile.GetNumberCard(i) },
+                        new Coordinates(
+                            (screen.width + offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
+                            screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 16 : -5) + 4), Animation.None, Placement.mid,
+                        ConsoleColor.White, ConsoleColor.Black);
 
-                layer.Add(amount);
-                layer.Add(card[0]);
-                layer.Add(card[1]);
-                cards.Add(card[1]);
+                    Element[] card = Urss ? CardChoice(i).ToElementFull(coordinates, true) : CardChoice(i).ToElementFull(coordinates, false);
+
+                    layer.Add(amount);
+                    layer.Add(card[0]);
+                    layer.Add(card[1]);
+                    cards.Add(card[1]);
+                }
+                return cards;
             }
-            return cards;
-        }
     }
 }

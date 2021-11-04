@@ -587,7 +587,12 @@ public static class Menu
         }
         return result;
     }
-
+    
+    /// <summary>
+    /// Permet d'afficher les l'explication des cartes
+    /// </summary>
+    /// <param name="screen">l'écran sur lequel afficher le menu</param>
+    /// <param name="game">pour accerder à la fonction Display cards</param>
     private static bool DisplayCards(Screen screen, Game game)
     {
         screen.HideLayer(background);
@@ -595,7 +600,6 @@ public static class Menu
         background.Clear();
 
         // affichage des cartes
-        GameOption gameOption = new GameOption();
         int choix = 0;
         while (true)
         {

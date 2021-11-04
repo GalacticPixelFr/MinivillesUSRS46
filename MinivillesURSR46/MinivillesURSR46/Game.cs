@@ -387,8 +387,13 @@ namespace MinivillesURSR46
 
             return c;
         }
-
-        //Check des cartes en main et activation des effets selon la couleur
+        
+        /// <summary>
+        /// Check des cartes en main et activation des effets selon la couleur
+        /// </summary>
+        /// <param name="userPlayer"></param>
+        /// <param name="opponentPlayer"></param>
+        /// <param name="dice"></param>
         public void CardsActivation(Player userPlayer, Player opponentPlayer, int dice)
         {
             foreach (CardsInfo card in userPlayer.UserHand) 
@@ -400,7 +405,7 @@ namespace MinivillesURSR46
                         userPlayer.UserMoney += card.Gain;
                     }
                 }
-
+                //Condition pour la carte Légendaire 2
                 if (dice == 1 || dice == 3 || dice == 5)
                 {
                     if (card.Id == 11)
@@ -423,6 +428,7 @@ namespace MinivillesURSR46
                         userPlayer.UserMoney -= card.Gain;
 
                     }
+                    //Condition pour la carte légendaire 1
                     else if (card.Id == 10)
                     {
                         opponentPlayer.UserMoney += card.Gain;
@@ -516,12 +522,19 @@ namespace MinivillesURSR46
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Fonction qui affiche les cartes au moment de l'achat et dans le menu des cartes.
+        /// </summary>
+        /// <param name="Urss"></param>
+        /// <param name="layer"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
         public List<Element> DisplayCards(bool Urss, Layer layer, int offset)
         {
             List<Element> cards = new List<Element>();
 
-            for (int i = 0; i <= 11; i++) //En faire une fonction
+            for (int i = 0; i <= 11; i++)
             {
                 Coordinates coordinates = new Coordinates((screen.width - offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
                     screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 11 : 0) + 4);

@@ -107,6 +107,16 @@ public static class Menu
         @" \____/\___/|_| |_| |_|_| |_| |_|\___|_| |_|\___\___|_|   ",
     };
 
+    private static string[] retour = new string[]
+    {
+        @" _____      _                   ",
+        @"|  __ \    | |                  ",
+        @"| |__) |___| |_ ___  _   _ _ __ ",
+        @"|  _  // _ \ __/ _ \| | | | '__|",
+        @"| | \ \  __/ || (_) | |_| | |   ",
+        @"|_|  \_\___|\__\___/ \__,_|_|   "
+    };
+
     private static string[] jordan = new string[]
     {
         @"   ___               _              ______                       _   ",
@@ -352,6 +362,7 @@ public static class Menu
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
         background.Add(titleElement);
         
+        
         Element dureeDeLaPartie = new Element(new string[]{"Durée de la partie :"},
             new Coordinates(5, screen.height / 7 * 2),
             Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
@@ -359,14 +370,18 @@ public static class Menu
         Element niveauIA = new Element(new Coordinates(5, screen.height / 7 * 4), "Niveau de l'IA :");
         Element modeDeJeu = new Element(new Coordinates(5, screen.height / 7 * 5), "Mode de jeu :");
         
-        Element commencerElement = new Element(commencer, new Coordinates(screen.width / 2, screen.height - 5),
+        Element commencerElement = new Element(commencer, new Coordinates(screen.width / 3*1, screen.height - 5),
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-        
+
+        Element retourElement = new Element(retour, new Coordinates(screen.width / 3*2, screen.height - 5),
+            Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
+
         background.Add(dureeDeLaPartie);
         background.Add(difficultee);
         background.Add(niveauIA);
         background.Add(modeDeJeu);
         background.Add(commencerElement);
+        background.Add(retourElement);
         
         Element dureeCourt = new Element( new string[]{"court"},
             new Coordinates(screen.width/8*3, screen.height / 7 * 2),
@@ -405,7 +420,7 @@ public static class Menu
 
         while (choix != 4)
         {
-            choix = screen.Select(new Element[] {dureeDeLaPartie, difficultee, niveauIA, modeDeJeu, commencerElement}, startPosition);
+            choix = screen.Select(new Element[] {dureeDeLaPartie, difficultee, niveauIA, modeDeJeu, commencerElement, retourElement}, startPosition);
             if (choix == 0)
             {
                 gameOption.duree = screen.Select(new Element[3] {dureeCourt, dureeMoyen, dureeLong}, gameOption.duree);
@@ -429,6 +444,10 @@ public static class Menu
                 gameOption.modeDeJeu = screen.Select(new Element[2] {modeDeJeuURSS, modeDeJeuUSA}, gameOption.modeDeJeu);
                 startPosition = 3;
                 choix = -1;
+            }
+            else if (choix == 5)
+            {
+                return false;
             }
         }
         screen.HideLayer(background);
@@ -569,7 +588,7 @@ public static class Menu
         return result;
     }
 
-    public static bool DisplayCards(Screen screen, Game game)
+    private static bool DisplayCards(Screen screen, Game game)
     {
         screen.HideLayer(background);
         screen.HideLayer(selectMainMenu);
@@ -577,7 +596,7 @@ public static class Menu
 
         // affichage des cartes
         GameOption gameOption = new GameOption();
-
+        int choix = 0;
         while (true)
         {
             List<Element> cards = game.DisplayCards(false, background, 0);
@@ -587,12 +606,7 @@ public static class Menu
                 background.Add(e);
             }
 
-            Element back = new Element(new String[6] {@" ____             _    ",
-                                                      @"|  _ \           | |   ",
-                                                      @"| |_) | __ _  ___| | __",
-                                                      @"|  _  </ _` |/ __| |/ /",
-                                                      @"| |_) | (_| | (__|   < ",
-                                                      @"|____/ \__,_|\___|_|\_\", },
+            Element back = new Element(retour,
                                         new Coordinates(screen.width / 2, screen.height - 8),
                                         Animation.None,
                                         Placement.mid,
@@ -603,7 +617,7 @@ public static class Menu
 
             screen.DisplayLayer(background);
 
-            int choix = screen.Select(cards.ToArray());
+            choix = screen.Select(cards.ToArray(), choix);
             screen.HideLayer(background);
             background.Clear();
 
@@ -643,7 +657,7 @@ public static class Menu
                                         ConsoleColor.White,
                                         ConsoleColor.Black)); // info carte
 
-            background.Add(new Element(new String[1] {"Press Enter to go Back"},
+            background.Add(new Element(new String[1] {"Pressez entré pour retourner en arrière"},
                                         new Coordinates(screen.width / 2, screen.height - 2),
                                         Animation.None,
                                         Placement.mid,

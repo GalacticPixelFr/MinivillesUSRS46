@@ -473,6 +473,7 @@ namespace MinivillesURSR46
         /// <param name="difficulty">La difficulté de l'ia</param>
         /// <param name="Urss">Si le jeu est en mode URSS ou pas</param>
         /// <param name="buyCardIA">La stat du nombre de carte acheter</param>
+        
         public void actionIA(int difficulty, bool Urss, ref int buyCardIA)
         {
             if (difficulty == 0) // IA choix au hasard
@@ -481,7 +482,7 @@ namespace MinivillesURSR46
                 if (rnd.Next(0, 2) == 0 && playerIA.UserMoney > 0)
                 {
                     // choix d'une carte a acheter au hasard
-                    int choix = rnd.Next(0, 8);
+                    int choix = rnd.Next(0, 12);
 
                     // selection carte choisi
                     CardsInfo c = CardChoice(choix); 
@@ -507,53 +508,61 @@ namespace MinivillesURSR46
                 - si argent joueur dans 4e quart de gain finish
                 */
                 if ((playerH.UserMoney > gainFinish/4 && playerH.UserMoney <= gainFinish/2 && rnd.Next(0, 4) == 0) || 
-                    (playerH.UserMoney > gainFinish/2 && playerH.UserMoney < (gainFinish*3)/4 && rnd.Next(0, 4) > 0) || 
+                    (playerH.UserMoney > gainFinish/2 && playerH.UserMoney<(gainFinish*3)/4 && rnd.Next(0, 4) > 0) || 
                     (playerH.UserMoney >= (gainFinish*3)/4)){ tranquille = false; }
 
                 CardsInfo c = null; // futur carte acheté
 
-                // tranquille signifie qu'elle va osciller entre acheter vert et bleu afin d'augmenter ses gains (priorité au bleu car plus rentable)
-                if (tranquille){
+                // tranquille signifie qu'elle va osciller entre acheter vert/bleu/jaune afin d'augmenter ses gains (priorité au bleu car plus rentable)
+                if (tranquille)
+                {
                     /*
-                    1/5 de ne rien faire
-                    1/5 de faire vert
-                    3/5 de faire bleu
+                    1/6 de ne rien faire
+                    1/6 de faire vert
+                    1/6 de faire jaune
+                    3/6 de faire bleu
                     */
-                    int choix = rnd.Next(0,6);
-                    if (choix == 0){ //vert
-                        if (playerIA.UserMoney >= 3) { // si choix entre ferme et foret possible (argent suffisant)
-                            if (rnd.Next(0, 2) == 0 && pile.GetNumberCard(2) > 0) { c = CardChoice(2); } // 1/2 achat boulangerie
-                            else if (pile.GetNumberCard(4) > 0) { c = CardChoice(4); } // 1/2 achat superette
-                            }
-                        else if (playerIA.UserMoney >= 2 && pile.GetNumberCard(2) > 0) { c = CardChoice(2); }
+                    int choix = rnd.Next(0, 7);
+                    if (choix == 0) //vert
+                    {
+                        choix = rnd.Next(0, 3);
+                        if (choix == 0 && playerIA.UserMoney >= 1 && pile.GetNumberCard(2) > 0) { c = CardChoice(2);
                         }
-                    else if (choix < 5){ //bleu
-                        if (playerIA.UserMoney >= 1 && pile.GetNumberCard(0) > 0) { c = CardChoice(0); } // si achat champs possible
-                        else if (playerIA.UserMoney >= 2 && (pile.GetNumberCard(1) > 0 || pile.GetNumberCard(5) > 0)) {
-                            if (pile.GetNumberCard(1) == 0){ c = CardChoice(5); } // si plus de ferme, achat foret
-                            else if (pile.GetNumberCard(5) == 0) { c = CardChoice(1); } // si plus de foret, achat ferme
-                            else if (rnd.Next(0, 2) == 0) { c = CardChoice(1); } // sinon achat aleatoire, 1/2 pour chaque
-                            else { c = CardChoice(5); }
-                            }
-                        else if (playerIA.UserMoney >= 4 && pile.GetNumberCard(7) > 0) { c = CardChoice(7); }
+                            else if (choix == 1 && playerIA.UserMoney >= 2 && pile.GetNumberCard(4) > 0) { c = CardChoice(4); }
+                            else if (choix == 2 && playerIA.UserMoney >= 4 && pile.GetNumberCard(8) > 0) { c = CardChoice(8); }
+                        }
+                        else if (choix == 1) //jaune
+                        {
+                            choix = rnd.Next(0, 2);
+                            if (choix == 0 && playerIA.UserMoney >= 10 && pile.GetNumberCard(10) > 0) { c = CardChoice(10); }
+                            else if (choix == 1 && playerIA.UserMoney >= 10 && pile.GetNumberCard(11) > 0) { c = CardChoice(10); }
+                        }
+                        else if (choix < 6) //bleu
+                        {
+                            choix = rnd.Next(0, 4);
+                            if (choix == 0 && playerIA.UserMoney >= 1 && pile.GetNumberCard(0) > 0) { c = CardChoice(0); }
+                            else if (choix == 1 && playerIA.UserMoney >= 2 && pile.GetNumberCard(1) > 0) { c = CardChoice(1); }
+                            else if (choix == 2 && playerIA.UserMoney >= 2 && pile.GetNumberCard(5) > 0) { c = CardChoice(5); }
+                            else if (choix == 2 && playerIA.UserMoney >= 6 && pile.GetNumberCard(7) > 0) { c = CardChoice(7); }
                         }
                     }
-                else
-                {
-                    // quand on panique, on essaye d'acheter des cartes rouges pour diminuer l'argent de l'adversaire
-                    if (playerIA.UserMoney >= 4 && pile.GetNumberCard(6) > 0) { c = CardChoice(6); } // achat de restaurant en priorité (valeur plus grande)
-                    else if (playerIA.UserMoney >= 2 && pile.GetNumberCard(3) > 0) { c = CardChoice(3); }
-                }
+                    else
+                    {
+                        // quand on panique, on essaye d'acheter des cartes rouges pour diminuer l'argent de l'adversaire
+                        int choix = rnd.Next(0, 3);
+                        if (choix == 0 && playerIA.UserMoney >= 2 && pile.GetNumberCard(3) > 0) { c = CardChoice(3); }
+                        else if (choix == 1 && playerIA.UserMoney >= 4 && pile.GetNumberCard(6) > 0) { c = CardChoice(6); }
+                        else if (choix == 2 && playerIA.UserMoney >= 6 && pile.GetNumberCard(9) > 0) { c = CardChoice(9); }
+                    }
 
-                // si on a décidé d'acheter
-                if (c != null)
-                {
-                    playerIA.BuyCard(c, pile);
-                    chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));
-                }	
-                else
-                {
-                    chat.AddText(TextManagement.GetDataString("NoIaAchat"));
+                    // si on a décidé d'acheter
+                    if (c != null)
+                    {
+                        buyCardIA += 1;
+                        playerIA.BuyCard(c, pile);
+                        chat.AddText(TextManagement.GetDataString("IaCarteAchat", Urss ? c.NameURSS : c.Name));
+                    }
+                    else { chat.AddText(TextManagement.GetDataString("NoIaAchat")); }
                 }
             }
         }

@@ -61,7 +61,7 @@ CARTES DU JEU :
 | Rouge | Café | Starbuck | Perlov Tea House | 3 | 2 | Recevez 1 pièce du joueur qui a lancé le dé |
 | Rouge | Restaurant | McDonald | Le Goum | 5 | 4 | Recevez 2 pièces du joueur qui a lancé le dé |
 
-CARTES Ajoutées :
+CARTES AJOUTEES :
 
 | Couleur | Nom version USA | Nom version URSS | Valeur d'activation (dé) | Coût d'achat de la carte | Effet de la carte |
 | ------- | --------------- | ---------------- | ------------------------ | ------------------------ | ----------------- |

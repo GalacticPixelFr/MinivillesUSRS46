@@ -4,9 +4,7 @@ CREDITS :
 
 PELE Camille - BURNET Jordan - DIDIER Mathias
 
-Exécution en Console grâce à un affichage ASCII
-Développé sur Rider et VS Code
-Lien du répertoire [GitHub](https://github.com/GalacticPixelFr/MinivillesUSRS46)
+Exécution en Console grâce à un affichage ASCII - Développé sur Rider et VS Code
 
 ------------------------------------------------------------------------------------------
 PRINCIPE DU JEU :

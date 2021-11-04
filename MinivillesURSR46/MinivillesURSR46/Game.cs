@@ -117,6 +117,9 @@ namespace MinivillesURSR46
             }
         }
 
+        /// <summary>
+        /// permet d'initialisé la pile de cartes en début de partie
+        /// </summary>
         public void InitializePile()
         {
             pile = new Piles();

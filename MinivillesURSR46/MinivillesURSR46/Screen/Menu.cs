@@ -653,9 +653,12 @@ public static class Menu
             else if (ci.Color == Color.Jaune && ci.Id == 10) { couleur = "Carte Jaune/Rouge : Légendaire (unique), s'active lors du tour adverse"; }
             else if (ci.Color == Color.Jaune && ci.Id == 11) { couleur = "Carte Jaune/Bleue : Légendaire (unique), s'active lors de votre tour"; }
 
+            string de = $"S'active pour un dé valant {ci.Dice}";
+            if (ci.Id == 11) { de = "S'active pour un dé valant 1, 3 ou 5"; }
+
             background.Add(new Element(new String[7] {couleur, 
                                                       $" ",
-                                                      $"S'active pour un dé valant {ci.Dice}",
+                                                      de,
                                                       $" ",
                                                       $"Capacité : {ci.Effect}",
                                                       $" ",

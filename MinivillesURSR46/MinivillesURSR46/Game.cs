@@ -81,7 +81,7 @@ namespace MinivillesURSR46
                     
                 cards.Add(playerIA.UserHand[i].Name);
                 Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerIA.GetNumberCardType()*(11+2)/2 + index*(11+2)+9, +3);
-                Element[] elements = playerIA.UserHand[i].ToElementSemi(false, playerIA.GetNumberCard(playerIA.UserHand[i].Id), coordinates);
+                Element[] elements = playerIA.UserHand[i].ToElementSemi(false, coordinates);
                 Element amount = new Element(new string[1] {"x" + playerIA.GetNumberCard(playerIA.UserHand[i].Id)},
                     new Coordinates((screen.width - 34) / 2 - playerIA.GetNumberCardType() * (11 + 2) / 2 + index * (11 + 2) + 9, 5),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
@@ -103,7 +103,7 @@ namespace MinivillesURSR46
                 
                 cards.Add(playerH.UserHand[i].Name);
                 Coordinates coordinates = new Coordinates((screen.width-34)/2 - playerH.GetNumberCardType()*(11+2)/2 + index*(11+2)+9, screen.height-3);
-                Element[] elements = playerH.UserHand[i].ToElementSemi(true, playerH.GetNumberCard(playerH.UserHand[i].Id), coordinates);
+                Element[] elements = playerH.UserHand[i].ToElementSemi(true, coordinates);
                 Element amount = new Element(new string[1] {"x" + playerH.GetNumberCard(playerH.UserHand[i].Id)},
                     new Coordinates((screen.width - 34) / 2 - playerH.GetNumberCardType() * (11 + 2) / 2 + index * (11 + 2) + 9, screen.height-6),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);

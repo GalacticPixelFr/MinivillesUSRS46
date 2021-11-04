@@ -11,7 +11,7 @@ namespace MinivillesURSR46
         public Player playerIA;
         public Die die;
         public Piles pile;
-        public int gainFinish; // en prévision du bonus changer condition fin pour partie rapide/normal/lente
+        public int gainFinish;
 
         // screen
         private Screen screen;
@@ -49,6 +49,9 @@ namespace MinivillesURSR46
             background = new Layer(1);
         }
 
+        /// <summary>
+        /// Permet d'afficher l'argent des joueurs
+        /// </summary>
         public void DisplayMoney()
         {
             money.Add(new Element(new string[] {playerIA.UserMoney+" pièces", }
@@ -60,10 +63,11 @@ namespace MinivillesURSR46
                 Animation.None, Placement.topLeft, playerH.UserMoney<0 ? ConsoleColor.Red : ConsoleColor.White, ConsoleColor.Black));
             
             screen.DisplayLayer(money);
-            
-            
         }
       
+        /// <summary>
+        /// Permet d'afficher les cartes possédé par les joueur
+        /// </summary>
         public void DisplayHands()
         {
             screen.HideLayer(hands);
@@ -115,16 +119,24 @@ namespace MinivillesURSR46
             screen.DisplayLayer(hands);
         }
 
+        /// <summary>
+        /// Permet de lancer le jeu
+        /// </summary>
         public void StartGame()
         {
             while (!Menu.Display(screen, this))
             {
-                screen = new Screen(screen.width, screen.height);
+                screen = new Screen(screen.width, screen.height); //Pour reset l'écran
             }
         }
         
+        /// <summary>
+        /// Permet de lancer une partie
+        /// </summary>
+        /// <param name="gameOption">les différentes options de jeu</param>
         public void Run(GameOption gameOption)
         {
+            // On instantie les joueurs
             playerH = new Player(new List<CardsInfo>(), pile);
             playerIA = new Player(new List<CardsInfo>(), pile);
             int nbTurn = 0;
@@ -154,7 +166,7 @@ namespace MinivillesURSR46
             // condition fin
             while (true)
             {
-                nbTurn++;
+                nbTurn++; //On incrémente le nombre de tours
                 DisplayHands();
                 DisplayMoney();
                 int resultDie;
@@ -162,12 +174,13 @@ namespace MinivillesURSR46
                 chat.AddText(TextManagement.GetDataString("TourJ", nbTurn.ToString()));
                 while (true)
                 {
+                    // On créer un élément
                     Element pressEnter = new Element(TextManagement.GetData("EnterDé")
                         , new Coordinates((screen.width-34) / 2, screen.height / 2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-                    screen.DisplayElement(pressEnter);
+                    screen.DisplayElement(pressEnter); // Puis on l'affiche
                     
-                    ConsoleKey key = Console.ReadKey().Key;
+                    ConsoleKey key = Console.ReadKey().Key; // On attend que le joueur appui sur une touche
                     if (key == ConsoleKey.Enter || key == ConsoleKey.Spacebar)
                     {
                         resultDie = die.Lancer();
@@ -179,107 +192,114 @@ namespace MinivillesURSR46
                 Layer dieLayer = new Layer(1);
                 for (int i = 0; i < 5; i++)
                 {
+                    // On creer un élément de dé aléatoire
                     dieLayer.Add(new Element(Die.ToStrings(rnd.Next(1, 7))
                         , new Coordinates((screen.width-34)/2, screen.height/2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                     Thread.Sleep(300);
                     screen.DisplayLayer(dieLayer);
                 }
+                // Puis on creer un élément dé avec la valeur qu'on a obtenue
                 dieLayer.Add(new Element(Die.ToStrings(resultDie)
                     , new Coordinates((screen.width-34)/2, screen.height/2),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                 screen.DisplayLayer(dieLayer);
                 Thread.Sleep(3000);
                 screen.HideLayer(dieLayer);
-                chat.AddText(TextManagement.GetDataString("NombreDé", resultDie.ToString()));
+                chat.AddText(TextManagement.GetDataString("NombreDé", resultDie.ToString())); // On affiche dans le chat la valeur qu'on a obtenue
 
+                // On instantie des variables pour les connaitre les révenues des joueurs 
                 int incomePlayer = playerH.UserMoney;
                 int incomeIA = playerIA.UserMoney;
-                CardsActivation(playerH, playerIA, resultDie);
+                
+                CardsActivation(playerH, playerIA, resultDie); // On actives les bonnes cartes
+                
+                // Puis on calcule la différence
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
-                DisplayMoney();
-                chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
-                gainMoneyPlayer += incomePlayer;
+                DisplayMoney(); // On actualise leur argent dans l'écran
+                chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString())); // Puis on le dit dans le chat pour plus de clarté
+                gainMoneyPlayer += incomePlayer; // On ajoute la différence aux gains totaux du joueur
                 if (incomeIA < 0)
                 {
-                    lossMoneyIA += Math.Abs(incomeIA);
+                    lossMoneyIA += Math.Abs(incomeIA); // On ajoute la valeur absolue des pertes aux pertes total
                     chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIA.ToString()));
                 }
                 else
                 {
-                    gainMoneyIA += incomeIA;
+                    gainMoneyIA += incomeIA; // On ajoute la valeur absolue des pertes aux pertes total
                     chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
                 }
-                //IA bleue et rouge
-                //H bleue et vert
 
-                // choix action joueur
-                bool action = false;
-                while (!action)
+                // Phase d'achat du joueur
+                bool action = false; // Pour savoir si le joueur a fait une action
+                while (!action) //S'il n'a rien fait on boucle
                 {
+                    // On creer un élément pour demander si le joueur veut acheter
                     Element title = new Element(TextManagement.GetData("Achat")
                         , new Coordinates((screen.width-34)/2, screen.height / 2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
-                    screen.DisplayElement(title);
-
-                    Layer choice = new Layer(1); 
+                    screen.DisplayElement(title); // On affiche l'élément
+                    
+                    // Permet de faire faire un choix au joueur entre oui et non
+                    Layer choice = new Layer(1); // On créer un layer sur lequel afficher les éléments du choix
                     Element oui = new Element(new Coordinates((screen.width-34)/3 *1, screen.height/2+2), "OUI");
                     Element non = new Element(new Coordinates((screen.width-34)/3 *2, screen.height/2+2), "NON");
+                    // On ajoute les éléments créé plus tôt dans le layer
                     choice.Add(oui);
                     choice.Add(non);
-                    screen.DisplayLayer(choice);
-                    int choix = screen.Select(new Element[2] {non, oui});
+                    screen.DisplayLayer(choice); // On affiche le layer
+                    int choix = screen.Select(new Element[2] {non, oui}); // On demande au joueur s'il veut acheter
                     screen.HideLayer(choice);
                     choice.Clear();
                     screen.HideElement(title);
-                    if (choix == 0)
+                    
+                    // On gère le choix du joueur
+                    if (choix == 0) // Si le joueur ne veut pas acheter
                     {
-                        chat.AddText(TextManagement.GetDataString("NoAchat"));
+                        chat.AddText(TextManagement.GetDataString("NoAchat")); // On ajoute au chat un petit message
                     }
-                    if (choix == 1)
+                    if (choix == 1) // Si le joueur veut acheter
                     {
-                        List<Element> cardsElements = DisplayCards(Urss, middle, 34);
+                        List<Element> cardsElements = DisplayCards(Urss, middle, -34); // On récupère l'affichage des différentes cartes
                       
-                        screen.DisplayLayer(middle);
-                        choix = screen.Select(cardsElements.ToArray());
+                        screen.DisplayLayer(middle); // On les affiches
+                        choix = screen.Select(cardsElements.ToArray()); // On fait faire un choix entre toutes les cartes
                         screen.HideLayer(middle);
                         middle.Clear();
 
-
-                        // selection carte choisi
+                        // Selection de la carte choisi
                         CardsInfo c = CardChoice(choix);
 
-                        // on vérifie que la carte est encore disponible
-                        if (pile.GetNumberCard(choix) == 0)
+                        // On vérifie que la carte est encore disponible
+                        if (pile.GetNumberCard(choix) >= 0) // Si la carte n'est plus disponible
                         {
+                            // On ajoute l'élément pour dire au joueur que la carte n'est plus disponible au background
                             background.Add(new Element(TextManagement.GetData("Indisponible")
                                                     , new Coordinates((screen.width-34)/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
-                        // on vérifie que le joueur a assez d'argent
-                        else if (c.Cost <= playerH.UserMoney)
+                        else if (c.Cost <= playerH.UserMoney) // Si la carte est disponible on vérifi que le joueur a assez d'argent
                         {
-                            buyCardPlayer += 1;
-                            playerH.BuyCard(c, pile);
-                            chat.AddText(TextManagement.GetDataString("CarteAchat", Urss ? c.NameURSS : c.Name));
-                            DisplayHands();
-                            DisplayMoney();
-                            action = true;
+                            buyCardPlayer += 1; // On incrément la stat du nombre de carte acheté
+                            playerH.BuyCard(c, pile); // On fait acheter la carte
+                            chat.AddText(TextManagement.GetDataString("CarteAchat", Urss ? c.NameURSS : c.Name)); // On dit dans le chat
+                            DisplayHands(); // On actualise les cartes des joueurs
+                            DisplayMoney(); // On actualise aussi leur argent
+                            action = true; // On dit que le joueur a fait une action
                         }
-                        else
+                        else // Et si le joueur n'a pas assez d'argent
                         {
+                            // On ajoute l'élément pour dire au joueur qu'il n'a pas assez d'argent au background
                             background.Add(new Element(TextManagement.GetData("ZeroArgent")
                                                     , new Coordinates((screen.width-34)/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
-                        screen.DisplayLayer(background);
+                        screen.DisplayLayer(background); // On affiche tous les éléments qu'on ajouté plus haut
                         Thread.Sleep(1000);
-                        screen.HideLayer(background);
-
+                        screen.HideLayer(background); // Puis on le cache
                     }
                     else { action = true; }
-
                 }
 
                 // verification condition de fin
@@ -288,42 +308,47 @@ namespace MinivillesURSR46
                     if (gameOption.difficultee != 1) { break; }
                     else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
                 }
-                DisplayHands();
-                DisplayMoney();
+                DisplayHands(); // On actualise les cartes des joueurs
+                DisplayMoney(); // On actualise aussi leur argent
 
                 // tour joueur IA
                 chat.AddText(TextManagement.GetDataString("TourIa", nbTurn.ToString()));
-                resultDie = die.Lancer();
+                resultDie = die.Lancer(); // On fait lancer le dé
                 
+                // Animation du Dé
                 dieLayer = new Layer(1);
                 for (int i = 0; i < 5; i++)
                 {
+                    // On creer un élément de dé aléatoire
                     dieLayer.Add(new Element(Die.ToStrings(rnd.Next(1, 7))
                         , new Coordinates((screen.width-34)/2, screen.height/2),
                         Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                     Thread.Sleep(300);
                     screen.DisplayLayer(dieLayer);
                 }
+                // Puis on creer un élément dé avec la valeur qu'on a obtenue
                 dieLayer.Add(new Element(Die.ToStrings(resultDie)
                     , new Coordinates((screen.width-34)/2, screen.height/2),
                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                 screen.DisplayLayer(dieLayer);
                 Thread.Sleep(3000);
-                screen.HideLayer(dieLayer);
+                screen.HideLayer(dieLayer);;
                 
                 chat.AddText(TextManagement.GetDataString("IaDé", resultDie.ToString()));
                 
-                //Activation des cartes et ajout des textes dans le chat en fonction des revenus du joueur
+                // Activation des cartes et ajout des textes dans le chat en fonction des revenus du joueur
+                // On instantie des variables pour les connaitre les révenues des joueurs 
                 incomePlayer = playerH.UserMoney;
                 incomeIA = playerIA.UserMoney;
-                CardsActivation(playerIA, playerH, resultDie);
+                CardsActivation(playerIA, playerH, resultDie); // On actives les bonnes cartes
+                // Puis on calcule la différence
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
                 chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
-                gainMoneyIA += incomeIA;
+                gainMoneyIA += incomeIA;  // On ajoute la différence aux gains totaux de l'ia
                 if (incomePlayer < 0)
                 {
-                    lossMoneyPlayer += Math.Abs(incomePlayer);
+                    lossMoneyPlayer += Math.Abs(incomePlayer); // On ajoute la valeur absolue des pertes aux pertes total
                     chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
                 }
                 else
@@ -331,10 +356,6 @@ namespace MinivillesURSR46
                     gainMoneyPlayer += incomePlayer;
                     chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
                 }
-                
-                //H bleue et rouge
-                //IA bleue et vert
-
                 // difficulté de l'IA et action
                 actionIA(gameOption.niveauIA, Urss, ref buyCardIA);
 
@@ -349,6 +370,7 @@ namespace MinivillesURSR46
             
             screen.Clear();
             Layer endLayer = new Layer(1);
+            // Conditions de fin
             if (playerH.UserMoney > playerIA.UserMoney)
             {
                 Menu.DisplayEnd(screen, endLayer, true, false, buyCardIA, buyCardPlayer, 
@@ -359,15 +381,22 @@ namespace MinivillesURSR46
             {
                 Menu.DisplayEnd(screen, endLayer, false, false, buyCardIA, buyCardPlayer, 
                     gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
-                Thread.Sleep(10000);            }
+                Thread.Sleep(10000);
+            }
             else // egalité des sommes d'argent
             {
                 Menu.DisplayEnd(screen, endLayer, false, true, buyCardIA, buyCardPlayer, 
                     gainMoneyIA, gainMoneyPlayer, lossMoneyIA, lossMoneyPlayer);
-                Thread.Sleep(10000);            }
+                Thread.Sleep(10000);
+            }
             screen.DisplayLayer(background);
         }
 
+        /// <summary>
+        /// Permet d'avoir une carte avec son id
+        /// </summary>
+        /// <param name="i">l'id de la carte que l'on veut avoir</param>
+        /// <returns>La carte avec l'id qui correspond</returns>
         private CardsInfo CardChoice(int i)
         {
             CardsInfo c;
@@ -438,6 +467,12 @@ namespace MinivillesURSR46
             }
         }
 
+        /// <summary>
+        /// Permet à l'ia d'effectuer son tour
+        /// </summary>
+        /// <param name="difficulty">La difficulté de l'ia</param>
+        /// <param name="Urss">Si le jeu est en mode URSS ou pas</param>
+        /// <param name="buyCardIA">La stat du nombre de carte acheter</param>
         public void actionIA(int difficulty, bool Urss, ref int buyCardIA)
         {
             if (difficulty == 0) // IA choix au hasard
@@ -544,11 +579,11 @@ namespace MinivillesURSR46
 
             for (int i = 0; i <= 11; i++)
             {
-                Coordinates coordinates = new Coordinates((screen.width - offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
+                Coordinates coordinates = new Coordinates((screen.width + offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
                     screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 11 : 0) + 4);
                 Element amount = new Element(new string[1] { "x " + pile.GetNumberCard(i) },
                     new Coordinates(
-                        (screen.width - offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
+                        (screen.width + offset) / 2 - 6 * (18 + 2) / 2 + i % 6 * (18 + 2) + 9,
                         screen.height / 2 - 2 * (9 + 2) / 2 + (i >= 6 ? 16 : -5) + 4), Animation.None, Placement.mid,
                     ConsoleColor.White, ConsoleColor.Black);
 
@@ -559,7 +594,6 @@ namespace MinivillesURSR46
                 layer.Add(card[1]);
                 cards.Add(card[1]);
             }
-
             return cards;
         }
     }

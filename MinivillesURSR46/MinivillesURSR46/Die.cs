@@ -13,11 +13,20 @@ namespace MinivillesURSR46
             
         }
         
+        /// <summary>
+        /// Fonction qui lance le dé
+        /// </summary>
+        /// <returns></returns>
         public int Lancer()
         {
             return random.Next(0, 6) + 1;
         }
 
+        /// <summary>
+        /// Fonction l'affichage du dé selon un nombre
+        /// </summary>
+        /// <param name="number"></param>
+        /// <returns></returns>
         public static string[] ToStrings(int number)
         {
             /* +---------+

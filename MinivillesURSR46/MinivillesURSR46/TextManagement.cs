@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 namespace MinivillesURSR46
 {
+    //Classe de stockage des textes du jeu
     public class TextManagement
     {
         static Dictionary<string, string[]> chatData = new Dictionary<string, string[]>()
@@ -43,11 +44,22 @@ namespace MinivillesURSR46
             {"TourIa", new []{"                                Tour & - IA                                "}},
         };
 
+        /// <summary>
+        /// Fonction permettant de récupéré le string[] à partir d'un mot clé
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static string[] GetData(string key)
         {
             return chatData[key];
         }
         
+        /// <summary>
+        /// Fonction permettant de récupéré le string[] à partir d'un mot clé et d'y changer & par une variable
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static string[] GetData(string key, string data)
         {
             List<string> result = new List<string>();
@@ -59,11 +71,22 @@ namespace MinivillesURSR46
             return result.ToArray();
         }
 
+        /// <summary>
+        /// Fonction permettant de récupéré le string à partir d'un mot clé
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public static string GetDataString(string key)
         {
             return chatData[key][0];
         }
         
+        /// <summary>
+        /// Fonction permettant de récupéré le string à partir d'un mot clé et d'y changer & par une variable
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public static string GetDataString(string key, string data)
         {
             List<string> result = new List<string>();

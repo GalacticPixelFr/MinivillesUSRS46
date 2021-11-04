@@ -56,7 +56,7 @@ namespace MinivillesURSR46
                     color = ConsoleColor.Red;
                     break;
                 case Color.Vert:
-                    color = ConsoleColor.Green;
+                    color = ConsoleColor.DarkGreen;
                     break;
                 case Color.Jaune:
                     color = ConsoleColor.Yellow;
@@ -116,7 +116,7 @@ namespace MinivillesURSR46
                     color = ConsoleColor.Red;
                     break;
                 case Color.Vert:
-                    color = ConsoleColor.Green;
+                    color = ConsoleColor.DarkGreen;
                     break;
                 case Color.Jaune:
                     color = ConsoleColor.Yellow;

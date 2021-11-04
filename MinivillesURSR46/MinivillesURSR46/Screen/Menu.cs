@@ -298,6 +298,9 @@ public static class Menu
     
     public static bool Display(Screen screen, Game game)
     {
+        if (Console.BufferWidth < screen.width) Console.BufferWidth = screen.width;
+        if (Console.BufferHeight < screen.height) Console.BufferHeight = screen.height;
+
         screen.HideLayer(background);
         screen.HideLayer(selectMainMenu);
         background.Clear();
@@ -349,11 +352,11 @@ public static class Menu
         background.Add(titleElement);
         
         Element dureeDeLaPartie = new Element(new string[]{"Durée de la partie :"},
-            new Coordinates(5, screen.height / 6 * 2),
+            new Coordinates(5, screen.height / 7 * 2),
             Animation.None, Placement.topLeft, ConsoleColor.Black, ConsoleColor.White);
-        Element difficultee = new Element(new Coordinates(5, screen.height / 6 * 3), "Difficultée :");
-        Element niveauIA = new Element(new Coordinates(5, screen.height / 6 * 4), "Niveau de l'IA :");
-        Element modeDeJeu = new Element(new Coordinates(5, screen.height / 6 * 5), "Mode de jeu :");
+        Element difficultee = new Element(new Coordinates(5, screen.height / 7 * 3), "Difficultée :");
+        Element niveauIA = new Element(new Coordinates(5, screen.height / 7 * 4), "Niveau de l'IA :");
+        Element modeDeJeu = new Element(new Coordinates(5, screen.height / 7 * 5), "Mode de jeu :");
         
         Element commencerElement = new Element(commencer, new Coordinates(screen.width / 2, screen.height - 5),
             Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);
@@ -365,32 +368,32 @@ public static class Menu
         background.Add(commencerElement);
         
         Element dureeCourt = new Element( new string[]{"court"},
-            new Coordinates(screen.width/8*3, screen.height / 6 * 2),
+            new Coordinates(screen.width/8*3, screen.height / 7 * 2),
             Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-        Element dureeMoyen = new Element(new Coordinates(screen.width/8*4, screen.height / 6 * 2), "moyen");
-        Element dureeLong = new Element(new Coordinates(screen.width/8*5, screen.height / 6 * 2), "long");
+        Element dureeMoyen = new Element(new Coordinates(screen.width/8*4, screen.height / 7 * 2), "moyen");
+        Element dureeLong = new Element(new Coordinates(screen.width/8*5, screen.height / 7 * 2), "long");
         background.Add(dureeCourt);
         background.Add(dureeMoyen);
         background.Add(dureeLong);
         
         Element difficulteeNormale = new Element(new string[]{"normale"}, 
-            new Coordinates(screen.width/5*2, screen.height / 6 * 3)
+            new Coordinates(screen.width/5*2, screen.height / 7 * 3)
             ,Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-        Element difficulteeExpert = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 3), "expert");
+        Element difficulteeExpert = new Element(new Coordinates(screen.width/5*3, screen.height / 7 * 3), "expert");
         background.Add(difficulteeNormale);
         background.Add(difficulteeExpert);
         
         Element niveauIADebile = new Element(new string[]{"débile"}, 
-            new Coordinates(screen.width/5*2, screen.height / 6 * 4)
+            new Coordinates(screen.width/5*2, screen.height / 7 * 4)
             ,Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-        Element niveauIAGenie = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 4), "génie");
+        Element niveauIAGenie = new Element(new Coordinates(screen.width/5*3, screen.height / 7 * 4), "génie");
         background.Add(niveauIADebile);
         background.Add(niveauIAGenie);
         
         Element modeDeJeuURSS = new Element(new string[]{"URSS"},
-            new Coordinates(screen.width/5*2, screen.height / 6 * 5)
+            new Coordinates(screen.width/5*2, screen.height / 7 * 5)
             ,Animation.None, Placement.mid, ConsoleColor.Black, ConsoleColor.White);
-        Element modeDeJeuUSA = new Element(new Coordinates(screen.width/5*3, screen.height / 6 * 5), "USA");
+        Element modeDeJeuUSA = new Element(new Coordinates(screen.width/5*3, screen.height / 7 * 5), "USA");
         background.Add(modeDeJeuURSS);
         background.Add(modeDeJeuUSA);
         

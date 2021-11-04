@@ -576,12 +576,16 @@ public static class Menu
         
         for (int i = 0; i < stringInt.Length; i++)
         {
-            if (i == 0) result = numberList[Int32.Parse(stringInt[i].ToString())];
-            else
+            int index;
+            if (int.TryParse(stringInt[i].ToString(), out index));
             {
-                for (int j = 0; j < result.Length; j++)
+                if (i == 0) result = numberList[index];
+                else
                 {
-                    result[j] += numberList[Int32.Parse(stringInt[i].ToString())][j];
+                    for (int j = 0; j < result.Length; j++)
+                    {
+                        result[j] += numberList[index][j];
+                    }
                 }
             }
         }

@@ -28,6 +28,8 @@ namespace MinivillesURSR46
             {"NombreDé", new []{"- Vous avez fait &."}},
             {"Revenu", new []{"- Vous gagnez & pièces(s)."}},
             {"RevenuIa", new []{"- Votre adversaire gagne & pièces."}},
+            {"NegativeRevenu", new []{"- Vous perdez & pièces(s)."}},
+            {"NegativeRevenuIa", new []{"- Votre adversaire perd & pièces."}},
             {"Achat", new []{"Voulez vous acheter ?"}},
             {"CarteAchat", new []{"- Vous avez acheté &."}},
             {"Indisponible", new []{"La carte n'est plus disponible."}},

@@ -572,20 +572,16 @@ public static class Menu
     public static string[] GetAsciiNumber(int number)
     {
         string stringInt = number.ToString();
-        string[] result = new string[] { };
+        string[] result = new string[] {"", "", "", "", "", ""};
         
         for (int i = 0; i < stringInt.Length; i++)
         {
             int index;
             if (int.TryParse(stringInt[i].ToString(), out index))
             {
-                if (i == 0) result = numberList[index];
-                else
+                for (int j = 0; j < result.Length; j++)
                 {
-                    for (int j = 0; j < result.Length; j++)
-                    {
-                        result[j] += numberList[index][j];
-                    }
+                    result[j] += numberList[index][j];
                 }
             }
         }

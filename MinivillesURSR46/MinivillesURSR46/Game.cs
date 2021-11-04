@@ -217,7 +217,7 @@ namespace MinivillesURSR46
                 screen.HideLayer(dieLayer);
                 chat.AddText(TextManagement.GetDataString("NombreDé", resultDie.ToString())); // On affiche dans le chat la valeur qu'on a obtenue
 
-                // On instantie des variables pour les connaitre les révenues des joueurs 
+                // On instantie des variables pour les connaitre les revenues des joueurs 
                 int incomePlayer = playerH.UserMoney;
                 int incomeIA = playerIA.UserMoney;
                 
@@ -226,18 +226,19 @@ namespace MinivillesURSR46
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
                 DisplayMoney(); // On actualise leur argent dans l'écran
-                chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString())); // Puis on le dit dans le chat pour plus de clarté
-                gainMoneyPlayer += incomePlayer; // On ajoute la différence aux gains totaux du joueur
-                if (incomeIA < 0)
+                chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString())); // Puis on le dit dans le chat pour plus de clarté
+                gainMoneyIA += incomeIA; // On ajoute la différence aux gains totaux du joueur
+                if (incomePlayer < 0)
                 {
-                    lossMoneyIA -= incomeIA; // On ajoute la valeur absolue des pertes aux pertes total
-                    chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", incomeIA.ToString()));
+                    lossMoneyPlayer -= incomePlayer; // On ajoute la valeur absolue des pertes aux pertes total
+                    chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
                 }
                 else
                 {
-                    gainMoneyIA += incomeIA; // On ajoute la valeur absolue des pertes aux pertes total
-                    chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
+                    gainMoneyPlayer += incomePlayer; // On ajoute la valeur absolue des pertes aux pertes total
+                    chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
                 }
+
                 // verification condition de fin
                 if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
                 {
@@ -336,6 +337,7 @@ namespace MinivillesURSR46
                     Thread.Sleep(300);
                     screen.DisplayLayer(dieLayer);
                 }
+
                 // Puis on creer un élément dé avec la valeur qu'on a obtenue
                 dieLayer.Add(new Element(Die.ToStrings(resultDie)
                     , new Coordinates((screen.width-34)/2, screen.height/2),
@@ -350,23 +352,22 @@ namespace MinivillesURSR46
                 // On instantie des variables pour les connaitre les révenues des joueurs 
                 incomePlayer = playerH.UserMoney;
                 incomeIA = playerIA.UserMoney;
-
                 CardsActivation(playerIA, playerH, resultDie); // On actives les bonnes cartes
 
                 // Puis on calcule la différence
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
-                chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
-                gainMoneyIA += incomeIA;  // On ajoute la différence aux gains totaux de l'ia
-                if (incomePlayer < 0)
+                chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
+                gainMoneyPlayer += incomePlayer;  // On ajoute la différence aux gains totaux de l'ia
+                if (incomeIA < 0)
                 {
-                    lossMoneyPlayer -= incomePlayer; // On ajoute la valeur absolue des pertes aux pertes total
-                    chat.AddText(TextManagement.GetDataString("NegativeRevenu", incomePlayer.ToString()));
+                    lossMoneyIA -= incomeIA; // On ajoute la valeur absolue des pertes aux pertes total
+                    chat.AddText(TextManagement.GetDataString("NegativeRevenuIa", Math.Abs(incomeIA).ToString()));
                 }
                 else
                 {
-                    gainMoneyPlayer += incomePlayer;
-                    chat.AddText(TextManagement.GetDataString("Revenu", incomePlayer.ToString()));
+                    gainMoneyIA += incomeIA;
+                    chat.AddText(TextManagement.GetDataString("RevenuIa", incomeIA.ToString()));
                 }
                 // verification condition de fin
                 if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)

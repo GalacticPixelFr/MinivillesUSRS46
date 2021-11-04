@@ -602,6 +602,7 @@ public static class Menu
         screen.HideLayer(background);
         screen.HideLayer(selectMainMenu);
         background.Clear();
+        game.InitializePile();
 
         // affichage des cartes
         int choix = 0;

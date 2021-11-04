@@ -116,12 +116,8 @@ namespace MinivillesURSR46
                 screen = new Screen(screen.width, screen.height); //Pour reset l'écran
             }
         }
-        
-        /// <summary>
-        /// Permet de lancer une partie
-        /// </summary>
-        /// <param name="gameOption">les différentes options de jeu</param>
-        public void Run(GameOption gameOption)
+
+        public void InitializePile()
         {
             pile = new Piles();
             //Ajout des cartes dans la pile selon le nombre de carte possible.
@@ -135,6 +131,15 @@ namespace MinivillesURSR46
             }
             pile.AddCard(card.EachCards[10]);
             pile.AddCard(card.EachCards[11]);
+        }
+        
+        /// <summary>
+        /// Permet de lancer une partie
+        /// </summary>
+        /// <param name="gameOption">les différentes options de jeu</param>
+        public void Run(GameOption gameOption)
+        {
+            InitializePile();
 
             // On instantie les joueurs
             playerH = new Player(new List<CardsInfo>(), pile);

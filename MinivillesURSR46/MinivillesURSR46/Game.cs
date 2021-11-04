@@ -598,6 +598,11 @@ namespace MinivillesURSR46
 
                 Element[] card = Urss ? CardChoice(i).ToElementFull(coordinates, true) : CardChoice(i).ToElementFull(coordinates, false);
 
+                if (pile.GetNumberCard(i) == 0)
+                {
+                    card[0].foreground = ConsoleColor.DarkGray;
+                }
+
                 layer.Add(amount);
                 layer.Add(card[0]);
                 layer.Add(card[1]);

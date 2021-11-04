@@ -278,14 +278,14 @@ namespace MinivillesURSR46
                         CardsInfo c = CardChoice(choix);
 
                         // On vérifie que la carte est encore disponible
-                        if (pile.GetNumberCard(choix) >= 0) // Si la carte n'est plus disponible
+                        if (pile.GetNumberCard(choix) == 0) // Si la carte n'est plus disponible
                         {
                             // On ajoute l'élément pour dire au joueur que la carte n'est plus disponible au background
                             background.Add(new Element(TextManagement.GetData("Indisponible")
                                                     , new Coordinates((screen.width-34)/2, screen.height/2+1),
                                                     Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black));
                         }
-                        else if (c.Cost <= playerH.UserMoney) // Si la carte est disponible on vérifi que le joueur a assez d'argent
+                        else if (c.Cost <= playerH.UserMoney) // Si la carte est disponible on vérifie que le joueur a assez d'argent
                         {
                             buyCardPlayer += 1; // On incrément la stat du nombre de carte acheté
                             playerH.BuyCard(c, pile); // On fait acheter la carte

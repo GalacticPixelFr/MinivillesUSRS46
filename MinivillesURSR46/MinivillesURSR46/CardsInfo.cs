@@ -2,6 +2,7 @@
 
 namespace MinivillesURSR46
 {
+    //Classe permettant la construction des cartes
     public class CardsInfo
     {
         public int Id { get; set; }

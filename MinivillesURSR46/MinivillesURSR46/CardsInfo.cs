@@ -30,8 +30,9 @@ namespace MinivillesURSR46
         /// <summary>
         /// Permet de renvoyer une liste d'element pour afficher une carte
         /// </summary>
-        /// <param name="cardsInfo">Les infos de la carte</param>
+        /// <param name="cardsInfo">les infos de la carte</param>
         /// <param name="coordinates">les coordonnées de la carte</param>
+        /// <param name="urss">si la carte est en mode URSS</param>
         /// <returns>liste d'element pour afficher une carte</returns>
         public Element[] ToElementFull(Coordinates coordinates, bool urss)
         {
@@ -70,7 +71,7 @@ namespace MinivillesURSR46
                 "",
                 this.Cost+"  pièces",
                 "",
-                this.Dice.ToString()
+                this.Id == 11 ? "1-3-5" : this.Dice.ToString()
             };
 
                 Element infos = new Element(stringInfos, new Coordinates(coordinates.x, coordinates.y), Animation.None, Placement.mid, ConsoleColor.White, ConsoleColor.Black);

@@ -222,7 +222,13 @@ namespace MinivillesURSR46
                 int incomeIA = playerIA.UserMoney;
                 
                 CardsActivation(playerH, playerIA, resultDie); // On actives les bonnes cartes
-                
+                // verification condition de fin
+                if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
+                {
+                    if (gameOption.difficultee != 1) { break; }
+                    else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 10) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 10)) { break; }
+                }
+
                 // Puis on calcule la différence
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
@@ -311,12 +317,7 @@ namespace MinivillesURSR46
                     else { action = true; }
                 }
 
-                // verification condition de fin
-                if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
-                {
-                    if (gameOption.difficultee != 1) { break; }
-                    else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
-                }
+                
                 DisplayHands(); // On actualise les cartes des joueurs
                 DisplayMoney(); // On actualise aussi leur argent
 
@@ -349,7 +350,15 @@ namespace MinivillesURSR46
                 // On instantie des variables pour les connaitre les révenues des joueurs 
                 incomePlayer = playerH.UserMoney;
                 incomeIA = playerIA.UserMoney;
+
                 CardsActivation(playerIA, playerH, resultDie); // On actives les bonnes cartes
+                // verification condition de fin
+                if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
+                {
+                    if (gameOption.difficultee != 1) { break; }
+                    else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 10) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 10)) { break; }
+                }
+
                 // Puis on calcule la différence
                 incomePlayer = playerH.UserMoney - incomePlayer;
                 incomeIA = playerIA.UserMoney - incomeIA;
@@ -367,14 +376,6 @@ namespace MinivillesURSR46
                 }
                 // difficulté de l'IA et action
                 actionIA(gameOption.niveauIA, Urss, ref buyCardIA);
-
-                // verification condition de fin
-                if (playerH.UserMoney >= gainFinish || playerIA.UserMoney >= gainFinish)
-                {
-                    if (gameOption.difficultee != 1) { break; }
-                    else if ((playerH.UserMoney >= gainFinish && playerH.GetNumberCardType() == 8) || (playerIA.UserMoney >= gainFinish && playerIA.GetNumberCardType() == 8)) { break; }
-                }
-
             }
             
             screen.Clear();
